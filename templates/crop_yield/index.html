@@ -218,8 +218,8 @@
                 <h3 style="font-size: 1.1rem; font-weight: 700;">No Image? Try an Example</h3>
             </div>
             <section class="examples-grid">
-                <div class="example-card tilt-card" onclick="selectExampleImage('/static/images/examples/field25.png', 'example_1.png')">
-                    <img src="/static/images/examples/field25.png" alt="Example Field 1">
+                <div class="example-card tilt-card" onclick="selectExampleImage('{{ url_for('crop_yield.assets', filename='field25.png') }}', 'example_1.png')">
+                    <img src="{{ url_for('crop_yield.assets', filename='field25.png') }}" alt="Example Field 1">
                     <div class="example-overlay">
                         <div class="example-overlay-btn"><i data-lucide="play"></i> Try This</div>
                     </div>
@@ -227,8 +227,8 @@
                         <h4>Example 1</h4>
                     </div>
                 </div>
-                <div class="example-card tilt-card" onclick="selectExampleImage('/static/images/examples/grass1 (4).jpg', 'example_2.jpg')">
-                    <img src="/static/images/examples/grass1 (4).jpg" alt="Example Field 2">
+                <div class="example-card tilt-card" onclick="selectExampleImage('{{ url_for('crop_yield.assets', filename='grass1-4.jpg') }}', 'example_2.jpg')">
+                    <img src="{{ url_for('crop_yield.assets', filename='grass1-4.jpg') }}" alt="Example Field 2">
                     <div class="example-overlay">
                         <div class="example-overlay-btn"><i data-lucide="play"></i> Try This</div>
                     </div>
@@ -236,8 +236,8 @@
                         <h4>Example 2</h4>
                     </div>
                 </div>
-                <div class="example-card tilt-card" onclick="selectExampleImage('/static/images/examples/grass1 (5).jpg', 'example_3.jpg')">
-                    <img src="/static/images/examples/grass1 (5).jpg" alt="Example Field 3">
+                <div class="example-card tilt-card" onclick="selectExampleImage('{{ url_for('crop_yield.assets', filename='grass1-5.jpg') }}', 'example_3.jpg')">
+                    <img src="{{ url_for('crop_yield.assets', filename='grass1-5.jpg') }}" alt="Example Field 3">
                     <div class="example-overlay">
                         <div class="example-overlay-btn"><i data-lucide="play"></i> Try This</div>
                     </div>

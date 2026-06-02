@@ -1,0 +1,86 @@
+<section class="section" id="projects">
+  <div class="section-inner">
+    <div class="section-heading">
+      <p class="section-kicker project-index-kicker">Academic Project Index</p>
+      <h2>Selected coursework and final-year projects.</h2>
+      <p>
+        Each project opens into its own review page with a live demo window,
+        role summary, technology stack, and short project background.
+      </p>
+    </div>
+
+    <div class="project-grid">
+      {% for project in projects %}
+      <a class="project-card" href="{{ project.url }}">
+        <div class="project-visual {{ project.visual_style or '' }}">
+          {% if project.visual_style == "chatbot" %}
+          <div class="chat-preview" aria-hidden="true">
+            <div class="chat-sidebar">
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+            <div class="chat-panel">
+              <div class="bot-bubble">Hi, I am UTSmartBot.</div>
+              <div class="user-bubble">Show me UTS info</div>
+              <div class="bot-bubble small">Courses / Fees / Contacts</div>
+            </div>
+          </div>
+          {% elif project.visual_style == "m4food" %}
+          <div class="food-preview" aria-hidden="true">
+            <img class="food-main" src="{{ project.image }}" alt="">
+            <img class="food-thumb one" src="/projects/m4food/assets/glazeddonut.png" alt="">
+            <img class="food-thumb two" src="/projects/m4food/assets/muffin.png" alt="">
+            <span>M4Food</span>
+          </div>
+          {% elif project.visual_style == "crop-ai" %}
+          <div class="crop-preview" aria-hidden="true">
+            <div class="field-map">
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+            <div class="analysis-path">
+              <i></i>
+              <i></i>
+              <i></i>
+            </div>
+            <div class="scan-line"></div>
+            <div class="crop-readout">
+              <strong>AI Yield Scan</strong>
+              <span>Supabase backend</span>
+            </div>
+          </div>
+          {% elif project.image %}
+          <img src="{{ project.image }}" alt="{{ project.title }} preview">
+          {% else %}
+          <div class="project-symbol">
+            <span>{{ project.number }}</span>
+            <strong>{{ project.category }}</strong>
+          </div>
+          {% endif %}
+        </div>
+        <div class="project-body">
+          <div class="project-meta">
+            <span>{{ project.year }}</span>
+            <span>{{ project.status }}</span>
+          </div>
+          <h3>{{ project.title }}</h3>
+          <p class="project-summary">{{ project.summary }}</p>
+          <p class="project-background">{{ project.background }}</p>
+          <div class="project-stack-preview" aria-label="{{ project.title }} technology stack">
+            <span class="role-chip">Role: {{ project.role }}</span>
+            {% for item in project.preview_stack %}
+            <span>{{ item }}</span>
+            {% endfor %}
+          </div>
+          <span class="project-link-label">Open project</span>
+        </div>
+      </a>
+      {% endfor %}
+    </div>
+  </div>
+</section>

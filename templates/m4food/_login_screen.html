@@ -1,0 +1,41 @@
+<section class="phone-frame login-phone" aria-label="M4Food login screen">
+  <div class="login-content">
+    <div class="logo-card">
+      <span>M4</span><span>FO</span><span>OD</span>
+    </div>
+
+    <div class="welcome-text">
+      <h1>Welcome to M4Food</h1>
+      <p>Your Solution for Food Donation!</p>
+    </div>
+
+    <form class="login-form">
+      <label class="input-pill">
+        <span>@</span>
+        <input type="email" placeholder="Email or Username">
+      </label>
+      <label class="input-pill">
+        <span>*</span>
+        <input type="password" placeholder="Password">
+      </label>
+      <button type="button">Login</button>
+      <a href="#">Forgot Password?</a>
+    </form>
+
+    <div class="separator">
+      <span></span>
+      <strong>OR</strong>
+      <span></span>
+    </div>
+
+    <div class="google-area">
+      <p>Sign in with Google</p>
+      <button type="button" aria-label="Google sign in">
+        <img src="{{ url_for('m4food.assets', filename='google_icon.jpg') }}" alt="">
+      </button>
+      <p>Don't have an account? <strong>Sign Up</strong></p>
+    </div>
+
+    <button class="guest-button" type="button">Continue As Guest</button>
+  </div>
+</section>

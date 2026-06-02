@@ -1,0 +1,57 @@
+@media (max-width: 920px) {
+  .m4-hero,
+  .m4-showcase,
+  .tech-section {
+    grid-template-columns: 1fr;
+  }
+
+  .m4-hero h1,
+  .m4-section h2 {
+    font-size: 2.7rem;
+  }
+
+  .feature-band {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .m4-header,
+  .m4-hero {
+    padding-right: 18px;
+    padding-left: 18px;
+  }
+
+  .m4-header {
+    align-items: flex-start;
+    flex-direction: column;
+    justify-content: center;
+    gap: 6px;
+  }
+
+  .m4-hero {
+    padding-top: 48px;
+  }
+
+  .m4-hero h1,
+  .m4-section h2 {
+    font-size: 2.1rem;
+  }
+
+  .m4-food-strip {
+    grid-template-columns: 1fr;
+  }
+
+  .m4-food-strip img {
+    height: 170px;
+  }
+
+  .m4-section {
+    width: calc(100% - 36px);
+    padding: 52px 0;
+  }
+
+  .phone-shell {
+    min-height: 680px;
+  }
+}

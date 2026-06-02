@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Derrick's Portfolio</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/portfolio/base.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/portfolio/header.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/portfolio/footer.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/portfolio/hero.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/portfolio/projects.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/portfolio/about.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/portfolio/responsive.css') }}">
+</head>
+<body>
+  {% include "portfolio/_header.html" %}
+  <main>
+    {% include "portfolio/_hero.html" %}
+    {% include "portfolio/_projects.html" %}
+    {% include "portfolio/_about.html" %}
+  </main>
+  {% include "portfolio/_footer.html" %}
+</body>
+</html>

@@ -1,0 +1,145 @@
+.hero {
+  position: relative;
+  min-height: 560px;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  padding: 58px 24px;
+  color: #ffffff;
+  background:
+    linear-gradient(135deg, rgba(23, 35, 33, 0.96), rgba(41, 62, 49, 0.95)),
+    linear-gradient(90deg, #1a2420, #34503d);
+}
+
+.hero-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+  background-size: 54px 54px;
+  opacity: 0.34;
+}
+
+.hero::after {
+  position: absolute;
+  inset: auto 0 0;
+  height: 210px;
+  content: "";
+  background: linear-gradient(180deg, transparent, rgba(0, 0, 0, 0.26));
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  width: min(820px, 100%);
+  transform: translateX(-32px);
+  text-align: center;
+}
+
+.eyebrow {
+  margin-bottom: 18px;
+  color: var(--gold);
+  font-size: 0.9rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.hero h1 {
+  margin-bottom: 22px;
+  color: #ffffff;
+  font-size: 4.35rem;
+  line-height: 0.98;
+  letter-spacing: 0;
+  text-shadow: 0 18px 42px rgba(0, 0, 0, 0.38);
+}
+
+.hero p {
+  max-width: 690px;
+  margin-right: auto;
+  margin-left: auto;
+  color: rgba(255, 255, 255, 0.84);
+  font-size: 1.08rem;
+}
+
+.primary-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  margin-top: 12px;
+  padding: 0 24px;
+  border-radius: 8px;
+  background: var(--gold);
+  color: #1a2420;
+  font-weight: 800;
+  box-shadow: 0 18px 36px rgba(0, 0, 0, 0.22);
+}
+
+.primary-action:hover {
+  transform: translateY(-2px);
+}
+
+.hero-console {
+  position: absolute;
+  z-index: 1;
+  width: 290px;
+  padding: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 8px;
+  background: rgba(8, 15, 14, 0.62);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(12px);
+}
+
+.hero-console p {
+  margin: 10px 0;
+  color: rgba(255, 255, 255, 0.78);
+  font-family: Consolas, "Courier New", monospace;
+  font-size: 0.85rem;
+}
+
+.hero-console-one {
+  left: 7%;
+  bottom: 38px;
+}
+
+.hero-console-two {
+  right: clamp(-18px, 1.5vw, 28px);
+  top: 72px;
+}
+
+.console-dot {
+  display: inline-block;
+  width: 9px;
+  height: 9px;
+  margin-right: 6px;
+  border-radius: 50%;
+  background: var(--coral);
+}
+
+.console-dot:nth-child(2) {
+  background: var(--gold);
+}
+
+.console-dot:nth-child(3) {
+  background: var(--teal);
+}
+
+.console-line {
+  height: 9px;
+  width: 74%;
+  margin: 10px 0;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.16);
+}
+
+.console-line.wide {
+  width: 94%;
+}
+
+.console-line.short {
+  width: 48%;
+  background: rgba(210, 160, 25, 0.58);
+}

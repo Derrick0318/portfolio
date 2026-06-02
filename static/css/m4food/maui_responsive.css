@@ -1,0 +1,33 @@
+@media (max-width: 900px) {
+  .maui-page {
+    grid-template-columns: minmax(320px, 410px);
+  }
+}
+
+@media (max-width: 520px) {
+  .maui-header {
+    align-items: flex-start;
+    flex-direction: column;
+    padding: 18px;
+  }
+
+  .maui-page {
+    grid-template-columns: 1fr;
+    padding: 18px 12px 42px;
+  }
+
+  .phone-frame {
+    min-height: 720px;
+    border-width: 6px;
+    border-radius: 24px;
+  }
+
+  .login-phone {
+    padding: 24px 20px;
+  }
+
+  .logo-card {
+    padding: 24px 38px;
+    font-size: 36px;
+  }
+}

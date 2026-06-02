@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ project.title }} - Derrick's Portfolio</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/portfolio/footer.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/projects/detail.css') }}">
+</head>
+<body>
+  {% include "projects/_detail_header.html" %}
+  <main>
+    {% include "projects/_demo_window.html" %}
+    {% include "projects/_project_details.html" %}
+  </main>
+  {% include "portfolio/_footer.html" %}
+</body>
+</html>

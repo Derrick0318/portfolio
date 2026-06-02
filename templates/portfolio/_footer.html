@@ -1,0 +1,40 @@
+<footer class="site-footer">
+  <div class="footer-inner">
+    <section class="footer-intro" aria-label="Portfolio footer">
+      <p class="footer-kicker">Computer Science Portfolio</p>
+      <h2>Derrick's Academic Projects</h2>
+      <p>
+        A collection of academic web, mobile, backend, database, and AI projects
+        presented in one organized portfolio.
+      </p>
+    </section>
+
+    <nav class="footer-links" aria-label="Footer quick links">
+      <h3>Quick Links</h3>
+      <div class="footer-link-list">
+        <a href="/#intro">Intro</a>
+        <a href="/#projects">Projects</a>
+        <a href="/#about">About</a>
+        {% for item in projects %}
+        <a href="{{ item.url }}">{{ item.title }}</a>
+        {% endfor %}
+      </div>
+    </nav>
+
+    <section class="footer-contact" aria-label="Contact information">
+      <h3>Contact</h3>
+      <a href="mailto:derrickcheng0318@gmail.com">
+        <span>Personal Email</span>
+        derrickcheng0318@gmail.com
+      </a>
+      <a href="mailto:bcs23090018@student.uts.edu.my">
+        <span>Student Email</span>
+        bcs23090018@student.uts.edu.my
+      </a>
+      <a href="tel:+601114177441">
+        <span>Phone</span>
+        011-1417-7441
+      </a>
+    </section>
+  </div>
+</footer>

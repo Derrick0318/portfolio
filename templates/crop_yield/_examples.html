@@ -1,0 +1,20 @@
+<section class="crop-card" id="examples">
+  <div class="card-title">
+    <span>Example Imagery</span>
+    <h3>No image? Try an example.</h3>
+  </div>
+  <div class="example-grid">
+    <button class="example-card" data-example="field25.png" data-image="{{ url_for('crop_yield.assets', filename='field25.png') }}" type="button">
+      <img src="{{ url_for('crop_yield.assets', filename='field25.png') }}" alt="Green field example">
+      <span>Example 1</span>
+    </button>
+    <button class="example-card" data-example="grass1-4.jpg" data-image="{{ url_for('crop_yield.assets', filename='grass1-4.jpg') }}" type="button">
+      <img src="{{ url_for('crop_yield.assets', filename='grass1-4.jpg') }}" alt="Sparse grass example">
+      <span>Example 2</span>
+    </button>
+    <button class="example-card" data-example="grass1-5.jpg" data-image="{{ url_for('crop_yield.assets', filename='grass1-5.jpg') }}" type="button">
+      <img src="{{ url_for('crop_yield.assets', filename='grass1-5.jpg') }}" alt="Low vegetation example">
+      <span>Example 3</span>
+    </button>
+  </div>
+</section>

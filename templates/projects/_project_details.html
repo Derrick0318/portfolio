@@ -1,0 +1,68 @@
+<section class="project-details project-details-{{ project.detail_variant }}" id="project-details">
+  <div class="details-copy">
+    <p class="section-kicker">Project Details / {{ project.year }}</p>
+    <h2>{{ project.background }}</h2>
+    <p>{{ project.short_description }}</p>
+  </div>
+
+  {% if project.detail_variant == "chat" %}
+  <div class="chat-detail">
+    {% for detail in project.details %}
+    <article class="{{ 'from-user' if loop.index is even else 'from-bot' }}">
+      <span>{{ 'User flow' if loop.index is even else 'UTSmartBot' }}</span>
+      <p>{{ detail }}</p>
+    </article>
+    {% endfor %}
+  </div>
+  {% elif project.detail_variant == "property" %}
+  <div class="property-detail">
+    {% for detail in project.details %}
+    <article>
+      <span>{{ ['Showcase', 'Explore', 'Connect'][loop.index0] }}</span>
+      <p>{{ detail }}</p>
+    </article>
+    {% endfor %}
+  </div>
+  {% elif project.detail_variant == "app" %}
+  <div class="app-detail">
+    <div class="app-flow-labels">
+      <span>Login</span>
+      <span>Browse</span>
+      <span>Cart</span>
+      <span>Orders</span>
+    </div>
+    <div class="app-notes">
+      {% for detail in project.details %}
+      <p>{{ detail }}</p>
+      {% endfor %}
+    </div>
+  </div>
+  {% elif project.detail_variant == "ai" %}
+  <div class="ai-detail">
+    <div class="ai-workflow">
+      {% for step in project.workflow %}
+      <article>
+        <strong>{{ step.label }}</strong>
+        <span>{{ step.text }}</span>
+      </article>
+      {% endfor %}
+    </div>
+  </div>
+  {% else %}
+  <div class="details-river">
+    {% for detail in project.details %}
+    <article class="detail-node">
+      <span aria-hidden="true"></span>
+      <p>{{ detail }}</p>
+    </article>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  <div class="stack-list" aria-label="Technology stack">
+    <span class="role-chip">Role: {{ project.role }}</span>
+    {% for item in project.stack %}
+    <span>{{ item }}</span>
+    {% endfor %}
+  </div>
+</section>

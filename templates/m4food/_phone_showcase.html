@@ -1,0 +1,95 @@
+<section class="m4-section m4-showcase">
+  <div class="m4-section-copy">
+    <p class="m4-kicker">Original UI Direction</p>
+    <h2>Warm mobile screens for ordering and donation flows.</h2>
+    <p>
+      The preview adapts the MAUI pages into browser-friendly screens while
+      keeping the yellow accent, soft background, product cards, and bottom
+      navigation style from the app.
+    </p>
+    <div class="screen-tabs" role="tablist" aria-label="M4Food screens">
+      <button class="active" data-screen="home" type="button">Home</button>
+      <button data-screen="cart" type="button">Cart</button>
+      <button data-screen="donate" type="button">Donate</button>
+    </div>
+  </div>
+
+  <div class="phone-shell">
+    <div class="phone-status">
+      <span>9:41</span>
+      <span>M4Food</span>
+    </div>
+
+    <div class="phone-screen active" data-screen-panel="home">
+      <div class="app-title-row">
+        <div>
+          <p>Welcome back</p>
+          <h3>Browse food nearby</h3>
+        </div>
+        <span class="avatar">M</span>
+      </div>
+      <div class="search-bar">Search donated bakery items</div>
+      <div class="product-grid">
+        <article>
+          <img src="{{ url_for('m4food.assets', filename='artisanbread.png') }}" alt="Artisan bread">
+          <h4>Artisan Bread</h4>
+          <p>Bakery Lane</p>
+        </article>
+        <article>
+          <img src="{{ url_for('m4food.assets', filename='muffin.png') }}" alt="Muffin">
+          <h4>Blueberry Muffin</h4>
+          <p>Sweet Crust</p>
+        </article>
+        <article>
+          <img src="{{ url_for('m4food.assets', filename='glazeddonut.png') }}" alt="Glazed donut">
+          <h4>Glazed Donut</h4>
+          <p>Morning Bites</p>
+        </article>
+        <article>
+          <img src="{{ url_for('m4food.assets', filename='chocochip.png') }}" alt="Chocolate chip cookie">
+          <h4>Choco Chip</h4>
+          <p>Fresh Batch</p>
+        </article>
+      </div>
+    </div>
+
+    <div class="phone-screen" data-screen-panel="cart">
+      <h3>My Cart</h3>
+      <div class="cart-line">
+        <img src="{{ url_for('m4food.assets', filename='buttercroissant.png') }}" alt="Butter croissant">
+        <div>
+          <strong>Butter Croissant</strong>
+          <p>Quantity 2</p>
+        </div>
+        <span>Free</span>
+      </div>
+      <div class="cart-line">
+        <img src="{{ url_for('m4food.assets', filename='chococake.png') }}" alt="Chocolate cake">
+        <div>
+          <strong>Choco Cake</strong>
+          <p>Quantity 1</p>
+        </div>
+        <span>Free</span>
+      </div>
+      <button class="checkout-button" type="button">Checkout</button>
+    </div>
+
+    <div class="phone-screen" data-screen-panel="donate">
+      <h3>Register Store</h3>
+      <label>Store name</label>
+      <div class="input-preview">M4 Bakery</div>
+      <label>Food category</label>
+      <div class="input-preview">Bread and pastry</div>
+      <label>Upload image</label>
+      <div class="image-upload-preview">Choose image</div>
+      <button class="checkout-button" type="button">Submit Donation</button>
+    </div>
+
+    <nav class="phone-nav" aria-label="App navigation preview">
+      <span class="active">Home</span>
+      <span>Cart</span>
+      <span>History</span>
+      <span>Profile</span>
+    </nav>
+  </div>
+</section>

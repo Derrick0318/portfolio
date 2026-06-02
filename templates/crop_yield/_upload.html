@@ -1,0 +1,17 @@
+<section class="crop-card upload-card" id="upload">
+  <div class="card-title">
+    <span>Upload & Analyze</span>
+    <h3>Run a local preview analysis.</h3>
+  </div>
+  <div class="upload-layout">
+    <label class="drop-zone" for="imageInput">
+      <input id="imageInput" type="file" accept="image/*">
+      <strong>Choose an agricultural image</strong>
+      <span id="fileName">No file chosen</span>
+    </label>
+    <div class="preview-panel">
+      <img id="imagePreview" src="{{ url_for('crop_yield.assets', filename='field25.png') }}" alt="Selected preview">
+    </div>
+  </div>
+  <button class="analyze-button" id="analyzeButton" type="button">Process Analysis</button>
+</section>

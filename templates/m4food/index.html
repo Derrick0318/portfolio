@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>M4Food</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/m4food/maui_base.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/m4food/maui_screens.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/m4food/maui_home.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/m4food/maui_responsive.css') }}">
+</head>
+<body>
+  {% include "m4food/_maui_header.html" %}
+  <main class="maui-page">
+    {% include "m4food/_login_screen.html" %}
+    {% include "m4food/_home_screen.html" %}
+  </main>
+</body>
+</html>

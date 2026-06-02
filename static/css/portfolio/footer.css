@@ -1,0 +1,111 @@
+.site-footer {
+  position: relative;
+  overflow: hidden;
+  padding: clamp(56px, 7vw, 82px) 24px 34px;
+  border-top: 1px solid rgba(246, 241, 230, 0.1);
+  background:
+    linear-gradient(rgba(246, 241, 230, 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(246, 241, 230, 0.04) 1px, transparent 1px),
+    linear-gradient(135deg, #13231d, #1f352b);
+  background-size: 44px 44px, 44px 44px, auto;
+  color: #f6f1e6;
+}
+
+.site-footer::before {
+  position: absolute;
+  right: -150px;
+  bottom: -210px;
+  width: 420px;
+  height: 420px;
+  border: 1px solid rgba(210, 160, 25, 0.22);
+  border-radius: 50%;
+  content: "";
+}
+
+.footer-inner {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: minmax(260px, 1.15fr) minmax(180px, 0.7fr) minmax(280px, 1fr);
+  gap: clamp(32px, 5vw, 74px);
+  width: min(1120px, 100%);
+  margin: 0 auto;
+}
+
+.footer-kicker,
+.site-footer h3 {
+  margin: 0 0 14px;
+  color: #d7c8a7;
+  font-size: 0.78rem;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.footer-intro h2 {
+  max-width: 430px;
+  margin: 0 0 16px;
+  color: #ffffff;
+  font-size: clamp(1.8rem, 3vw, 2.6rem);
+  line-height: 1.05;
+}
+
+.footer-intro p:last-child {
+  max-width: 470px;
+  margin: 0;
+  color: rgba(246, 241, 230, 0.76);
+  line-height: 1.75;
+}
+
+.footer-link-list {
+  display: grid;
+  gap: 8px;
+}
+
+.footer-link-list a,
+.footer-contact a {
+  color: rgba(246, 241, 230, 0.84);
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.footer-link-list a {
+  width: fit-content;
+  padding: 3px 0;
+  font-weight: 700;
+}
+
+.footer-link-list a:hover,
+.footer-contact a:hover {
+  color: #ffffff;
+  transform: translateX(5px);
+}
+
+.footer-contact {
+  display: grid;
+  gap: 12px;
+  align-content: start;
+}
+
+.footer-contact a {
+  display: grid;
+  gap: 3px;
+  min-width: 0;
+  padding: 0 0 13px;
+  border-bottom: 1px solid rgba(246, 241, 230, 0.14);
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+
+.footer-contact span {
+  color: #d2a019;
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+@media (max-width: 860px) {
+  .footer-inner {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,1714 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Predict crop yield and get smart crop recommendations using AI-powered image analysis. Upload satellite or drone imagery for instant agricultural insights.">
+    <meta name="theme-color" content="#ffffff">
+    <title>Crop Yield AI — Smart Agriculture Prediction System</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+
+    <!-- Custom Select CSS -->
+    <style>
+        .custom-select { position: relative; width: 100%; }
+        .custom-select-trigger { 
+            padding: 0.75rem 1rem; 
+            background: var(--surface-light, #f8fafc); 
+            border: 1.5px solid var(--border, #e2e8f0); 
+            border-radius: 0.75rem; 
+            font-size: 0.95rem; 
+            color: var(--text, #1e293b); 
+            cursor: pointer; 
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .custom-select-trigger.disabled { opacity: 0.7; cursor: not-allowed; }
+        .custom-select-trigger::after { 
+            content: ''; 
+            width: 16px; height: 16px; 
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%2364748b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>'); 
+            background-size: contain; background-repeat: no-repeat; background-position: center;
+        }
+        .custom-select-options { 
+            position: absolute; top: calc(100% + 5px); left: 0; width: 100%; 
+            background: var(--surface, #ffffff); border: 1.5px solid var(--border, #e2e8f0); 
+            border-radius: 0.75rem; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); 
+            z-index: 100; display: none; flex-direction: column; overflow: hidden;
+        }
+        .custom-select.open .custom-select-options { display: flex; }
+        .custom-select-search { 
+            padding: 0.75rem; border-bottom: 1.5px solid var(--border, #e2e8f0); outline: none; border: none; font-size: 0.95rem; width: 100%; box-sizing: border-box;
+        }
+        .custom-select-list { max-height: 450px; overflow-y: auto; }
+        .custom-select-option { padding: 0.75rem 1rem; cursor: pointer; font-size: 0.95rem; color: var(--text, #1e293b); }
+        .custom-select-option:hover { background: var(--primary-light, #e0e7ff); }
+    </style>
+</head>
+
+<body>
+    <!-- Persistent Sidebar -->
+    <aside class="app-sidebar">
+        <!-- Close button for mobile -->
+        <button class="menu-close-btn" onclick="toggleSidebar()" style="display: none; position: absolute; top: 1rem; right: 1rem; color: white; background: none; border: none; font-size: 1.5rem; z-index: 1001;">
+            <i data-lucide="x"></i>
+        </button>
+
+        <div class="sidebar-brand">
+            <div class="brand-logo">
+                <i data-lucide="sprout"></i>
+            </div>
+            <div class="brand-text">
+                <h1>Crop Yield AI</h1>
+                <p>Smart Agriculture</p>
+            </div>
+            <!-- Visible Close Button for Mobile -->
+            <button class="menu-close-btn-visible" onclick="toggleSidebar()" style="display: none; background: none; border: none; color: white; margin-left: auto;">
+                <i data-lucide="x"></i>
+            </button>
+        </div>
+
+
+        <nav class="sidebar-nav">
+            <div class="nav-group">
+                <a href="#" class="nav-link active" id="nav-upload" onclick="showSection('dashboard','upload-section'); return false;">
+                    <i data-lucide="upload-cloud"></i>
+                    <span>Upload & Analyze</span>
+                </a>
+
+                <a href="#" class="nav-link" id="nav-results" onclick="showSection('dashboard','results'); return false;">
+                    <i data-lucide="bar-chart-2"></i>
+                    <span>Results</span>
+                </a>
+
+                <a href="#" class="nav-link" id="nav-history" onclick="showSection('dashboard','history-section'); return false;">
+                    <i data-lucide="history"></i>
+                    <span>History</span>
+                </a>
+            </div>
+
+            <div class="nav-group" style="margin-top: auto; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 1rem;">
+                <a href="#" class="nav-link" id="nav-settings" onclick="showSection('settings'); return false;">
+                    <i data-lucide="settings"></i>
+                    <span>Settings</span>
+                </a>
+                <a href="#" class="nav-link" id="nav-help" onclick="showSection('help'); return false;">
+                    <i data-lucide="help-circle"></i>
+                    <span>Help</span>
+                </a>
+            </div>
+        </nav>
+
+        <div class="pro-tip-card tilt-card">
+            <h4>Pro Tip</h4>
+            <p>Add GPS coordinates for weather & soil insights</p>
+        </div>
+
+        <!-- GOOGLE LOGIN SIDEBAR WIDGET -->
+        <div style="margin-top: 1rem; padding: 0 1rem; display: flex; flex-direction: column; gap: 0.5rem; justify-content: center; margin-bottom: 2rem;">
+            <div id="g_id_onload"
+                 data-client_id="429246103244-foo5vku4t3j6jmmvab8as1e5f14d9dl1.apps.googleusercontent.com"
+                 data-context="signin"
+                 data-ux_mode="popup"
+                 data-callback="handleCredentialResponse"
+                 data-auto_prompt="false">
+            </div>
+            <div class="g_id_signin" data-type="standard" data-shape="rectangular" data-theme="outline" data-text="signin_with" data-size="large" data-logo_alignment="left" style="width: 100%; display: flex; justify-content: center;"></div>
+            
+            <div id="user-profile-menu" style="display: none; flex-direction: column; align-items: center; gap: 10px; background: rgba(255,255,255,0.05); border-radius: 12px; padding: 1.25rem 1rem; border: 1px solid rgba(255,255,255,0.1); margin-top: 1rem;">
+                <img id="user-avatar" src="" alt="User Avatar" referrerpolicy="no-referrer" style="width: 56px; height: 56px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary-light); margin-bottom: 4px;">
+                <span id="user-name-display" style="font-size: 1rem; font-weight: 700; color: #ffffff; text-align: center; display: block; letter-spacing: 0.02em;"></span>
+                <button class="btn-ghost" onclick="handleLogout()" style="padding: 0.6rem 1rem; font-size: 0.85rem; width: 100%; margin-top: 10px; color: #111827; background: #ffffff; border: 1px solid rgba(0,0,0,0.1); font-weight: 700; text-transform: uppercase; border-radius: 100px;">Logout</button>
+
+            </div>
+
+        </div>
+    </aside>
+
+    <!-- Overlay for mobile sidebar -->
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+
+    <!-- Main Content Area -->
+
+    <main class="app-main">
+        <!-- Minimal Top Nav -->
+        <header class="app-header">
+            <button class="menu-toggle" onclick="toggleSidebar()">
+                <i data-lucide="layout-panel-left"></i>
+            </button>
+            <div class="header-divider"></div>
+            <div class="header-title">
+                <h2 id="headerTitle">Dashboard</h2>
+            </div>
+            
+            <div class="header-actions" style="margin-left: auto; display: flex; align-items: center; gap: 1rem;">
+                <!-- Google Login moved to sidebar -->
+            </div>
+        </header>
+
+        <!-- DASHBOARD VIEW -->
+        <div class="dashboard-content" id="view-dashboard">
+            <!-- Hero Gradient Section -->
+            <section class="hero-gradient tilt-card">
+                <div class="hero-badge">
+                    <span class="status-dot"></span>
+                    AI Model Active
+                </div>
+                <div class="hero-text">
+                    <h2>Predict Crop Yield <br>with AI Intelligence</h2>
+                    <p>Upload satellite or drone imagery to get instant yield predictions and smart crop recommendations.</p>
+                </div>
+                <div class="hero-features">
+                    <div class="h-feature">
+                        <i data-lucide="cpu" class="icon-blue"></i>
+                        <span>AI-Powered</span>
+                    </div>
+                    <div class="h-feature">
+                        <i data-lucide="zap" class="icon-pink"></i>
+                        <span>Instant Results</span>
+                    </div>
+                    <div class="h-feature">
+                        <i data-lucide="map-pin" class="icon-orange"></i>
+                        <span>Location-Aware</span>
+                    </div>
+                </div>
+                <div class="hero-scroll-hint">
+                    <i data-lucide="arrow-down"></i>
+                </div>
+            </section>
+
+            <!-- Step Guide Section -->
+            <section class="steps-grid">
+                <div class="step-card tilt-card">
+                    <div class="step-icon-wrapper blue">
+                        <i data-lucide="upload"></i>
+                    </div>
+                    <span class="step-meta">STEP 1</span>
+                    <h3>Upload Imagery</h3>
+                    <p>Select satellite or drone photos. Supports PNG, JPG, TIFF, and WebP.</p>
+                </div>
+                <div class="step-card tilt-card">
+                    <div class="step-icon-wrapper purple">
+                        <i data-lucide="cpu"></i>
+                    </div>
+                    <span class="step-meta">STEP 2</span>
+                    <h3>AI Analysis</h3>
+                    <p>Our model extracts vegetation indices and environmental data.</p>
+                </div>
+                <div class="step-card tilt-card">
+                    <div class="step-icon-wrapper orange">
+                        <i data-lucide="bar-chart-3"></i>
+                    </div>
+                    <span class="step-meta">STEP 3</span>
+                    <h3>Get Results</h3>
+                    <p>Receive yield predictions and top crop recommendations.</p>
+                </div>
+            </section>
+
+            <!-- Try with Examples Section -->
+            <div class="section-header" style="margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.75rem; margin-top: 2rem;">
+                <i data-lucide="image-plus" style="color: var(--primary); width: 20px; height: 20px;"></i>
+                <h3 style="font-size: 1.1rem; font-weight: 700;">No Image? Try an Example</h3>
+            </div>
+            <section class="examples-grid">
+                <div class="example-card tilt-card" onclick="selectExampleImage('/static/images/examples/field25.png', 'example_1.png')">
+                    <img src="/static/images/examples/field25.png" alt="Example Field 1">
+                    <div class="example-overlay">
+                        <div class="example-overlay-btn"><i data-lucide="play"></i> Try This</div>
+                    </div>
+                    <div class="example-info">
+                        <h4>Example 1</h4>
+                    </div>
+                </div>
+                <div class="example-card tilt-card" onclick="selectExampleImage('/static/images/examples/grass1 (4).jpg', 'example_2.jpg')">
+                    <img src="/static/images/examples/grass1 (4).jpg" alt="Example Field 2">
+                    <div class="example-overlay">
+                        <div class="example-overlay-btn"><i data-lucide="play"></i> Try This</div>
+                    </div>
+                    <div class="example-info">
+                        <h4>Example 2</h4>
+                    </div>
+                </div>
+                <div class="example-card tilt-card" onclick="selectExampleImage('/static/images/examples/grass1 (5).jpg', 'example_3.jpg')">
+                    <img src="/static/images/examples/grass1 (5).jpg" alt="Example Field 3">
+                    <div class="example-overlay">
+                        <div class="example-overlay-btn"><i data-lucide="play"></i> Try This</div>
+                    </div>
+                    <div class="example-info">
+                        <h4>Example 3</h4>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Upload & Analyze Section -->
+            <section id="upload-section" class="main-card">
+                <div class="card-header">
+                    <i data-lucide="sparkles" class="header-icon"></i>
+                    <h3>Upload & Analyze</h3>
+                </div>
+                
+                <div class="upload-container">
+                    <label for="imageInput" class="drop-zone">
+                        <div class="drop-icon">
+                            <i data-lucide="cloud-upload"></i>
+                        </div>
+                        <h3>Click to upload or drag & drop</h3>
+                        <p>PNG, JPG, JPEG, TIF, TIFF, WEBP</p>
+                        <p style="font-size: 0.78rem; color: var(--primary); font-weight: 600; margin-top: 2px; opacity: 0.85;"><i data-lucide="info" style="width: 13px; height: 13px; display: inline-block; vertical-align: -2px; margin-right: 3px;"></i>Maximum 15 images per upload</p>
+                        <span id="file-name" class="selected-file-name">No files chosen</span>
+                    </label>
+                    <input type="file" id="imageInput" accept="image/*" style="display: none;" multiple>
+                    
+                     <div class="action-buttons">
+                         <button id="predictButton" class="btn-primary">
+                             <i data-lucide="wand-2"></i>
+                             PROCESS ANALYSIS
+                         </button>
+                         <button id="clearButton" class="btn-ghost">
+                             <i data-lucide="refresh-cw"></i>
+                             CLEAR WORKSPACE
+                         </button>
+                     </div>
+                </div>
+            </section>
+
+            <!-- Results Section -->
+            <section id="results" class="results-container">
+                <div id="loader" class="loader-overlay" style="display: none;">
+                    <div class="loader-spinner"></div>
+                    <p id="loader-text">Analyzing images with AI...</p>
+                </div>
+                <div id="prediction"></div>
+            </section>
+
+            <!-- History Section (Moved from Sidebar) -->
+            <section id="history-section" class="main-card">
+                <div class="card-header">
+                    <i data-lucide="history" class="header-icon"></i>
+                    <h3>Prediction History</h3>
+                    <div class="header-actions">
+                        <button class="btn-text" onclick="exportHistory()">
+                            <i data-lucide="download"></i> Export
+                        </button>
+                        <button class="btn-text btn-danger" onclick="clearHistory()">
+                            <i data-lucide="trash-2"></i> Clear
+                        </button>
+                    </div>
+                </div>
+
+                <div class="history-stats-grid">
+                    <div class="h-stat-card">
+                        <p class="h-stat-val" id="totalImages">0</p>
+                        <p class="h-stat-label">IMAGES ANALYZED</p>
+                    </div>
+                    <div class="h-stat-card">
+                        <p class="h-stat-val" id="avgYield">0.0</p>
+                        <p class="h-stat-label">AVG YIELD (T/HA)</p>
+                    </div>
+                </div>
+
+                <div class="history-list-container" id="historyList">
+                    <p class="empty-msg">No predictions yet. Upload an image to get started!</p>
+                </div>
+            </section>
+        </div>
+
+        <!-- SETTINGS VIEW -->
+        <div class="dashboard-content" id="view-settings" style="display:none;">
+
+            <!-- Profile Card -->
+            <section class="main-card settings-section" id="settings-profile">
+                <div class="card-header">
+                    <i data-lucide="user-circle" class="header-icon"></i>
+                    <h3>User Profile</h3>
+                </div>
+                <div class="settings-body">
+                    <div class="profile-area">
+                        <div class="avatar-wrapper">
+                            <div class="avatar" id="avatarDisplay">U</div>
+                            <button class="avatar-edit-btn" id="avatarEditBtn" onclick="triggerAvatarChange()" title="Change avatar color" style="display: none;">
+                                <i data-lucide="pencil"></i>
+                            </button>
+                        </div>
+                        <div class="profile-info-fields">
+                            <div class="settings-field">
+                                <label>Full Name</label>
+                                <input type="text" id="profileName" placeholder="Enter your name" disabled />
+                            </div>
+                            <div class="settings-field">
+                                <label>Email Address</label>
+                                <input type="email" id="profileEmail" placeholder="Enter your email" disabled />
+                            </div>
+                            <div class="settings-field">
+                                <label>Organisation / Institution</label>
+                                <div class="custom-select" id="orgDropdown">
+                                    <div class="custom-select-trigger disabled" id="orgTrigger" onclick="toggleOrgDropdown()">Select your organisation...</div>
+                                    <div class="custom-select-options" id="orgOptions">
+                                        <input type="text" class="custom-select-search" id="orgSearch" placeholder="Search universities..." onkeyup="filterOrgs()" />
+                                        <div class="custom-select-list" id="orgList"></div>
+                                        <div class="custom-select-option" onclick="selectOrg('other')" style="border-top: 1px solid var(--border); font-weight: bold;">Other...</div>
+                                    </div>
+                                </div>
+                                <input type="hidden" id="profileOrg" />
+                                <input type="text" id="profileCustomOrg" placeholder="Enter your organisation" disabled style="display: none; margin-top: 0.5rem;" />
+                            </div>
+                            <div class="settings-field">
+                                <label>Role</label>
+                                <select id="profileRole" disabled onchange="handleRoleChange()">
+                                    <option value="researcher">Researcher</option>
+                                    <option value="farmer">Farmer</option>
+                                    <option value="agronomist">Agronomist</option>
+                                    <option value="student">Student</option>
+                                    <option value="other">Other</option>
+                                </select>
+                                <input type="text" id="profileCustomRole" placeholder="Enter your role" disabled style="display: none; margin-top: 0.5rem;" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="settings-actions" style="display: flex; gap: 0.75rem;">
+                        <button class="btn-ghost" id="editProfileBtn" onclick="enableProfileEdit()" style="border: 1.5px solid var(--primary); color: var(--primary);">
+                            <i data-lucide="pencil"></i> Edit Profile
+                        </button>
+                        <button class="btn-primary" id="saveProfileBtn" onclick="saveProfile()" style="display: none;">
+                            <i data-lucide="save"></i> Save Profile
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Preferences -->
+            <section class="main-card settings-section" id="settings-preferences">
+                <div class="card-header">
+                    <i data-lucide="sliders" class="header-icon"></i>
+                    <h3>Preferences</h3>
+                </div>
+                <div class="settings-body">
+                    <div class="settings-row">
+                        <div class="settings-row-info">
+                            <p class="settings-row-title">Yield Unit</p>
+                            <p class="settings-row-sub">Choose your preferred measurement unit for yield values</p>
+                        </div>
+                        <div class="settings-control">
+                            <select id="prefUnit" onchange="savePref('yieldUnit', this.value)">
+                                <option value="tha">Tonnes / Ha (T/Ha)</option>
+                                <option value="kgha">Kg / Ha</option>
+                                <option value="bushels">Bushels / Acre</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Notifications -->
+            <section class="main-card settings-section" id="settings-notifications">
+                <div class="card-header">
+                    <i data-lucide="bell" class="header-icon"></i>
+                    <h3>Notifications</h3>
+                </div>
+                <div class="settings-body">
+                    <div class="settings-row">
+                        <div class="settings-row-info">
+                            <p class="settings-row-title">Analysis Complete Alert</p>
+                            <p class="settings-row-sub">Show a notification when image analysis finishes</p>
+                        </div>
+                        <div class="settings-control">
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="notifAnalysis" checked onchange="savePref('notifAnalysis', this.checked)">
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="settings-row">
+                        <div class="settings-row-info">
+                            <p class="settings-row-title">Low Yield Warning</p>
+                            <p class="settings-row-sub">Alert when predicted yield is below threshold</p>
+                        </div>
+                        <div class="settings-control">
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="notifLowYield" checked onchange="savePref('notifLowYield', this.checked)">
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Data Management -->
+            <section class="main-card settings-section" id="settings-data">
+                <div class="card-header">
+                    <i data-lucide="database" class="header-icon"></i>
+                    <h3>Data &amp; Storage</h3>
+                </div>
+                <div class="settings-body">
+                    <div class="settings-row">
+                        <div class="settings-row-info">
+                            <p class="settings-row-title">Prediction History</p>
+                            <p class="settings-row-sub" id="storageInfo">Loading storage info...</p>
+                        </div>
+                        <div class="settings-control" style="gap:0.5rem; display:flex; flex-direction:column;">
+                            <button class="btn-ghost btn-sm" onclick="exportHistoryFromSettings()">
+                                <i data-lucide="download"></i> Export CSV
+                            </button>
+                            <button class="btn-ghost btn-sm btn-danger-outline" onclick="clearHistoryFromSettings()">
+                                <i data-lucide="trash-2"></i> Clear History
+                            </button>
+                        </div>
+                    </div>
+                    <div class="settings-row">
+                        <div class="settings-row-info">
+                            <p class="settings-row-title">Reset All Settings</p>
+                            <p class="settings-row-sub">Reset all preferences and profile data to defaults</p>
+                        </div>
+                        <div class="settings-control">
+                            <button class="btn-ghost btn-sm btn-danger-outline" onclick="resetAllSettings()">
+                                <i data-lucide="rotate-ccw"></i> Reset
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </div><!-- end settings view -->
+
+        <!-- HELP VIEW -->
+        <div class="dashboard-content" id="view-help" style="display:none;">
+
+            <!-- Quick Start -->
+            <section class="main-card settings-section">
+                <div class="card-header">
+                    <i data-lucide="rocket" class="header-icon"></i>
+                    <h3>Quick Start Guide</h3>
+                </div>
+                <div class="settings-body">
+                    <div class="help-steps">
+                        <div class="help-step">
+                            <div class="help-step-num">1</div>
+                            <div>
+                                <p class="help-step-title">Upload Your Image</p>
+                                <p class="help-step-desc">Click <strong>Upload &amp; Analyze</strong> in the sidebar. Drag and drop — or click the upload area — to select satellite or drone imagery. Supported formats: PNG, JPG, JPEG, TIF, TIFF, WebP. You can upload multiple images at once.</p>
+                            </div>
+                        </div>
+                        <div class="help-step">
+                            <div class="help-step-num">2</div>
+                            <div>
+                                <p class="help-step-title">Run AI Analysis</p>
+                                <p class="help-step-desc">Click <strong>PROCESS ANALYSIS</strong>. The AI model extracts vegetation indices (NDVI, EVI) and colour features from the image to estimate crop health and yield potential.</p>
+                            </div>
+                        </div>
+                        <div class="help-step">
+                            <div class="help-step-num">3</div>
+                            <div>
+                                <p class="help-step-title">Add GPS Coordinates (Optional)</p>
+                                <p class="help-step-desc">For richer predictions, click <strong>Add Location</strong> on any result card and enter your field's latitude and longitude. This fetches live weather data and soil type for your area.</p>
+                            </div>
+                        </div>
+                        <div class="help-step">
+                            <div class="help-step-num">4</div>
+                            <div>
+                                <p class="help-step-title">Review Results &amp; Recommendations</p>
+                                <p class="help-step-desc">Each result card shows the <em>Predicted Yield</em> (T/Ha), a <em>Yield Class</em> (Good / Fair / Poor), top recommended crops, and an environment snapshot with weather and soil data.</p>
+                            </div>
+                        </div>
+                        <div class="help-step">
+                            <div class="help-step-num">5</div>
+                            <div>
+                                <p class="help-step-title">View &amp; Export History</p>
+                                <p class="help-step-desc">All predictions are saved in <strong>History</strong>. Click any history item to expand the full result. Use <strong>Export</strong> to download a CSV of all predictions.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- FAQ -->
+            <section class="main-card settings-section">
+                <div class="card-header">
+                    <i data-lucide="message-circle-question" class="header-icon"></i>
+                    <h3>Frequently Asked Questions</h3>
+                </div>
+                <div class="settings-body">
+                    <div class="faq-list">
+
+                        <div class="faq-item">
+                            <button class="faq-q" onclick="toggleFaq(this)">
+                                <span>What image types give the best results?</span>
+                                <i data-lucide="chevron-down"></i>
+                            </button>
+                            <div class="faq-a">Multispectral satellite imagery or high-resolution drone photos (above-canopy view) give the most accurate results. The model works best with images taken during the growing season showing clear crop rows or vegetation cover.</div>
+                        </div>
+
+                        <div class="faq-item">
+                            <button class="faq-q" onclick="toggleFaq(this)">
+                                <span>How is Predicted Yield calculated?</span>
+                                <i data-lucide="chevron-down"></i>
+                            </button>
+                            <div class="faq-a">The AI analyses vegetation-related colour features and indices from the uploaded image. These values feed into a trained regression model to produce a yield estimate in Tonnes per Hectare (T/Ha). If GPS coordinates are provided, weather and soil data are also factored in.</div>
+                        </div>
+
+                        <div class="faq-item">
+                            <button class="faq-q" onclick="toggleFaq(this)">
+                                <span>What do Good / Fair / Poor yield classes mean?</span>
+                                <i data-lucide="chevron-down"></i>
+                            </button>
+                            <div class="faq-a"><strong>Good</strong> — yield is above the expected average for the region and crop type. <strong>Fair</strong> — yield is within an average range. <strong>Poor</strong> — yield is below average, suggesting stress factors such as drought, disease, or poor soil.</div>
+                        </div>
+
+                        <div class="faq-item">
+                            <button class="faq-q" onclick="toggleFaq(this)">
+                                <span>How are crop recommendations chosen?</span>
+                                <i data-lucide="chevron-down"></i>
+                            </button>
+                            <div class="faq-a">Crop recommendations are generated by a separate Random Forest classifier trained on Malaysian agricultural data. It considers the image-derived environmental features (and GPS-based weather/soil data when available) to suggest the top 3 most suitable crops for your plot.</div>
+                        </div>
+
+                        <div class="faq-item">
+                            <button class="faq-q" onclick="toggleFaq(this)">
+                                <span>Can I upload multiple images at once?</span>
+                                <i data-lucide="chevron-down"></i>
+                            </button>
+                            <div class="faq-a">Yes! Select multiple files in the upload dialog or drag multiple images at once. Each image is analysed independently and results are ranked from highest to lowest predicted yield on the Results page.</div>
+                        </div>
+
+                        <div class="faq-item">
+                            <button class="faq-q" onclick="toggleFaq(this)">
+                                <span>Is my data stored on the server?</span>
+                                <i data-lucide="chevron-down"></i>
+                            </button>
+                            <div class="faq-a">Uploaded images are temporarily stored on the server in an <code>images/</code> folder for the duration of your session to allow location-based re-analysis. Prediction history is stored locally in your browser's localStorage and is not sent to any external server.</div>
+                        </div>
+
+                        <div class="faq-item">
+                            <button class="faq-q" onclick="toggleFaq(this)">
+                                <span>What GPS coordinates should I enter?</span>
+                                <i data-lucide="chevron-down"></i>
+                            </button>
+                            <div class="faq-a">Enter the latitude and longitude of your field in decimal degrees. For example, Kuala Lumpur is approximately <strong>3.1390, 101.6869</strong>. You can find coordinates on Google Maps by right-clicking on your field location.</div>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+
+            <!-- Contact / About -->
+            <section class="main-card settings-section">
+                <div class="card-header">
+                    <i data-lucide="info" class="header-icon"></i>
+                    <h3>About This System</h3>
+                </div>
+                <div class="settings-body">
+                    <div class="about-grid">
+                        <div class="about-item">
+                            <i data-lucide="cpu"></i>
+                            <div>
+                                <p class="about-title">AI Model</p>
+                                <p class="about-desc">Random Forest Regressor + Classifier trained on Malaysian multi-crop agricultural datasets with image feature extraction pipeline.</p>
+                            </div>
+                        </div>
+                        <div class="about-item">
+                            <i data-lucide="cloud"></i>
+                            <div>
+                                <p class="about-title">Weather Data</p>
+                                <p class="about-desc">7-day forecast sourced from the Open-Meteo API using your GPS coordinates for temperature, precipitation and humidity.</p>
+                            </div>
+                        </div>
+                        <div class="about-item">
+                            <i data-lucide="layers"></i>
+                            <div>
+                                <p class="about-title">Soil Data</p>
+                                <p class="about-desc">Soil texture and pH data retrieved from the SoilGrids / ISRIC World Soil Database using coordinate-based lookup.</p>
+                            </div>
+                        </div>
+                        <div class="about-item">
+                            <i data-lucide="shield-check"></i>
+                            <div>
+                                <p class="about-title">Version</p>
+                                <p class="about-desc">Crop Yield AI v2.0 — Final Year Project (FYP). Built with Python Flask, scikit-learn, and Vanilla JS.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </div><!-- end help view -->
+
+        <footer class="app-footer">
+            <p><a href="#">Crop Yield AI</a> — Smart Agriculture Prediction System by CHENG QING HONG</p>
+        </footer>
+    </main>
+
+    <!-- Location Modal (Keeping for functionality) -->
+    <div class="modal-overlay" id="locationModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i data-lucide="map-pin"></i> Add Location Data</h3>
+                <button class="close-modal" onclick="closeLocationModal()">
+                    <i data-lucide="x"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-row">
+                    <label>Latitude</label>
+                    <input type="number" step="any" id="modalLatitude" placeholder="e.g., 3.1390" />
+                </div>
+                <div class="form-row">
+                    <label>Longitude</label>
+                    <input type="number" step="any" id="modalLongitude" placeholder="e.g., 101.6869" />
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-ghost" onclick="closeLocationModal()">Cancel</button>
+                <button class="btn-primary" onclick="submitLocation()">Update Prediction</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        lucide.createIcons();
+
+        // DOM Elements
+        const imageInput = document.getElementById('imageInput');
+        const predictButton = document.getElementById('predictButton');
+        const clearButton = document.getElementById('clearButton');
+        const predictionEl = document.getElementById('prediction');
+        const loaderEl = document.getElementById('loader');
+        const loaderText = document.getElementById('loader-text');
+        const fileNameEl = document.getElementById('file-name');
+        const sidebar = document.querySelector('.app-sidebar');
+        const sidebarOverlay = document.getElementById('sidebarOverlay');
+        const mainContent = document.querySelector('.app-main');
+
+        const historyList = document.getElementById('historyList');
+        const locationModal = document.getElementById('locationModal');
+
+        const supabaseUrl = '';
+        const supabaseKey = '';
+        let supabaseClient = null;
+        try {
+            if (window.supabase && supabaseUrl && supabaseKey) {
+                supabaseClient = window.supabase.createClient(supabaseUrl, supabaseKey);
+            }
+        } catch (e) {
+            console.error("Supabase init failed", e);
+        }
+
+        let uploadedFiles = [];
+        let objectURLs = [];
+        let predictionHistory = JSON.parse(localStorage.getItem('predictionHistory') || '[]');
+        let currentResults = [];
+        let currentModalIndex = null;
+
+        // Guest ID for anonymous persistence
+        let guestId = localStorage.getItem('guest_id');
+        if (!guestId) {
+            guestId = 'guest_' + Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+            localStorage.setItem('guest_id', guestId);
+        }
+
+
+        function getPref(key, defaultVal) {
+            const prefs = JSON.parse(localStorage.getItem('userPrefs') || '{}');
+            return prefs[key] !== undefined ? prefs[key] : defaultVal;
+        }
+
+        function convertYield(valInTHa) {
+            const unit = getPref('yieldUnit', 'tha');
+            if (unit === 'kgha') return { val: (valInTHa * 1000).toFixed(0), label: 'Kg/Ha' };
+            if (unit === 'bushels') return { val: (valInTHa * 14.87).toFixed(1), label: 'Bu/Ac' }; // Approx conversion for corn as a baseline
+            return { val: valInTHa.toFixed(1), label: 'T/Ha' };
+        }
+
+        const formatMetric = (value, suffix = '', decimals = 1) => {
+            if (value === null || value === undefined || isNaN(value)) return '—';
+            return `${Number(value).toFixed(decimals)}${suffix}`;
+        };
+
+        const formatCoordinate = (value) => {
+            if (value === null || value === undefined || isNaN(value)) return null;
+            return Number(value).toFixed(4);
+        };
+
+        // Initialize
+        updateHistoryStats();
+        renderHistory();
+
+        // Sidebar Toggle
+        function toggleSidebar() {
+            if (window.innerWidth <= 1024) {
+                document.body.classList.toggle('sidebar-active');
+            } else {
+                sidebar.classList.toggle('collapsed');
+                mainContent.classList.toggle('full-width');
+            }
+        }
+
+
+        // Click listener for sidebar
+        sidebar.addEventListener('click', (e) => {
+            // Desktop: Click anywhere on collapsed sidebar to expand
+            if (window.innerWidth > 1024 && sidebar.classList.contains('collapsed')) {
+                toggleSidebar();
+            }
+            // Mobile: Click anywhere on sidebar (like a link) to close it
+            else if (window.innerWidth <= 1024 && document.body.classList.contains('sidebar-active')) {
+                toggleSidebar();
+            }
+        });
+
+
+
+
+        // Location Modal Functions
+        function openLocationModal(index) {
+            currentModalIndex = index;
+            const result = currentResults[index];
+            document.getElementById('modalLatitude').value = result.latitude || '';
+            document.getElementById('modalLongitude').value = result.longitude || '';
+            
+            const handleEnter = (e) => {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    submitLocation();
+                }
+            };
+            document.getElementById('modalLatitude').onkeydown = handleEnter;
+            document.getElementById('modalLongitude').onkeydown = handleEnter;
+            locationModal.classList.add('active');
+            
+            setTimeout(() => {
+                const latInput = document.getElementById('modalLatitude');
+                latInput.focus();
+                latInput.select();
+            }, 100);
+            lucide.createIcons();
+        }
+
+        function closeLocationModal() {
+            locationModal.classList.remove('active');
+            currentModalIndex = null;
+        }
+
+        async function submitLocation() {
+            if (currentModalIndex === null) return;
+            const modalIndex = currentModalIndex;
+            const lat = parseFloat(document.getElementById('modalLatitude').value);
+            const lon = parseFloat(document.getElementById('modalLongitude').value);
+
+            if (isNaN(lat) || isNaN(lon) || lat < -90 || lat > 90 || lon < -180 || lon > 180) {
+                alert('Please enter valid coordinates!');
+                return;
+            }
+
+            closeLocationModal();
+            loaderText.textContent = '🌍 Updating prediction...';
+            loaderEl.style.display = 'block';
+
+            const result = currentResults[modalIndex];
+            const fileIndex = uploadedFiles.findIndex(f => f.name === result.fileName);
+            
+            const p = JSON.parse(localStorage.getItem('userGoogleProfile') || '{}');
+            const userEmail = p.email || guestId;
+            
+            const formData = new FormData();
+            formData.append('image', uploadedFiles[fileIndex]);
+            formData.append('latitude', lat.toString());
+            formData.append('longitude', lon.toString());
+            formData.append('email', userEmail);
+
+            try {
+                const response = await fetch('/predict', { method: 'POST', body: formData });
+                if (!response.ok) throw new Error('Update failed');
+                const data = await response.json();
+
+                // Store original timestamp to find it in history
+                const originalTimestamp = result.timestamp;
+
+                currentResults[modalIndex] = {
+                    ...data,
+                    fileName: result.fileName,
+                    previewURL: data.image_url || result.previewURL,
+                    timestamp: originalTimestamp, // Keep original timestamp for matching
+                    latitude: data.coordinates?.latitude ?? lat,
+                    longitude: data.coordinates?.longitude ?? lon
+                };
+
+                // Update predictionHistory array
+                predictionHistory = predictionHistory.map(item => {
+                    if (item.fileName === result.fileName && item.timestamp === originalTimestamp) {
+                        return {
+                            ...item,
+                            yield: data.predicted_yield,
+                            class: data.predicted_class,
+                            fullData: currentResults[modalIndex]
+                        };
+                    }
+                    return item;
+                });
+
+                // Persist to localStorage
+                localStorage.setItem('predictionHistory', JSON.stringify(predictionHistory));
+                
+                // Update UI
+                updateHistoryStats();
+                renderHistory();
+                renderResults();
+                
+                loaderEl.style.display = 'none';
+                showToast('Prediction updated in history!', 'success');
+            } catch (error) {
+                loaderEl.style.display = 'none';
+                showToast(error.message, 'error');
+            }
+        }
+
+        function showToast(message, type = 'success') {
+            const toast = document.createElement('div');
+            toast.style.cssText = `
+                position: fixed; top: 20px; right: 20px; 
+                background: ${type === 'success' ? '#10b981' : '#ef4444'};
+                color: white; padding: 12px 24px; border-radius: 8px; z-index: 9999;
+                box-shadow: 0 4px 6px rgba(0,0,0,0.1); font-weight: 600;
+            `;
+            toast.innerText = message;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 3000);
+        }
+
+        // Result Card Rendering
+        function createResultCard(data, rank, index) {
+            const weather = data.weather || {};
+            const soil = data.soil || {};
+            const latDisplay = formatCoordinate(data.latitude);
+            const lonDisplay = formatCoordinate(data.longitude);
+            const locationProvided = data.location_provided && latDisplay !== null;
+
+            const rankBadge = rank > 0 ? `
+                <div class="rank-badge">
+                    <i data-lucide="${rank === 1 ? 'award' : 'trending-up'}"></i>
+                    ${rank === 1 ? 'Best Yield' : rank + (rank === 2 ? 'nd' : (rank === 3 ? 'rd' : 'th')) + ' Best'}
+                </div>
+            ` : '';
+
+            return `
+                <div class="multi-result-card ${rank > 0 ? 'rank-' + rank : ''}">
+                    ${rankBadge}
+                    <div class="result-card-inner">
+                        <img src="${data.previewURL || data.image_url || ''}" class="res-preview" alt="Preview"/>
+                        <div class="res-content">
+                            <h3 class="res-filename">${data.fileName || data.file_name || 'Image'}</h3>
+                            <p class="env-sub" style="margin-top:-2px; margin-bottom:10px;"></p>
+                            <div class="res-metrics">
+                                <div class="metric-box">
+                                    <p class="m-label">Predicted Yield</p>
+                                    <p class="m-val">${convertYield(data.predicted_yield).val} <span class="m-unit">${convertYield(data.predicted_yield).label}</span></p>
+                                </div>
+                                <div class="metric-box">
+                                    <p class="m-label">Yield Class</p>
+                                    <span class="class-badge class-${data.predicted_class}">${data.predicted_class}</span>
+                                </div>
+                            </div>
+                            <div class="crop-recs">
+                                <p class="crop-recs-title"><i data-lucide="sparkles"></i> Recommended Crops</p>
+                                <div class="crop-list">
+                                    ${(data.top3_crops || []).map(crop => {
+                                        const name = (crop.name || crop).replace(/_/g, ' ').toUpperCase();
+                                        return `
+                                            <div class="crop-tag">
+                                                <i data-lucide="leaf"></i>
+                                                ${name}
+                                            </div>
+                                        `;
+                                    }).join('') || '<p class="env-sub">No specific recommendations</p>'}
+                                </div>
+                            </div>
+
+                            <div class="env-section">
+                                <p class="env-title"><i data-lucide="globe"></i> Environment Snapshot</p>
+                                <div class="env-grid">
+                                    <div class="env-item">
+                                        <p class="env-label">LOCATION</p>
+                                        <p class="env-val">${data.location_name || (locationProvided ? latDisplay + ', ' + lonDisplay : 'Awaiting Location')}</p>
+                                        <button class="btn-location" onclick="openLocationModal(${index})">
+                                            <i data-lucide="map-pin"></i> ${data.latitude ? 'Update' : 'Add'}
+                                        </button>
+                                    </div>
+                                    <div class="env-item">
+                                        <p class="env-label">WEATHER</p>
+                                        <p class="env-val">${weather.temp_max ? weather.temp_max + '°C' : '—'}</p>
+                                        <p class="env-sub">${weather.precipitation ? weather.precipitation + 'mm precip' : 'Forecast data'}</p>
+                                    </div>
+                                    <div class="env-item">
+                                        <p class="env-label">SOIL</p>
+                                        <p class="env-val">${soil.soil_type || '—'}</p>
+                                        <p class="env-sub">${soil.soil_ph ? 'pH ' + (soil.soil_ph/10).toFixed(1) : 'Moisture & PH'}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderResults() {
+            const sorted = [...currentResults].filter(r => !r.error)
+                .sort((a, b) => b.predicted_yield - a.predicted_yield);
+            predictionEl.innerHTML = '';
+            sorted.forEach((data, i) => {
+                predictionEl.innerHTML += createResultCard(data, i + 1, currentResults.indexOf(data));
+            });
+            lucide.createIcons();
+        }
+
+        // Example Selection Logic
+        async function selectExampleImage(url, filename) {
+            try {
+                loaderText.textContent = `⚡ Preparing example: ${filename}...`;
+                loaderEl.style.display = 'block';
+                
+                const response = await fetch(url);
+                const blob = await response.blob();
+                const file = new File([blob], filename, { type: 'image/png' });
+                
+                handleFiles([file]);
+                
+                loaderEl.style.display = 'none';
+                
+                // Scroll to upload section
+                document.getElementById('upload-section').scrollIntoView({ behavior: 'smooth', block: 'center' });
+                
+                // Trigger predictive animation hint
+                predictButton.classList.add('pulse-animation');
+                setTimeout(() => predictButton.classList.remove('pulse-animation'), 3000);
+                
+                showToast('Example selected! Click Process Analysis to begin.', 'success');
+            } catch (e) {
+                console.error(e);
+                loaderEl.style.display = 'none';
+                showToast('Failed to load example image', 'error');
+            }
+        }
+
+        // File Handling
+        const MAX_UPLOAD_FILES = 15;
+        function handleFiles(files) {
+            if (files.length > 0) {
+                let fileArr = Array.from(files);
+                if (fileArr.length > MAX_UPLOAD_FILES) {
+                    showToast(`Maximum ${MAX_UPLOAD_FILES} images allowed. Only the first ${MAX_UPLOAD_FILES} will be used.`, 'error');
+                    fileArr = fileArr.slice(0, MAX_UPLOAD_FILES);
+                }
+                uploadedFiles = fileArr;
+                objectURLs.forEach(URL.revokeObjectURL);
+                objectURLs = uploadedFiles.map(file => URL.createObjectURL(file));
+                fileNameEl.textContent = fileArr.length === 1 ? fileArr[0].name : `${fileArr.length} files selected`;
+            }
+        }
+
+        function compressImage(file, maxWidth = 1200, maxHeight = 1200) {
+            return new Promise((resolve, reject) => {
+                if (!file.type.startsWith('image/')) {
+                    resolve(file);
+                    return;
+                }
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = event => {
+                    const img = new Image();
+                    img.src = event.target.result;
+                    img.onload = () => {
+                        let width = img.width;
+                        let height = img.height;
+                        if (width > maxWidth || height > maxHeight) {
+                            if (width > height) {
+                                height = Math.round(height * (maxWidth / width));
+                                width = maxWidth;
+                            } else {
+                                width = Math.round(width * (maxHeight / height));
+                                height = maxHeight;
+                            }
+                        } else {
+                            resolve(file);
+                            return;
+                        }
+                        const canvas = document.createElement('canvas');
+                        canvas.width = width;
+                        canvas.height = height;
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(img, 0, 0, width, height);
+                        canvas.toBlob((blob) => {
+                            if (blob) {
+                                const newFile = new File([blob], file.name, { type: 'image/jpeg', lastModified: Date.now() });
+                                resolve(newFile);
+                            } else {
+                                resolve(file);
+                            }
+                        }, 'image/jpeg', 0.85);
+                    };
+                    img.onerror = () => resolve(file); // fallback on error
+                };
+                reader.onerror = () => resolve(file); // fallback on error
+            });
+        }
+
+        imageInput.addEventListener('change', () => handleFiles(imageInput.files));
+        
+        predictButton.addEventListener('click', async () => {
+            if (uploadedFiles.length === 0) return alert('Select images first!');
+            loaderText.textContent = `🤖 Optimizing and analyzing ${uploadedFiles.length} images...`;
+            loaderEl.style.display = 'block';
+            predictionEl.innerHTML = '';
+
+            const p = JSON.parse(localStorage.getItem('userGoogleProfile') || '{}');
+            const userEmail = p.email || guestId;
+
+            try {
+                const compressedFiles = await Promise.all(uploadedFiles.map(file => compressImage(file)));
+
+                const promises = compressedFiles.map((file, i) => {
+                    const fd = new FormData();
+                    fd.append('image', file);
+                    fd.append('email', userEmail);
+                    return fetch('/predict', { method: 'POST', body: fd })
+                        .then(r => r.ok ? r.json() : { error: true })
+                        .then(data => ({
+                            ...data, 
+                            fileName: file.name, 
+                            previewURL: data.image_url || objectURLs[i],
+                            timestamp: data.timestamp || new Date().toISOString()
+                        }));
+                });
+
+                const results = await Promise.all(promises);
+                currentResults = results;
+                loaderEl.style.display = 'none';
+
+                predictionHistory = predictionHistory.map((item, idx) => {
+                    const r = results.find(res => res.fileName === item.fileName);
+                    return r ? { ...item, fullData: r } : item;
+                });
+                
+                // Always add new results to history with full data
+                const p = JSON.parse(localStorage.getItem('userGoogleProfile') || '{}');
+                results.filter(r => !r.error).forEach(r => {
+                    const exists = predictionHistory.find(h => h.fileName === r.fileName && h.timestamp === r.timestamp);
+                    if (!exists) {
+                        predictionHistory.unshift({
+                            fileName: r.fileName, yield: r.predicted_yield,
+                            class: r.predicted_class, timestamp: r.timestamp,
+                            fullData: r
+                        });
+                        // BACKEND NOW HANDLES SUPABASE INSERT
+                    }
+                });
+                predictionHistory = predictionHistory.slice(0, 500);
+                localStorage.setItem('predictionHistory', JSON.stringify(predictionHistory));
+
+                if (getPref('notifAnalysis', true)) {
+                    showToast('Analysis complete!', 'success');
+                }
+                
+                // Low yield warning
+                if (getPref('notifLowYield', true)) {
+                    const lowYields = results.filter(r => !r.error && r.predicted_class.includes('Poor'));
+                    if (lowYields.length > 0) {
+                        setTimeout(() => showToast(`Warning: ${lowYields.length} image(s) showed Poor yield`, 'error'), 3000);
+                    }
+                }
+                updateHistoryStats();
+                renderHistory();
+                renderResults();
+            } catch (e) {
+                loaderEl.style.display = 'none';
+            }
+        });
+
+        function updateHistoryStats() {
+            document.getElementById('totalImages').textContent = predictionHistory.length;
+            if (predictionHistory.length > 0) {
+                const sum = predictionHistory.reduce((a, b) => a + Number(b.yield), 0);
+                document.getElementById('avgYield').textContent = (sum / predictionHistory.length).toFixed(1);
+            }
+        }
+
+        function renderHistory() {
+            if (predictionHistory.length === 0) {
+                historyList.innerHTML = '<p class="empty-msg">No predictions yet.</p>';
+                return;
+            }
+            historyList.innerHTML = predictionHistory.map((item, idx) => `
+                <div class="history-item-wrapper">
+                    <div class="history-item" id="h-item-${idx}" onclick="toggleHistoryResult(${idx})">
+                        <div class="h-icon"><i data-lucide="file-image"></i></div>
+                        <div class="h-info">
+                            <p class="h-name">${item.fileName}</p>
+                            <p class="h-meta">${new Date(item.timestamp).toLocaleDateString()}</p>
+                        </div>
+                        <p class="h-yield-val">${convertYield(item.yield).val} ${convertYield(item.yield).label}</p>
+                    </div>
+                    <div class="h-details-container" id="h-details-${idx}"></div>
+                </div>
+            `).join('');
+            lucide.createIcons();
+        }
+
+        function toggleHistoryResult(idx) {
+            const container = document.getElementById(`h-details-${idx}`);
+            const item = document.getElementById(`h-item-${idx}`);
+            const data = predictionHistory[idx].fullData;
+
+            if (!data) {
+                showToast('Full data not available for this record', 'error');
+                return;
+            }
+
+            // Close others
+            document.querySelectorAll('.h-details-container').forEach((el, i) => {
+                if (i !== idx) {
+                    el.classList.remove('active');
+                    document.getElementById(`h-item-${i}`).classList.remove('expanded');
+                }
+            });
+
+            const isActive = container.classList.contains('active');
+            if (isActive) {
+                container.classList.remove('active');
+                item.classList.remove('expanded');
+            } else {
+                // Render the result card if empty
+                if (!container.innerHTML) {
+                    container.innerHTML = createResultCard(data, 0, -1); // rank 0 to hide badge
+                    // Hide the location update button in history expansion
+                    const btn = container.querySelector('.btn-location');
+                    if (btn) btn.style.display = 'none';
+                    lucide.createIcons();
+                }
+                container.classList.add('active');
+                item.classList.add('expanded');
+                
+                // Scroll into view if needed
+                setTimeout(() => {
+                    container.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }, 300);
+            }
+        }
+
+        function clearHistory() {
+            if (confirm('Clear all history?')) {
+                predictionHistory = [];
+                localStorage.removeItem('predictionHistory');
+                updateHistoryStats();
+                renderHistory();
+            }
+        }
+
+        function exportHistory() {
+            if (predictionHistory.length === 0) return alert('No history to export');
+            const headers = 'FileName,Yield (T/Ha),Class,Timestamp,Latitude,Longitude,RecommendedCrops';
+            const rows = predictionHistory.map(h => {
+                const crops = h.fullData && h.fullData.top3_crops 
+                    ? h.fullData.top3_crops.map(crop => (crop.name || crop).replace(/_/g, ' ').toUpperCase()).join('; ') 
+                    : 'N/A';
+                const lat = h.fullData?.latitude || 'N/A';
+                const lon = h.fullData?.longitude || 'N/A';
+                // Using quotes for crops to handle semicolons/commas
+                return `${h.fileName},${h.yield},${h.class},"${h.timestamp}",${lat},${lon},"${crops}"`;
+            }).join('\n');
+            const csv = headers + '\n' + rows;
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'crop_history.csv';
+            a.click();
+        }
+
+        clearButton.addEventListener('click', () => location.reload());
+
+        // ======================================================
+        // SECTION NAVIGATION
+        // ======================================================
+        const SECTION_CONFIG = {
+            dashboard: { title: 'Dashboard', navIds: ['nav-upload'] },
+            settings:  { title: 'Settings',  navIds: ['nav-settings'] },
+            help:      { title: 'Help',       navIds: ['nav-help'] },
+        };
+
+        function showSection(name, scrollToId) {
+            // Hide all views
+            ['dashboard', 'settings', 'help'].forEach(s => {
+                document.getElementById('view-' + s).style.display = 'none';
+            });
+            // Show target
+            document.getElementById('view-' + name).style.display = 'block';
+            // Update header
+            document.getElementById('headerTitle').textContent = SECTION_CONFIG[name].title;
+            // Update nav active states
+            document.querySelectorAll('.nav-link').forEach(el => el.classList.remove('active'));
+            // Mark the clicked nav link active based on scrollToId or section navIds
+            if (scrollToId) {
+                const idMap = { 'upload-section': 'nav-upload', 'results': 'nav-results', 'history-section': 'nav-history' };
+                const activeId = idMap[scrollToId];
+                if (activeId) { const el = document.getElementById(activeId); if (el) el.classList.add('active'); }
+            } else {
+                SECTION_CONFIG[name].navIds.forEach(id => {
+                    const el = document.getElementById(id);
+                    if (el) el.classList.add('active');
+                });
+            }
+            // If settings, refresh storage info
+            if (name === 'settings') {
+                loadSettingsData();
+                updateStorageInfo();
+            }
+            // Re-run icons
+            lucide.createIcons();
+            // On mobile, close sidebar
+            if (window.innerWidth <= 1024) toggleSidebar();
+
+            // Scroll to anchor if provided
+            if (scrollToId) {
+                setTimeout(() => {
+                    const target = document.getElementById(scrollToId);
+                    if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }, 50);
+            } else {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+
+        // ======================================================
+        // SETTINGS LOGIC
+        // ======================================================
+        const AVATAR_COLORS = [
+            'linear-gradient(135deg,#6366f1,#3b82f6)',
+            'linear-gradient(135deg,#10b981,#059669)',
+            'linear-gradient(135deg,#f59e0b,#ef4444)',
+            'linear-gradient(135deg,#8b5cf6,#ec4899)',
+            'linear-gradient(135deg,#0ea5e9,#6366f1)',
+        ];
+        let avatarColorIdx = parseInt(localStorage.getItem('avatarColorIdx') || '0');
+
+        function triggerAvatarChange() {
+            avatarColorIdx = (avatarColorIdx + 1) % AVATAR_COLORS.length;
+            localStorage.setItem('avatarColorIdx', avatarColorIdx);
+            applyAvatarColor();
+        }
+
+        function applyAvatarColor() {
+            const el = document.getElementById('avatarDisplay');
+            if (el) el.style.background = AVATAR_COLORS[avatarColorIdx];
+        }
+
+        let globalUniversities = [];
+
+        function toggleOrgDropdown() {
+            if (!profileEditMode) return;
+            document.getElementById('orgDropdown').classList.toggle('open');
+            if (document.getElementById('orgDropdown').classList.contains('open')) {
+                document.getElementById('orgSearch').value = '';
+                filterOrgs();
+                document.getElementById('orgSearch').focus();
+            }
+        }
+        
+        function filterOrgs() {
+            const query = document.getElementById('orgSearch').value.toLowerCase();
+            const options = document.querySelectorAll('#orgList .custom-select-option');
+            options.forEach(opt => {
+                if (opt.textContent.toLowerCase().includes(query)) opt.style.display = 'block';
+                else opt.style.display = 'none';
+            });
+        }
+        
+        function selectOrg(val) {
+            document.getElementById('profileOrg').value = val;
+            document.getElementById('orgTrigger').textContent = val === 'other' ? 'Other' : val;
+            document.getElementById('orgDropdown').classList.remove('open');
+            
+            const customInput = document.getElementById('profileCustomOrg');
+            if (val === 'other') {
+                customInput.style.display = 'block';
+                customInput.disabled = false;
+                customInput.focus();
+            } else {
+                customInput.style.display = 'none';
+                customInput.value = '';
+            }
+        }
+
+        document.addEventListener('click', function(e) {
+            if (!document.getElementById('orgDropdown')) return;
+            if (!document.getElementById('orgDropdown').contains(e.target)) {
+                document.getElementById('orgDropdown').classList.remove('open');
+            }
+        });
+
+        async function initUniversities() {
+            try {
+                const res = await fetch('/static/universities.json');
+                if (res.ok) {
+                    const data = await res.json();
+                    if (data && data.length > 0) {
+                        globalUniversities = data;
+                        
+                        const list = document.getElementById('orgList');
+                        list.innerHTML = '';
+                        data.forEach(uni => {
+                            const opt = document.createElement('div');
+                            opt.className = 'custom-select-option';
+                            opt.textContent = uni;
+                            opt.onclick = () => selectOrg(uni);
+                            list.appendChild(opt);
+                        });
+
+                        loadSettingsData();
+                    }
+                }
+            } catch (e) {
+                console.error("Failed to load universities", e);
+            }
+        }
+        
+        // Load universities immediately
+        initUniversities();
+
+        function loadSettingsData() {
+            const p = JSON.parse(localStorage.getItem('userProfile') || '{}');
+            document.getElementById('profileName').value  = p.name  || '';
+            document.getElementById('profileEmail').value = p.email || '';
+            
+            const orgVal = p.org || '';
+            document.getElementById('profileOrg').value = orgVal;
+            
+            const customInput = document.getElementById('profileCustomOrg');
+            const trigger = document.getElementById('orgTrigger');
+            
+            if (orgVal && !globalUniversities.includes(orgVal)) {
+                if (profileEditMode) {
+                    document.getElementById('profileOrg').value = 'other';
+                    trigger.textContent = 'Other';
+                    customInput.value = orgVal;
+                    customInput.style.display = 'block';
+                } else {
+                    trigger.textContent = orgVal;
+                    customInput.style.display = 'none';
+                }
+            } else {
+                trigger.textContent = orgVal || 'Select your organisation...';
+                customInput.value = '';
+                customInput.style.display = orgVal === 'other' ? 'block' : 'none';
+            }
+
+            // Handle role — check if it's a custom value
+            const roleSelect = document.getElementById('profileRole');
+            const customRoleInput = document.getElementById('profileCustomRole');
+            const standardRoles = ['researcher', 'farmer', 'agronomist', 'student', 'other'];
+            
+            Array.from(roleSelect.options).filter(o => o.className === 'temp-custom').forEach(o => o.remove());
+
+            if (p.role && !standardRoles.includes(p.role)) {
+                if (profileEditMode) {
+                    roleSelect.value = 'other';
+                    customRoleInput.value = p.role;
+                    customRoleInput.style.display = 'block';
+                } else {
+                    const tempOpt = document.createElement('option');
+                    tempOpt.value = p.role;
+                    tempOpt.textContent = p.role;
+                    tempOpt.className = 'temp-custom';
+                    roleSelect.insertBefore(tempOpt, roleSelect.firstChild);
+                    roleSelect.value = p.role;
+                    customRoleInput.style.display = 'none';
+                }
+            } else {
+                if (p.role) roleSelect.value = p.role;
+                customRoleInput.value = '';
+                customRoleInput.style.display = p.role === 'other' ? 'block' : 'none';
+            }
+
+            // Avatar initial
+            const avatarEl = document.getElementById('avatarDisplay');
+            const nameVal = p.name || 'U';
+            avatarEl.textContent = nameVal.trim().charAt(0).toUpperCase();
+            applyAvatarColor();
+
+            // Prefs
+            const prefs = JSON.parse(localStorage.getItem('userPrefs') || '{}');
+            if (prefs.yieldUnit)  document.getElementById('prefUnit').value = prefs.yieldUnit;
+            document.getElementById('notifAnalysis').checked = prefs.notifAnalysis !== false;
+            document.getElementById('notifLowYield').checked = prefs.notifLowYield !== false;
+        }
+
+        // Profile edit mode state
+        let profileEditMode = false;
+
+        function handleRoleChange() {
+            const roleVal = document.getElementById('profileRole').value;
+            const customInput = document.getElementById('profileCustomRole');
+            if (roleVal === 'other') {
+                customInput.style.display = 'block';
+                if (profileEditMode) {
+                    customInput.disabled = false;
+                    customInput.focus();
+                }
+            } else {
+                customInput.style.display = 'none';
+                customInput.value = '';
+            }
+        }
+
+        function enableProfileEdit() {
+            profileEditMode = true;
+            loadSettingsData();
+            document.getElementById('profileName').disabled = false;
+            document.getElementById('profileEmail').disabled = false;
+            document.getElementById('orgTrigger').classList.remove('disabled');
+            const customOrg = document.getElementById('profileCustomOrg');
+            if (customOrg.style.display !== 'none') customOrg.disabled = false;
+            
+            document.getElementById('profileRole').disabled = false;
+            const customRole = document.getElementById('profileCustomRole');
+            if (customRole.style.display !== 'none') customRole.disabled = false;
+            document.getElementById('editProfileBtn').style.display = 'none';
+            document.getElementById('saveProfileBtn').style.display = 'inline-flex';
+            document.getElementById('avatarEditBtn').style.display = '';
+            // Focus on first field
+            document.getElementById('profileName').focus();
+        }
+
+        function lockProfile() {
+            profileEditMode = false;
+            loadSettingsData();
+            document.getElementById('profileName').disabled = true;
+            document.getElementById('profileEmail').disabled = true;
+            document.getElementById('orgTrigger').classList.add('disabled');
+            document.getElementById('profileCustomOrg').disabled = true;
+            document.getElementById('profileRole').disabled = true;
+            document.getElementById('profileCustomRole').disabled = true;
+            document.getElementById('editProfileBtn').style.display = 'inline-flex';
+            document.getElementById('saveProfileBtn').style.display = 'none';
+            document.getElementById('avatarEditBtn').style.display = 'none';
+        }
+
+        function saveProfile() {
+            const name  = document.getElementById('profileName').value.trim();
+            const email = document.getElementById('profileEmail').value.trim();
+            
+            const orgSelect = document.getElementById('profileOrg').value;
+            const customOrg = document.getElementById('profileCustomOrg').value.trim();
+            const org = (orgSelect === 'other' && customOrg) ? customOrg : orgSelect;
+            
+            const roleSelect = document.getElementById('profileRole').value;
+            const customRole = document.getElementById('profileCustomRole').value.trim();
+            // If "other" is selected and custom text is provided, save the custom text as role
+            const role = (roleSelect === 'other' && customRole) ? customRole : roleSelect;
+            localStorage.setItem('userProfile', JSON.stringify({ name, email, org, role }));
+            // Update avatar initial
+            document.getElementById('avatarDisplay').textContent = (name || 'U').charAt(0).toUpperCase();
+            // Lock fields after saving
+            lockProfile();
+            showToast('Profile saved!', 'success');
+        }
+
+        function savePref(key, value) {
+            const prefs = JSON.parse(localStorage.getItem('userPrefs') || '{}');
+            prefs[key] = value;
+            localStorage.setItem('userPrefs', JSON.stringify(prefs));
+            if (key === 'yieldUnit') {
+                renderResults();
+                renderHistory();
+            }
+            showToast('Preference updated', 'success');
+        }
+
+        function updateStorageInfo() {
+            const count = predictionHistory.length;
+            const bytes = new Blob([localStorage.getItem('predictionHistory') || '']).size;
+            const kb = (bytes / 1024).toFixed(1);
+            const el = document.getElementById('storageInfo');
+            if (el) el.textContent = `${count} predictions stored · ~${kb} KB used`;
+        }
+
+        function exportHistoryFromSettings() { exportHistory(); }
+
+        function clearHistoryFromSettings() {
+            if (confirm('Clear all prediction history? This cannot be undone.')) {
+                predictionHistory = [];
+                localStorage.removeItem('predictionHistory');
+                
+                const p = JSON.parse(localStorage.getItem('userGoogleProfile') || '{}');
+                if (p.email && supabaseClient) {
+                    supabaseClient.from('predictions').delete().eq('user_email', p.email).then(({error}) => {
+                        if (error) console.error("Supabase clear error:", error);
+                    });
+                }
+
+                updateHistoryStats();
+                renderHistory();
+                updateStorageInfo();
+                showToast('History cleared', 'success');
+            }
+        }
+
+        function resetAllSettings() {
+            if (confirm('Reset all settings and profile to default? This will not delete prediction history.')) {
+                localStorage.removeItem('userProfile');
+                localStorage.removeItem('userPrefs');
+                localStorage.removeItem('avatarColorIdx');
+                avatarColorIdx = 0;
+                loadSettingsData();
+                showToast('Settings reset to defaults', 'success');
+            }
+        }
+
+        // ======================================================
+        // HELP — FAQ ACCORDION
+        // ======================================================
+        function toggleFaq(btn) {
+            const item = btn.parentElement;
+            const isOpen = item.classList.contains('open');
+            // Close all
+            document.querySelectorAll('.faq-item').forEach(el => el.classList.remove('open'));
+            if (!isOpen) item.classList.add('open');
+            lucide.createIcons();
+        }
+
+        // ======================================================
+        // GOOGLE LOGIN INTEGRATION
+        // ======================================================
+        function parseJwt (token) {
+            try {
+                var base64Url = token.split('.')[1];
+                var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+                var jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+                    return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+                }).join(''));
+                return JSON.parse(jsonPayload);
+            } catch(e) {
+                return {};
+            }
+        }
+
+        async function handleCredentialResponse(response) {
+            const data = parseJwt(response.credential);
+            const profile = { name: data.name, email: data.email, avatar: data.picture };
+            localStorage.setItem('userGoogleProfile', JSON.stringify(profile));
+            
+            // Sync with settings profile
+            let p = JSON.parse(localStorage.getItem('userProfile') || '{}');
+            p.name = data.name;
+            p.email = data.email;
+            localStorage.setItem('userProfile', JSON.stringify(p));
+            if (typeof loadSettingsData === 'function') loadSettingsData();
+
+            if (supabaseClient) {
+                try {
+                    await supabaseClient.from('users').upsert({
+                        email: data.email,
+                        name: data.name,
+                        avatar: data.picture
+                    });
+                } catch(e) { console.error("Supabase sync error", e); }
+
+                try {
+                    const { data: historyData, error } = await supabaseClient
+                        .from('predictions')
+                        .select('*')
+                        .eq('user_email', data.email)
+                        .order('timestamp', { ascending: false });
+
+                    if (!error && historyData && historyData.length > 0) {
+                        predictionHistory = historyData.map(r => ({
+                            fileName: r.file_name,
+                            yield: r.predicted_yield,
+                            class: r.predicted_class,
+                            timestamp: r.timestamp,
+                            fullData: r.full_data
+                        }));
+                        localStorage.setItem('predictionHistory', JSON.stringify(predictionHistory));
+                        updateHistoryStats();
+                        renderHistory();
+                        updateStorageInfo();
+                    }
+                } catch(e) { console.error("Supabase fetch error", e); }
+            }
+            
+            updateLoginUI();
+            showToast('Logged in successfully', 'success');
+            
+            // Redirect to Profile Page
+            showSection('settings', 'settings-profile');
+        }
+
+        function handleLogout() {
+            localStorage.removeItem('userGoogleProfile');
+            localStorage.removeItem('userProfile');
+            if (typeof loadSettingsData === 'function') loadSettingsData();
+            updateLoginUI();
+            showToast('Logged out', 'success');
+        }
+
+        function updateLoginUI() {
+            const profileStr = localStorage.getItem('userGoogleProfile');
+            const gBtn = document.querySelector('.g_id_signin');
+            const profileMenu = document.getElementById('user-profile-menu');
+            
+            if (profileStr) {
+                const profile = JSON.parse(profileStr);
+                if (gBtn) gBtn.style.display = 'none';
+                profileMenu.style.display = 'flex';
+                document.getElementById('user-avatar').src = profile.avatar || '';
+                document.getElementById('user-name-display').textContent = profile.name || '';
+                document.getElementById('user-name-display').style.display = 'block';
+            } else {
+                if (gBtn) gBtn.style.display = 'block';
+                profileMenu.style.display = 'none';
+            }
+        }
+
+        
+        // Initialize UI
+        updateLoginUI();
+
+        // 3D TILT EFFECT LOGIC
+        function initTilt() {
+            const cards = document.querySelectorAll('.tilt-card');
+            
+            cards.forEach(card => {
+                card.addEventListener('mousemove', e => {
+                    if (window.innerWidth <= 1024) return; // Disable on mobile
+                    
+                    const rect = card.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    
+                    const centerX = rect.width / 2;
+                    const centerY = rect.height / 2;
+                    
+                    const rotateX = ((y - centerY) / centerY) * -10; // Max 10 degrees
+                    const rotateY = ((x - centerX) / centerX) * 10;
+                    
+                    card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+                });
+                
+                card.addEventListener('mouseleave', () => {
+                    card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
+                });
+            });
+        }
+        
+        // Initialize tilt after a short delay to ensure DOM is ready
+        setTimeout(initTilt, 500);
+    </script>
+
+
+</body>
+
+</html>

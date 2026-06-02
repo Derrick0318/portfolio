@@ -1,0 +1,17 @@
+<header class="project-detail-header">
+  <div class="header-left">
+    <a class="brand-link" href="/">Derrick's Portfolio</a>
+    <nav class="project-links" aria-label="Other projects">
+      {% for item in projects %}
+      <a class="{{ 'active' if item.slug == project.slug else '' }}" href="{{ item.url }}">
+        <span></span>{{ item.title }}
+      </a>
+      {% endfor %}
+    </nav>
+  </div>
+  <nav class="main-links" aria-label="Portfolio navigation">
+    <a href="/#intro">Intro</a>
+    <a href="/#projects">Projects</a>
+    <a href="/#about">About</a>
+  </nav>
+</header>

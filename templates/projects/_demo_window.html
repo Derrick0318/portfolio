@@ -1,0 +1,20 @@
+<section class="project-hero">
+  <div class="project-title-block">
+    <p>{{ project.category }}</p>
+    <h1>{{ project.title }}</h1>
+    <span>{{ project.summary }} Built in {{ project.year }}.</span>
+  </div>
+
+  <div class="demo-window">
+    <div class="window-topbar">
+      <div class="window-dots" aria-hidden="true">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+      <strong>{{ project.title }} Demo</strong>
+      <a href="{{ project.demo_url }}" target="_blank" rel="noopener noreferrer">Open Full Demo</a>
+    </div>
+    <iframe src="{{ project.demo_url }}" title="{{ project.title }} demo"></iframe>
+  </div>
+</section>

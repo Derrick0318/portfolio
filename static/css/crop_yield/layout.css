@@ -1,0 +1,129 @@
+.crop-sidebar {
+  position: fixed;
+  inset: 0 auto 0 0;
+  width: 280px;
+  display: flex;
+  flex-direction: column;
+  padding: 24px;
+  background: var(--crop-sidebar);
+  color: #ffffff;
+}
+
+.crop-back {
+  margin-bottom: 28px;
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 0.9rem;
+  font-weight: 800;
+}
+
+.crop-brand {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  margin-bottom: 34px;
+}
+
+.brand-mark {
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, var(--crop-primary), #2563eb);
+  font-weight: 900;
+}
+
+.crop-brand h1,
+.crop-brand p,
+.crop-topbar h2,
+.crop-topbar p {
+  margin: 0;
+}
+
+.crop-brand h1 {
+  font-size: 1.05rem;
+}
+
+.crop-brand p {
+  color: #9ca3af;
+  font-size: 0.76rem;
+}
+
+.crop-nav {
+  display: grid;
+  gap: 8px;
+}
+
+.crop-nav a {
+  padding: 13px 14px;
+  border-radius: 8px;
+  color: #cbd5e1;
+  font-weight: 700;
+}
+
+.crop-nav a.active,
+.crop-nav a:hover {
+  background: #374151;
+  color: #ffffff;
+}
+
+.tip-card {
+  margin-top: auto;
+  padding: 18px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, var(--crop-primary), #2563eb);
+}
+
+.tip-card h2 {
+  margin: 0 0 8px;
+  font-size: 1rem;
+}
+
+.tip-card p {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.82);
+  font-size: 0.86rem;
+}
+
+.crop-main {
+  width: calc(100% - 280px);
+  margin-left: 280px;
+}
+
+.crop-topbar {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 64px;
+  padding: 0 28px;
+  border-bottom: 1px solid #edf2f7;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(12px);
+}
+
+.crop-topbar p {
+  color: var(--crop-muted);
+  font-size: 0.78rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.crop-topbar h2 {
+  font-size: 1.12rem;
+}
+
+.model-status {
+  padding: 8px 12px;
+  border-radius: 8px;
+  background: #eef2ff;
+  color: var(--crop-primary-dark);
+  font-size: 0.82rem;
+  font-weight: 900;
+}
+
+.crop-content {
+  padding: 28px;
+}

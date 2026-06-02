@@ -3,6 +3,26 @@
   background: var(--maui-cream);
 }
 
+.m4food-screen[hidden] {
+  display: none;
+}
+
+.m4food-screen {
+  animation: m4food-panel-in 0.18s ease-out;
+}
+
+@keyframes m4food-panel-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 .home-top {
   padding: 18px 20px 15px;
   background: var(--maui-cream);
@@ -156,6 +176,161 @@
   background: var(--maui-yellow);
 }
 
+.utility-screen {
+  display: grid;
+  align-content: start;
+  gap: 16px;
+  min-height: 668px;
+  padding: 24px 20px;
+  background: var(--maui-cream);
+}
+
+.utility-header p {
+  margin: 0 0 8px;
+  color: var(--maui-muted);
+  font-size: 13px;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.utility-header h2 {
+  margin: 0;
+  color: var(--maui-ink);
+  font-size: 26px;
+}
+
+.food-order-card,
+.order-status-card,
+.account-card,
+.account-list button,
+.cart-summary {
+  border: 1px solid var(--maui-line);
+  border-radius: 18px;
+  background: #ffffff;
+  box-shadow: 0 8px 24px rgba(44, 36, 22, 0.08);
+}
+
+.food-order-card {
+  display: grid;
+  grid-template-columns: 62px 1fr auto;
+  gap: 14px;
+  align-items: center;
+  padding: 14px;
+}
+
+.food-order-card img {
+  width: 62px;
+  height: 62px;
+  border-radius: 14px;
+  object-fit: contain;
+  background: #f3ecdf;
+}
+
+.food-order-card h3,
+.order-status-card h3,
+.account-card h3 {
+  margin: 0 0 4px;
+  color: var(--maui-ink);
+  font-size: 16px;
+}
+
+.food-order-card p,
+.order-status-card p,
+.account-card p {
+  margin: 0;
+  color: var(--maui-muted);
+  font-size: 13px;
+  line-height: 1.35;
+}
+
+.food-order-card strong {
+  color: var(--maui-coral);
+}
+
+.cart-summary {
+  display: flex;
+  justify-content: space-between;
+  padding: 16px 18px;
+  color: var(--maui-muted);
+  font-weight: 800;
+}
+
+.cart-summary strong {
+  color: var(--maui-ink);
+}
+
+.m4food-primary-button {
+  min-height: 50px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--maui-yellow);
+  color: var(--maui-ink);
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.order-status-card {
+  padding: 18px;
+}
+
+.order-status-card span {
+  display: inline-block;
+  margin-bottom: 12px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: #f4ecd1;
+  color: var(--maui-muted);
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.order-status-card.active {
+  border-color: rgba(232, 197, 71, 0.8);
+}
+
+.order-status-card.active span {
+  background: var(--maui-yellow);
+  color: var(--maui-ink);
+}
+
+.account-card {
+  display: grid;
+  justify-items: center;
+  padding: 26px 18px;
+  text-align: center;
+}
+
+.account-card span {
+  display: grid;
+  place-items: center;
+  width: 70px;
+  height: 70px;
+  margin-bottom: 14px;
+  border-radius: 50%;
+  background: var(--maui-yellow);
+  color: var(--maui-ink);
+  font-size: 30px;
+  font-weight: 900;
+}
+
+.account-list {
+  display: grid;
+  gap: 12px;
+}
+
+.account-list button {
+  min-height: 50px;
+  padding: 0 16px;
+  border-color: var(--maui-line);
+  color: var(--maui-ink);
+  text-align: left;
+  font-weight: 800;
+  cursor: pointer;
+}
+
 .bottom-nav {
   position: absolute;
   right: 0;
@@ -163,10 +338,26 @@
   left: 0;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  padding: 16px 0;
+  gap: 4px;
+  padding: 12px 10px;
   background: var(--maui-nav);
   color: #333333;
   text-align: center;
   font-size: 10px;
   font-weight: 900;
+}
+
+.bottom-nav button {
+  min-height: 38px;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: #333333;
+  font-size: 10px;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.bottom-nav button.active {
+  background: rgba(44, 36, 22, 0.16);
 }

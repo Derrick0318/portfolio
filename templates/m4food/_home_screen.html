@@ -1,68 +1,137 @@
 <section class="phone-frame home-phone" aria-label="M4Food home screen">
-  <div class="home-top">
-    <p>Participating Bakeries Nearby (2)</p>
-    <div class="search-field">Search stores and food</div>
+  <div class="m4food-screen active" data-m4food-panel="home">
+    <div class="home-top">
+      <p>Participating Bakeries Nearby (2)</p>
+      <div class="search-field">Search stores and food</div>
+    </div>
+
+    <div class="promo-row">
+      <article class="promo-card yellow">
+        <h2>FREE SURPLUS FOOD</h2>
+        <p>Free for every order</p>
+        <span>cookie</span>
+      </article>
+      <article class="promo-card green">
+        <h2>Your Favourite Choices</h2>
+        <p>Healthy and Special Food</p>
+        <span>bread</span>
+      </article>
+    </div>
+
+    <div class="home-section-title">
+      <h2>Your Preferred</h2>
+      <a href="#">See All</a>
+    </div>
+
+    <div class="preferred-grid">
+      <article>
+        <img src="{{ url_for('m4food.assets', filename='artisanbread.png') }}" alt="Artisan Bread">
+        <h3>Artisan Bread</h3>
+      </article>
+      <article>
+        <img src="{{ url_for('m4food.assets', filename='buttercroissant.png') }}" alt="Butter Croissant">
+        <h3>Butter Croissant</h3>
+      </article>
+      <article>
+        <img src="{{ url_for('m4food.assets', filename='chococake.png') }}" alt="Choco Cake">
+        <h3>Choco Cake</h3>
+      </article>
+      <article>
+        <img src="{{ url_for('m4food.assets', filename='glazeddonut.png') }}" alt="Glazed Donut">
+        <h3>Glazed Donut</h3>
+      </article>
+      <article>
+        <img src="{{ url_for('m4food.assets', filename='chocochip.png') }}" alt="Choco Chip">
+        <h3>Choco Chip</h3>
+      </article>
+      <article>
+        <img src="{{ url_for('m4food.assets', filename='muffin.png') }}" alt="Blueberry Muffin">
+        <h3>Blueberry Muffin</h3>
+      </article>
+    </div>
+
+    <div class="category-section">
+      <h2>Categories</h2>
+      <div>
+        <span class="active">All</span>
+        <span>Bread</span>
+        <span>Cake</span>
+        <span>Others</span>
+      </div>
+    </div>
   </div>
 
-  <div class="promo-row">
-    <article class="promo-card yellow">
-      <h2>FREE SURPLUS FOOD</h2>
-      <p>Free for every order</p>
-      <span>cookie</span>
-    </article>
-    <article class="promo-card green">
-      <h2>Your Favourite Choices</h2>
-      <p>Healthy and Special Food</p>
-      <span>bread</span>
-    </article>
-  </div>
-
-  <div class="home-section-title">
-    <h2>Your Preferred</h2>
-    <a href="#">See All</a>
-  </div>
-
-  <div class="preferred-grid">
-    <article>
-      <img src="{{ url_for('m4food.assets', filename='artisanbread.png') }}" alt="Artisan Bread">
-      <h3>Artisan Bread</h3>
-    </article>
-    <article>
+  <div class="m4food-screen utility-screen" data-m4food-panel="cart" hidden>
+    <div class="utility-header">
+      <p>My Cart</p>
+      <h2>Selected Food</h2>
+    </div>
+    <article class="food-order-card">
       <img src="{{ url_for('m4food.assets', filename='buttercroissant.png') }}" alt="Butter Croissant">
-      <h3>Butter Croissant</h3>
+      <div>
+        <h3>Butter Croissant</h3>
+        <p>Morning Bites</p>
+      </div>
+      <strong>x2</strong>
     </article>
-    <article>
-      <img src="{{ url_for('m4food.assets', filename='chococake.png') }}" alt="Choco Cake">
-      <h3>Choco Cake</h3>
-    </article>
-    <article>
-      <img src="{{ url_for('m4food.assets', filename='glazeddonut.png') }}" alt="Glazed Donut">
-      <h3>Glazed Donut</h3>
-    </article>
-    <article>
-      <img src="{{ url_for('m4food.assets', filename='chocochip.png') }}" alt="Choco Chip">
-      <h3>Choco Chip</h3>
-    </article>
-    <article>
+    <article class="food-order-card">
       <img src="{{ url_for('m4food.assets', filename='muffin.png') }}" alt="Blueberry Muffin">
-      <h3>Blueberry Muffin</h3>
+      <div>
+        <h3>Blueberry Muffin</h3>
+        <p>Sweet Crust</p>
+      </div>
+      <strong>x1</strong>
+    </article>
+    <div class="cart-summary">
+      <span>Total items</span>
+      <strong>3</strong>
+    </div>
+    <button class="m4food-primary-button" type="button">Confirm Pickup</button>
+  </div>
+
+  <div class="m4food-screen utility-screen" data-m4food-panel="orders" hidden>
+    <div class="utility-header">
+      <p>Orders</p>
+      <h2>Pickup Status</h2>
+    </div>
+    <article class="order-status-card active">
+      <span>Ready</span>
+      <h3>Sweet Crust Bakery</h3>
+      <p>Blueberry Muffin and Choco Chip</p>
+    </article>
+    <article class="order-status-card">
+      <span>Completed</span>
+      <h3>Morning Bites</h3>
+      <p>Butter Croissant</p>
+    </article>
+    <article class="order-status-card">
+      <span>Completed</span>
+      <h3>Fresh Batch</h3>
+      <p>Glazed Donut</p>
     </article>
   </div>
 
-  <div class="category-section">
-    <h2>Categories</h2>
-    <div>
-      <span class="active">All</span>
-      <span>Bread</span>
-      <span>Cake</span>
-      <span>Others</span>
+  <div class="m4food-screen utility-screen" data-m4food-panel="account" hidden>
+    <div class="utility-header">
+      <p>Account</p>
+      <h2>Profile</h2>
+    </div>
+    <div class="account-card">
+      <span>M</span>
+      <h3>M4Food User</h3>
+      <p>Food receiver account</p>
+    </div>
+    <div class="account-list">
+      <button type="button">Saved Bakeries</button>
+      <button type="button">Pickup History</button>
+      <button type="button">Notification Settings</button>
     </div>
   </div>
 
   <nav class="bottom-nav" aria-label="M4Food bottom navigation">
-    <span>HOME</span>
-    <span>CART</span>
-    <span>ORDERS</span>
-    <span>ACCOUNT</span>
+    <button class="active" data-m4food-tab="home" type="button">HOME</button>
+    <button data-m4food-tab="cart" type="button">CART</button>
+    <button data-m4food-tab="orders" type="button">ORDERS</button>
+    <button data-m4food-tab="account" type="button">ACCOUNT</button>
   </nav>
 </section>

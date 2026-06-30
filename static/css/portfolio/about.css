@@ -1,54 +1,85 @@
 .about-section {
-  padding: 88px 24px;
-  background: #ffffff;
+  padding: clamp(72px, 9vw, 104px) 24px;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.94), rgba(251, 250, 244, 0.94)),
+    #ffffff;
   border-top: 1px solid var(--line);
 }
 
 .about-layout {
   display: grid;
-  grid-template-columns: minmax(0, 1.1fr) minmax(280px, 0.9fr);
-  gap: 44px;
+  grid-template-columns: minmax(0, 1fr) minmax(320px, 0.95fr);
+  gap: clamp(36px, 7vw, 74px);
   align-items: start;
+}
+
+.about-layout > div:first-child {
+  position: sticky;
+  top: 104px;
+}
+
+.about-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 24px;
+}
+
+.about-tags span {
+  display: inline-flex;
+  align-items: center;
+  min-height: 38px;
+  padding: 0 13px;
+  border: 1px solid rgba(29, 36, 32, 0.1);
+  border-radius: 999px;
+  background: #ffffff;
+  color: var(--forest-dark);
+  font-size: 0.84rem;
+  font-weight: 800;
+  box-shadow: 0 10px 24px rgba(29, 36, 32, 0.06);
 }
 
 .about-flow {
   position: relative;
   display: grid;
-  gap: 22px;
-  padding-left: 28px;
+  gap: 14px;
+  padding-left: 0;
 }
 
 .about-flow::before {
-  position: absolute;
-  top: 6px;
-  bottom: 6px;
-  left: 8px;
-  width: 2px;
-  content: "";
-  background: linear-gradient(var(--forest), var(--gold), var(--teal));
+  display: none;
 }
 
 .about-step {
   position: relative;
-  padding: 4px 0 4px 18px;
+  overflow: hidden;
+  padding: 24px 24px 24px 28px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #ffffff;
+  box-shadow: 0 16px 34px rgba(29, 36, 32, 0.08);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .about-step::before {
   position: absolute;
-  top: 11px;
-  left: -27px;
-  width: 14px;
-  height: 14px;
-  border: 3px solid #ffffff;
-  border-radius: 50%;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 5px;
   content: "";
-  background: var(--gold);
-  box-shadow: 0 0 0 4px rgba(210, 160, 25, 0.16);
+  background: linear-gradient(var(--forest), var(--gold));
+  box-shadow: none;
+}
+
+.about-step:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 22px 48px rgba(29, 36, 32, 0.12);
 }
 
 .about-step span {
   display: inline-flex;
-  margin-bottom: 8px;
+  margin-bottom: 10px;
   color: var(--forest);
   font-size: 0.86rem;
   font-weight: 900;
@@ -59,4 +90,5 @@
 .about-step p {
   margin: 0;
   color: var(--ink);
+  line-height: 1.65;
 }

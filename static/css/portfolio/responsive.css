@@ -4,7 +4,7 @@
   }
 
   .hero {
-    min-height: 600px;
+    min-height: 640px;
   }
 
   .hero-content {
@@ -12,16 +12,24 @@
   }
 
   .hero h1 {
-    font-size: 3.7rem;
+    font-size: 4.1rem;
   }
 
   .hero-console {
-    opacity: 0.62;
+    opacity: 0.42;
+  }
+
+  .hero-project-rail {
+    display: none;
   }
 
   .project-grid,
   .about-layout {
     grid-template-columns: 1fr;
+  }
+
+  .about-layout > div:first-child {
+    position: static;
   }
 
   .project-card:first-child {
@@ -38,9 +46,10 @@
 
 @media (max-width: 640px) {
   .site-header {
-    align-items: flex-start;
+    align-items: stretch;
     flex-direction: column;
-    padding: 18px;
+    min-height: auto;
+    padding: 14px;
   }
 
   .footer-inner {
@@ -49,21 +58,25 @@
 
   .site-nav {
     width: 100%;
-    gap: 8px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px;
   }
 
   .site-nav a {
-    flex: 1;
-    min-height: 44px;
+    min-height: 42px;
+    padding: 0 8px;
+    font-size: 0.9rem;
   }
 
   .hero {
-    min-height: 560px;
-    padding: 64px 18px;
+    min-height: 620px;
+    padding: 72px 18px 58px;
   }
 
   .hero h1 {
-    font-size: 2.65rem;
+    font-size: clamp(2.8rem, 13vw, 3.65rem);
+    line-height: 0.98;
   }
 
   .hero p {
@@ -74,13 +87,36 @@
     display: none;
   }
 
+  .hero-actions {
+    gap: 10px;
+  }
+
+  .primary-action,
+  .secondary-action {
+    flex: 1 1 140px;
+    min-height: 48px;
+  }
+
+  .hero-highlights {
+    justify-content: stretch;
+  }
+
+  .hero-highlights span {
+    width: 100%;
+    justify-content: center;
+  }
+
   .section,
   .about-section {
-    padding: 62px 18px;
+    padding: 66px 18px;
   }
 
   h2 {
     font-size: 1.8rem;
+  }
+
+  .project-summary-strip {
+    display: grid;
   }
 
   .project-card {
@@ -101,6 +137,45 @@
   }
 
   .about-flow {
-    padding-left: 24px;
+    padding-left: 0;
+  }
+}
+
+@media (max-width: 430px) {
+  .brand {
+    font-size: 1rem;
+  }
+
+  .hero {
+    min-height: 600px;
+  }
+
+  .hero h1 {
+    font-size: clamp(2.55rem, 14vw, 3.2rem);
+  }
+
+  .project-body {
+    padding: 20px;
+  }
+
+  .project-meta {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .project-link-label {
+    width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
   }
 }

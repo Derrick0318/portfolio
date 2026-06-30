@@ -1,7 +1,7 @@
 .project-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 24px;
+  gap: 28px;
 }
 
 .project-index-kicker {
@@ -9,31 +9,77 @@
   letter-spacing: 0.13em;
 }
 
+.project-summary-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 0 0 32px;
+}
+
+.project-summary-strip span {
+  display: inline-flex;
+  align-items: center;
+  min-height: 40px;
+  padding: 0 14px;
+  border: 1px solid rgba(29, 36, 32, 0.1);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.74);
+  color: var(--forest-dark);
+  font-size: 0.86rem;
+  font-weight: 800;
+  box-shadow: 0 10px 26px rgba(29, 36, 32, 0.06);
+}
+
 .project-card {
+  position: relative;
+  isolation: isolate;
   display: grid;
   grid-template-rows: 230px 1fr;
   overflow: hidden;
   min-height: 460px;
   border: 1px solid var(--line);
   border-radius: 8px;
-  background: var(--surface);
-  box-shadow: var(--shadow);
-  transition: transform 0.22s ease, box-shadow 0.22s ease;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.96), #ffffff),
+    var(--surface);
+  box-shadow: 0 16px 44px rgba(29, 36, 32, 0.1);
+  transition: transform 0.24s ease, box-shadow 0.24s ease, border-color 0.24s ease;
+}
+
+.project-card::before {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  content: "";
+  background: linear-gradient(135deg, rgba(210, 160, 25, 0.14), transparent 32%, rgba(44, 122, 116, 0.12));
+  opacity: 0;
+  transition: opacity 0.24s ease;
 }
 
 .project-card:first-child {
   grid-column: 1 / -1;
-  grid-template-columns: minmax(0, 1.08fr) minmax(360px, 0.92fr);
+  grid-template-columns: minmax(0, 1.02fr) minmax(380px, 0.98fr);
   grid-template-rows: none;
-  min-height: 318px;
+  min-height: 340px;
 }
 
 .project-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 24px 48px rgba(29, 36, 32, 0.18);
+  border-color: rgba(93, 114, 81, 0.24);
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-strong);
+}
+
+.project-card:hover::before {
+  opacity: 1;
+}
+
+.project-card:focus-visible {
+  outline: 3px solid rgba(210, 160, 25, 0.42);
+  outline-offset: 4px;
 }
 
 .project-visual {
+  position: relative;
   display: grid;
   place-items: center;
   overflow: hidden;
@@ -44,7 +90,7 @@
 }
 
 .project-card:first-child .project-visual {
-  min-height: 318px;
+  min-height: 340px;
 }
 
 .project-card:first-child .project-body {
@@ -67,6 +113,12 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+  transition: transform 0.3s ease, filter 0.3s ease;
+}
+
+.project-card:hover .project-visual img {
+  filter: saturate(1.05);
+  transform: scale(1.035);
 }
 
 .project-symbol {
@@ -109,6 +161,11 @@
   background: rgba(255, 255, 255, 0.32);
   box-shadow: 0 22px 45px rgba(31, 54, 122, 0.22);
   backdrop-filter: blur(10px);
+  transition: transform 0.28s ease;
+}
+
+.project-card:hover .chat-preview {
+  transform: translateY(-5px);
 }
 
 .chat-sidebar,
@@ -172,6 +229,11 @@
   position: relative;
   width: min(430px, 86%);
   height: 190px;
+  transition: transform 0.28s ease;
+}
+
+.project-card:hover .food-preview {
+  transform: rotate(-1deg) translateY(-4px);
 }
 
 .food-main,
@@ -449,7 +511,7 @@
   display: grid;
   grid-template-rows: auto auto minmax(58px, auto) minmax(92px, auto) minmax(58px, auto) auto;
   align-content: start;
-  padding: 24px;
+  padding: clamp(22px, 3vw, 30px);
 }
 
 .project-meta {
@@ -467,7 +529,8 @@
 
 .project-card h3 {
   margin-bottom: 10px;
-  font-size: 1.45rem;
+  font-size: clamp(1.45rem, 2vw, 1.85rem);
+  line-height: 1.16;
 }
 
 .project-summary {
@@ -478,7 +541,7 @@
 .project-background {
   min-height: 92px;
   margin: 0;
-  padding-top: 16px;
+  padding-top: 18px;
   border-top: 1px solid var(--line);
   color: var(--ink);
   font-weight: 700;
@@ -518,17 +581,19 @@
   align-items: center;
   justify-content: center;
   width: fit-content;
-  min-height: 40px;
-  padding: 0 14px;
+  min-height: 46px;
+  padding: 0 17px;
   border: 1px solid rgba(29, 36, 32, 0.14);
   border-radius: 8px;
-  background: var(--ink);
+  background:
+    linear-gradient(135deg, var(--forest-dark), #13231d);
   color: #ffffff;
   font-size: 0.78rem;
   font-weight: 900;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  transition: transform 0.2s ease, background 0.2s ease;
+  box-shadow: 0 12px 28px rgba(29, 36, 32, 0.16);
+  transition: transform 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
 }
 
 .project-link-label::after {
@@ -542,6 +607,6 @@
 }
 
 .project-card:hover .project-link-label {
-  transform: translateX(3px);
-  background: var(--forest-dark);
+  transform: translateX(5px);
+  box-shadow: 0 16px 32px rgba(29, 36, 32, 0.22);
 }

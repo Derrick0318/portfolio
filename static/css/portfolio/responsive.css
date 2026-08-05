@@ -29,14 +29,21 @@
   }
 
   .project-card:first-child {
-    grid-column: auto;
     grid-template-columns: 1fr;
-    grid-template-rows: 230px 1fr;
     min-height: auto;
   }
 
-  .project-card:first-child .project-visual {
-    min-height: 230px;
+  .project-card,
+  .project-card:nth-child(even) {
+    grid-template-columns: 1fr;
+  }
+
+  .project-card:nth-child(even) .project-visual {
+    order: 0;
+  }
+
+  .project-visual {
+    min-height: 280px;
   }
 }
 
@@ -82,14 +89,8 @@
     font-size: 1rem;
   }
 
-  .hero-dashboard {
-    border-radius: 16px;
-  }
-
-  .dashboard-footer {
-    align-items: flex-start;
-    flex-direction: column;
-    padding: 14px 18px;
+  .hero-index a {
+    padding: 16px 0;
   }
 
   .hero-actions {
@@ -100,14 +101,6 @@
   .secondary-action {
     flex: 1 1 140px;
     min-height: 48px;
-  }
-
-  .hero-highlights {
-    display: grid;
-  }
-
-  .hero-highlights span {
-    width: 100%;
   }
 
   .section,
@@ -124,20 +117,23 @@
   }
 
   .project-card {
-    grid-template-rows: 190px 1fr;
+    gap: 20px;
+    padding-block: 30px;
     min-height: auto;
   }
 
-  .project-card:first-child {
-    grid-template-rows: 190px 1fr;
+  .project-number {
+    top: 16px;
+    font-size: 3rem;
   }
 
   .project-visual {
-    min-height: 190px;
+    min-height: 230px;
+    border-radius: 24px 24px 24px 8px;
   }
 
-  .project-card:first-child .project-visual {
-    min-height: 190px;
+  .project-card:nth-child(even) .project-visual {
+    border-radius: 24px 8px 24px 24px;
   }
 
   .about-flow {
@@ -154,21 +150,17 @@
     padding-inline: 16px;
   }
 
-  .hero-status {
-    max-width: 100%;
-    font-size: 0.68rem;
+  .hero-mark {
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
   }
 
   .hero h1 {
     font-size: clamp(2.55rem, 14vw, 3.2rem);
   }
 
-  .dashboard-list div {
-    grid-template-columns: 40px 1fr;
-  }
-
   .project-body {
-    padding: 20px;
+    max-width: none;
   }
 
   .project-meta {
@@ -178,7 +170,7 @@
   }
 
   .project-link-label {
-    width: 100%;
+    width: fit-content;
   }
 }
 

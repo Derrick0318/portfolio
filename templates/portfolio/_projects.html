@@ -1,7 +1,7 @@
 <section class="section" id="projects">
   <div class="section-inner">
     <div class="section-heading">
-      <h2>Featured projects with clear roles and live previews.</h2>
+      <h2>Coursework and final-year projects, arranged for quick review.</h2>
       <p>
         Each project opens into its own review page with a live demo window,
         role summary, technology stack, and short project background.
@@ -16,6 +16,7 @@
     <div class="project-grid">
       {% for project in projects %}
       <a class="project-card" href="{{ project.url }}">
+        <span class="project-number">{{ project.number }}</span>
         <div class="project-visual {{ project.visual_style or '' }}">
           {% if project.visual_style == "chatbot" %}
           <div class="chat-preview" aria-hidden="true">
@@ -69,7 +70,7 @@
         </div>
         <div class="project-body">
           <div class="project-meta">
-            <span>{{ project.number }} / {{ project.year }}</span>
+            <span>{{ project.year }}</span>
             <span>{{ project.status }}</span>
           </div>
           <h3>{{ project.title }}</h3>

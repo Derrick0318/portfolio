@@ -4,10 +4,7 @@
   padding: clamp(56px, 7vw, 82px) 24px 34px;
   border-top: 1px solid rgba(246, 241, 230, 0.1);
   background:
-    linear-gradient(rgba(246, 241, 230, 0.045) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(246, 241, 230, 0.04) 1px, transparent 1px),
     linear-gradient(135deg, #13231d, #1f352b);
-  background-size: 44px 44px, 44px 44px, auto;
   color: #f6f1e6;
 }
 

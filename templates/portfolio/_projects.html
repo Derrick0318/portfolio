@@ -1,13 +1,13 @@
 <section class="section" id="projects">
   <div class="section-inner">
-    <div class="section-heading">
+    <div class="section-heading reveal-on-scroll">
       <h2>Coursework and final-year projects, arranged for quick review.</h2>
       <p>
         Each project opens into its own review page with a live demo window,
         role summary, technology stack, and short project background.
       </p>
     </div>
-    <div class="project-summary-strip" aria-label="Project presentation summary">
+    <div class="project-summary-strip reveal-on-scroll delay-100" aria-label="Project presentation summary">
       <span>Original project pages protected</span>
       <span>Role and stack visible first</span>
       <span>Built for desktop and phone viewing</span>
@@ -15,7 +15,7 @@
 
     <div class="project-grid">
       {% for project in projects %}
-      <a class="project-card" href="{{ project.url }}">
+      <a class="project-card reveal-on-scroll delay-{{ loop.index * 100 }}" href="{{ project.url }}">
         <span class="project-number">{{ project.number }}</span>
         <div class="project-visual {{ project.visual_style or '' }}">
           {% if project.visual_style == "chatbot" %}

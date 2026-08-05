@@ -51,7 +51,7 @@
   min-height: 40px;
   padding: 0 13px;
   border-radius: 999px;
-  transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+  transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .site-nav a:hover,
@@ -62,7 +62,19 @@
   transform: translateY(-2px);
 }
 
+.site-nav a.active {
+  background: rgba(98, 232, 255, 0.2);
+  color: #ffffff;
+  box-shadow: 0 0 16px rgba(98, 232, 255, 0.28);
+}
+
 .site-nav .nav-cta {
   background: #ffffff;
   color: #07101d;
+}
+
+.site-nav .nav-cta.active,
+.site-nav .nav-cta:hover {
+  background: var(--cyan);
+  color: #05070a;
 }

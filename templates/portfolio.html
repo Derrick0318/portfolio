@@ -12,16 +12,9 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='css/portfolio/about.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/portfolio/showcase.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/portfolio/responsive.css') }}">
+  <script src="{{ url_for('static', filename='js/portfolio/scroll.js') }}" defer></script>
 </head>
 <body>
-  <!--
-  THESIS: Derrick's portfolio is a curated academic exhibit, refusing the same-size card grid.
-  OWN-WORLD: ink, ivory, deep green, brass accents, editorial spacing, gallery-like project rows.
-  STORY: visitors understand the four projects, Derrick's roles, and open each original demo.
-  FIRST VIEWPORT: large left-aligned statement, slim project rail, and quiet proof without project photos.
-  FORM: assigned grounded direction 5, seed ec57d1d8.
-  FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, and DESIGN.md
-  -->
   {% include "portfolio/_header.html" %}
   <main>
     {% include "portfolio/_hero.html" %}

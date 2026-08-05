@@ -1,7 +1,7 @@
 .project-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 28px;
+  gap: 22px;
 }
 
 .project-index-kicker {
@@ -13,7 +13,7 @@
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
-  margin: 0 0 32px;
+  margin: 0 0 34px;
 }
 
 .project-summary-strip span {
@@ -22,8 +22,8 @@
   min-height: 40px;
   padding: 0 14px;
   border: 1px solid rgba(29, 36, 32, 0.1);
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.74);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.82);
   color: var(--forest-dark);
   font-size: 0.86rem;
   font-weight: 800;
@@ -34,15 +34,15 @@
   position: relative;
   isolation: isolate;
   display: grid;
-  grid-template-rows: 230px 1fr;
+  grid-template-rows: 210px 1fr;
   overflow: hidden;
-  min-height: 460px;
-  border: 1px solid var(--line);
-  border-radius: 14px;
+  min-height: 430px;
+  border: 1px solid rgba(18, 31, 28, 0.1);
+  border-radius: 18px;
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.96), #ffffff),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(248, 251, 248, 0.94)),
     var(--surface);
-  box-shadow: 0 18px 50px rgba(29, 36, 32, 0.1);
+  box-shadow: 0 20px 60px rgba(29, 36, 32, 0.11);
   transition: transform 0.24s ease, box-shadow 0.24s ease, border-color 0.24s ease;
 }
 
@@ -51,14 +51,14 @@
   inset: 0;
   z-index: -1;
   content: "";
-  background: linear-gradient(135deg, rgba(210, 160, 25, 0.14), transparent 32%, rgba(44, 122, 116, 0.12));
+  background: linear-gradient(135deg, rgba(210, 160, 25, 0.12), transparent 34%, rgba(68, 98, 168, 0.12));
   opacity: 0;
   transition: opacity 0.24s ease;
 }
 
 .project-card:first-child {
   grid-column: 1 / -1;
-  grid-template-columns: minmax(0, 1.02fr) minmax(380px, 0.98fr);
+  grid-template-columns: minmax(0, 0.9fr) minmax(420px, 1fr);
   grid-template-rows: none;
   min-height: 340px;
 }
@@ -83,7 +83,7 @@
   display: grid;
   place-items: center;
   overflow: hidden;
-  min-height: 230px;
+  min-height: 210px;
   background:
     linear-gradient(135deg, rgba(93, 114, 81, 0.16), rgba(44, 122, 116, 0.16)),
     #e9ede6;
@@ -93,11 +93,8 @@
   position: absolute;
   inset: 0;
   content: "";
-  background:
-    linear-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.08) 1px, transparent 1px);
-  background-size: 42px 42px;
-  opacity: 0.22;
+  background: linear-gradient(180deg, transparent, rgba(6, 16, 13, 0.1));
+  opacity: 0.34;
   pointer-events: none;
 }
 
@@ -106,19 +103,19 @@
 }
 
 .project-card:first-child .project-body {
-  grid-template-rows: auto auto minmax(48px, auto) minmax(76px, auto) minmax(52px, auto) auto;
+  grid-template-rows: auto auto auto auto auto auto;
 }
 
 .project-card:first-child .project-summary {
-  min-height: 48px;
+  min-height: 0;
 }
 
 .project-card:first-child .project-background {
-  min-height: 76px;
+  min-height: 0;
 }
 
 .project-card:first-child .project-stack-preview {
-  min-height: 52px;
+  min-height: 0;
 }
 
 .project-visual img {
@@ -521,9 +518,9 @@
 
 .project-body {
   display: grid;
-  grid-template-rows: auto auto minmax(58px, auto) minmax(92px, auto) minmax(58px, auto) auto;
+  grid-template-rows: auto auto auto auto auto auto;
   align-content: start;
-  padding: clamp(22px, 3vw, 30px);
+  padding: clamp(22px, 3vw, 28px);
 }
 
 .project-meta {
@@ -532,7 +529,7 @@
   justify-content: space-between;
   gap: 12px;
   margin-bottom: 18px;
-  color: var(--forest);
+  color: var(--teal);
   font-size: 0.78rem;
   font-weight: 800;
   letter-spacing: 0.08em;
@@ -546,16 +543,14 @@
 }
 
 .project-summary {
-  min-height: 58px;
   margin-bottom: 0;
 }
 
 .project-background {
-  min-height: 92px;
   margin: 0;
   padding-top: 18px;
   border-top: 1px solid var(--line);
-  color: var(--ink);
+  color: #15211f;
   font-weight: 700;
 }
 
@@ -564,7 +559,6 @@
   flex-wrap: wrap;
   gap: 8px;
   align-content: start;
-  min-height: 58px;
   margin-top: 12px;
   margin-bottom: 18px;
 }
@@ -575,7 +569,7 @@
   min-height: 32px;
   padding: 0 10px;
   border: 1px solid rgba(29, 36, 32, 0.1);
-  border-radius: 999px;
+  border-radius: 10px;
   background: rgba(248, 250, 246, 0.86);
   color: var(--ink);
   font-size: 0.76rem;
@@ -584,7 +578,7 @@
 
 .project-stack-preview .role-chip {
   border-color: rgba(210, 160, 25, 0.28);
-  background: rgba(210, 160, 25, 0.12);
+  background: rgba(210, 160, 25, 0.13);
   color: var(--forest-dark);
 }
 
@@ -596,7 +590,7 @@
   min-height: 46px;
   padding: 0 17px;
   border: 1px solid rgba(29, 36, 32, 0.14);
-  border-radius: 10px;
+  border-radius: 12px;
   background:
     linear-gradient(135deg, var(--forest-dark), #13231d);
   color: #ffffff;

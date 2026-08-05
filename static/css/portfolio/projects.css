@@ -19,10 +19,11 @@
   font-weight: 800;
 }
 
+/* Single column vertical flow layout: Project 1 then Project 2 down */
 .project-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 40px 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 80px;
 }
 
 /* Border-free open project presentation */
@@ -31,13 +32,20 @@
   display: flex;
   flex-direction: column;
   overflow: visible;
-  min-height: auto;
+  width: 100%;
   border: none;
   border-radius: 0;
   background: transparent;
   box-shadow: none;
   backdrop-filter: none;
   transition: transform 0.3s ease;
+  padding-bottom: 24px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.project-card:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
 }
 
 .project-card::before {
@@ -57,17 +65,18 @@
 
 .project-number {
   position: absolute;
-  top: 16px;
-  left: 18px;
+  top: 18px;
+  left: 20px;
   z-index: 5;
-  color: rgba(255, 255, 255, 0.55);
-  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 0.88rem;
   font-weight: 900;
-  font-family: "Fira Code", monospace;
-  background: rgba(5, 7, 10, 0.6);
-  padding: 2px 8px;
-  border-radius: 6px;
-  backdrop-filter: blur(6px);
+  font-family: "Fira Code", Monaco, monospace;
+  background: rgba(5, 7, 10, 0.75);
+  padding: 4px 10px;
+  border-radius: 8px;
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
 }
 
 .project-visual {
@@ -75,9 +84,10 @@
   display: grid;
   place-items: center;
   overflow: hidden;
-  min-height: 280px;
-  height: 280px;
-  border-radius: 20px;
+  width: 100%;
+  min-height: 360px;
+  height: 380px;
+  border-radius: 24px;
   border: 1px solid rgba(255, 255, 255, 0.1);
   background: rgba(255, 255, 255, 0.03);
   transition: transform 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease;
@@ -85,7 +95,7 @@
 
 .project-card:hover .project-visual {
   border-color: rgba(98, 232, 255, 0.45);
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4), 0 0 25px rgba(98, 232, 255, 0.15);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), 0 0 30px rgba(98, 232, 255, 0.15);
 }
 
 .project-visual img {
@@ -96,13 +106,13 @@
 }
 
 .project-card:hover .project-visual img {
-  transform: scale(1.04);
+  transform: scale(1.03);
 }
 
 .project-body {
   display: flex;
   flex-direction: column;
-  padding: 24px 0 0 0;
+  padding: 28px 0 0 0;
   background: transparent;
 }
 
@@ -110,18 +120,18 @@
   display: flex;
   justify-content: space-between;
   gap: 12px;
-  margin-bottom: 12px;
+  margin-bottom: 14px;
   color: var(--cyan);
-  font-size: 0.76rem;
+  font-size: 0.8rem;
   font-weight: 900;
   letter-spacing: 0.1em;
   text-transform: uppercase;
 }
 
 .project-card h3 {
-  margin-bottom: 10px;
+  margin-bottom: 12px;
   color: #ffffff;
-  font-size: clamp(1.5rem, 2.5vw, 2.1rem);
+  font-size: clamp(1.8rem, 3vw, 2.6rem);
   line-height: 1.15;
   transition: color 0.2s ease;
 }
@@ -131,22 +141,24 @@
 }
 
 .project-summary {
-  margin-bottom: 10px;
-  color: rgba(232, 238, 255, 0.85);
-  font-size: 0.98rem;
+  margin-bottom: 12px;
+  color: rgba(232, 238, 255, 0.9);
+  font-size: 1.05rem;
+  max-width: 860px;
 }
 
 .project-background {
   margin: 0;
   color: rgba(247, 249, 255, 0.65);
-  font-size: 0.9rem;
+  font-size: 0.94rem;
+  max-width: 860px;
 }
 
 .project-stack-preview {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-  margin-top: 20px;
+  margin-top: 24px;
 }
 
 .project-stack-preview .role-chip {
@@ -159,14 +171,14 @@
   display: inline-flex;
   align-items: center;
   width: fit-content;
-  min-height: 40px;
-  margin-top: 22px;
-  padding: 0 18px;
+  min-height: 42px;
+  margin-top: 24px;
+  padding: 0 20px;
   border-radius: 999px;
   border: 1px solid rgba(255, 255, 255, 0.25);
   background: transparent;
   color: #ffffff;
-  font-size: 0.8rem;
+  font-size: 0.82rem;
   font-weight: 850;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -200,11 +212,11 @@
 
 .chat-preview {
   display: grid;
-  grid-template-columns: 92px 1fr;
-  gap: 14px;
-  width: min(420px, 84%);
-  height: 166px;
-  padding: 14px;
+  grid-template-columns: 110px 1fr;
+  gap: 16px;
+  width: min(560px, 86%);
+  height: 220px;
+  padding: 16px;
   border-radius: 20px;
   background: rgba(255, 255, 255, 0.18);
 }
@@ -244,11 +256,11 @@
 .user-bubble {
   width: fit-content;
   max-width: 92%;
-  padding: 10px 12px;
+  padding: 10px 14px;
   border-radius: 14px;
   color: #24315e;
   background: #ffffff;
-  font-size: 0.78rem;
+  font-size: 0.85rem;
   font-weight: 900;
 }
 
@@ -264,8 +276,8 @@
 
 .food-preview {
   position: relative;
-  width: min(430px, 86%);
-  height: 210px;
+  width: min(540px, 88%);
+  height: 260px;
 }
 
 .food-main,
@@ -277,29 +289,29 @@
 
 .food-main {
   inset: 24px auto auto 50%;
-  width: 230px;
-  height: 156px;
+  width: 290px;
+  height: 196px;
   border-radius: 22px;
   transform: translateX(-50%);
 }
 
 .food-thumb {
-  width: 104px;
-  height: 90px;
+  width: 124px;
+  height: 108px;
   border: 5px solid #fffaf0;
   border-radius: 18px;
 }
 
-.food-thumb.one { left: 18px; top: 92px; transform: rotate(-7deg); }
-.food-thumb.two { right: 12px; top: 26px; transform: rotate(8deg); }
+.food-thumb.one { left: 24px; top: 112px; transform: rotate(-7deg); }
+.food-thumb.two { right: 18px; top: 32px; transform: rotate(8deg); }
 
 .food-preview span {
   position: absolute;
-  left: 22px;
-  top: 18px;
+  left: 24px;
+  top: 20px;
   z-index: 4;
   color: #1b241b;
-  font-size: 1.5rem;
+  font-size: 1.65rem;
   font-weight: 950;
 }
 
@@ -322,12 +334,12 @@
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(2, minmax(0, 1fr));
-  gap: 10px;
-  transform: rotate(-7deg) scale(1.06);
+  gap: 12px;
+  transform: rotate(-5deg) scale(1.04);
 }
 
 .field-map span {
-  border-radius: 16px;
+  border-radius: 18px;
   background: linear-gradient(135deg, rgba(70, 145, 88, 0.92), rgba(34, 88, 57, 0.92));
 }
 
@@ -382,21 +394,28 @@
 
 .crop-readout {
   position: absolute;
-  right: 18px;
-  bottom: 18px;
+  right: 24px;
+  bottom: 24px;
   z-index: 3;
   display: grid;
   gap: 4px;
-  padding: 12px 14px;
-  border-radius: 14px;
-  background: rgba(5, 24, 14, 0.76);
+  padding: 14px 18px;
+  border-radius: 16px;
+  background: rgba(5, 24, 14, 0.82);
   color: #eaffef;
 }
 
-.crop-readout strong { font-size: 0.86rem; }
-.crop-readout span { color: rgba(234, 255, 239, 0.72); font-size: 0.72rem; }
+.crop-readout strong { font-size: 0.92rem; }
+.crop-readout span { color: rgba(234, 255, 239, 0.75); font-size: 0.78rem; }
 
 @keyframes scanMove {
   0%, 100% { top: 18px; }
   50% { top: calc(100% - 22px); }
+}
+
+@media (max-width: 768px) {
+  .project-visual {
+    height: 260px;
+    min-height: 260px;
+  }
 }

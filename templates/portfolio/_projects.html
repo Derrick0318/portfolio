@@ -60,7 +60,12 @@
             </div>
           </div>
           {% elif project.image %}
-          <img src="{{ project.image }}" alt="{{ project.title }} preview">
+            {% set _img = project.image %}
+            {% if _img and _img[0] == '/' %}
+              <img src="{{ _img }}" alt="{{ project.title }} preview">
+            {% else %}
+              <img src="{{ url_for('static', filename=_img) }}" alt="{{ project.title }} preview">
+            {% endif %}
           {% else %}
           <div class="project-symbol">
             <span>{{ project.number }}</span>

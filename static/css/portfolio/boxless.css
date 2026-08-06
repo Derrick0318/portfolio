@@ -49,8 +49,151 @@
   text-decoration: none;
 }
 
-/* Ensure placeholders have no visible area but keep flow */
-.resource-full-placeholder {
-  min-height: 0 !important;
-  height: auto !important;
+/* Remove remaining glass cards, badges, and rounded buttons */
+.hero-roles span,
+.project-stack-preview span,
+.project-summary-strip span,
+.skill-panel span,
+.project-link-label,
+.primary-action,
+.secondary-action,
+.title-circle-icon,
+.where-dot,
+.project-number,
+.holo-caption,
+.holo-caption strong,
+.holo-caption span {
+  background: transparent !important;
+  border: 1px solid rgba(255, 255, 255, 0.18) !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+.hero-roles span,
+.skill-panel span,
+.project-stack-preview span,
+.project-summary-strip span {
+  padding: 4px 10px !important;
+  color: rgba(247, 249, 255, 0.85) !important;
+}
+
+.skill-panel {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+  padding: 22px 16px !important;
+  border-left: 2px solid rgba(98, 232, 255, 0.35) !important;
+}
+
+.skill-panel::before,
+.project-card::before,
+.pro-tip-card::before,
+.skill-panel span::before {
+  display: none !important;
+}
+
+.where-card,
+.experience-header-block,
+.hero-actions,
+.project-visual,
+.holo-caption,
+.hero-roles,
+.hero-shell,
+.holo-ring,
+.holo-core,
+.project-card {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+}
+
+.where-card {
+  padding: 0 !important;
+}
+
+.where-item {
+  padding-bottom: 28px !important;
+}
+
+.where-axis::before {
+  background: rgba(163, 230, 53, 0.45) !important;
+}
+
+.title-circle-icon {
+  width: 24px !important;
+  height: 4px !important;
+  border-radius: 0 !important;
+  border: none !important;
+}
+
+.where-dot {
+  width: 10px !important;
+  height: 10px !important;
+  border-radius: 2px !important;
+  background: rgba(163, 230, 53, 0.85) !important;
+}
+
+.primary-action,
+.secondary-action {
+  background: transparent !important;
+  color: #ffffff !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+.primary-action:hover,
+.secondary-action:hover,
+.project-link-label:hover {
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+.project-number {
+  border-radius: 2px !important;
+  background: rgba(5, 7, 10, 0.35) !important;
+}
+
+.holo-caption {
+  padding: 14px 16px !important;
+  background: transparent !important;
+}
+
+/* Ensure open layout for project visuals */
+.project-visual {
+  border-radius: 0 !important;
+  border: none !important;
+  background: transparent !important;
+}
+
+.project-visual img {
+  border-radius: 0 !important;
+}
+
+/* Ensure no card-like rounded rows remain */
+.skill-panel span,
+.hero-roles span,
+.project-stack-preview span,
+.project-summary-strip span {
+  border-radius: 0 !important;
+}
+
+/* Ensure headings and sections are open */
+.section,
+.section-inner,
+.experience-section,
+.about-section,
+.skills-section {
+  background: transparent !important;
+}
+
+/* Ensure section separators are subtle */
+.where-card,
+.skill-panel,
+.project-card,
+.holo-caption,
+.hero-actions,
+.project-visual {
+  padding: 0 !important;
 }

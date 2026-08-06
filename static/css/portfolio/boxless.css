@@ -1,0 +1,56 @@
+/* Boxless override - remove card backgrounds, shadows, radii across portfolio */
+:root {
+  --bg-card: transparent;
+}
+
+/* Broad selectors for elements that act like cards/boxes */
+.card,
+.project-card,
+.resource-card,
+.pro-tip-card,
+.step-card,
+.promo-card,
+.feature-card,
+.resource-full,
+.resource-full-image,
+.resource-full-pdf,
+.resource-full-placeholder,
+.resource-copy,
+.project-details .details-copy,
+.portfolio-card,
+.project-links,
+.main-links,
+.project-detail-header,
+.stack-list,
+.header-left,
+.app-detail,
+.property-detail,
+.ai-detail,
+.details-river,
+.project-resources,
+.resource-grid {
+  background: transparent !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+  border: none !important;
+}
+
+/* Make resource action buttons clear and stacked under the title/description */
+.resource-actions {
+  margin-top: 12px;
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.resource-actions .btn {
+  display: inline-block;
+  padding: 10px 16px;
+  text-decoration: none;
+}
+
+/* Ensure placeholders have no visible area but keep flow */
+.resource-full-placeholder {
+  min-height: 0 !important;
+  height: auto !important;
+}

@@ -1,5 +1,2 @@
-# Ignore local upload files and large residential assets from Vercel deployment
+# Ignore local upload files from Vercel deployment
 static/uploads/
-projects/residential/assets/pdfs/*
-projects/residential/assets/home.zip
-projects/residential/assets/home/

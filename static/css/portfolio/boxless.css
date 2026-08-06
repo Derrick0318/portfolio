@@ -218,12 +218,24 @@ body::before,
   }
 }
 
-..project-visual img {
+.project-visual img {
   border-radius: 0 !important;
   width: 100% !important;
   height: auto !important;
   display: block !important;
   object-fit: cover !important;
+}
+
+.project-card {
+  grid-auto-rows: auto !important;
+}
+
+.project-body {
+  grid-column: 1 / span 1 !important;
+}
+
+.project-visual {
+  grid-column: 2 / span 1 !important;
 }
 
 .project-number {

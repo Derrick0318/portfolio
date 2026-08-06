@@ -66,12 +66,14 @@
       {% for resource in project.resources %}
       <article class="resource-card">
         {% if resource.type == 'image' %}
-        <div class="resource-preview">
+        <div class="resource-full resource-full-image">
           <img src="{{ url_for(resource.endpoint, filename=resource.filename) }}" alt="{{ resource.label }}">
         </div>
         {% else %}
-        <div class="resource-preview resource-preview-placeholder">
-          <span>PDF</span>
+        <div class="resource-full resource-full-pdf">
+          <object data="{{ url_for(resource.endpoint, filename=resource.filename) }}" type="application/pdf" width="100%" height="420">
+            <p>Unable to display the brochure preview in this browser. <a href="{{ url_for(resource.endpoint, filename=resource.filename) }}" target="_blank" rel="noopener noreferrer">Open brochure</a>.</p>
+          </object>
         </div>
         {% endif %}
         <div class="resource-copy">

@@ -40,6 +40,22 @@ PROJECTS = [
         ],
         "preview_stack": ["Python", "Flask", "Supabase", "HTML", "CSS", "JavaScript"],
         "stack": ["Python", "Flask", "Supabase", "HTML", "CSS", "JavaScript", "OpenCV", "scikit-learn"],
+        "resources": [
+            {
+                "label": "Crop Yield Brochure",
+                "description": "Download the project brochure with workflow, model summary, and results.",
+                "type": "pdf",
+                "filename": "crop_yield_brochure.pdf",
+                "endpoint": "crop_yield.assets",
+            },
+            {
+                "label": "Crop Yield Poster",
+                "description": "View the project poster for Crop Yield AI.",
+                "type": "image",
+                "filename": "crop_yield_poster.jpg",
+                "endpoint": "crop_yield.assets",
+            },
+        ],
     },
     {
         "slug": "residential",

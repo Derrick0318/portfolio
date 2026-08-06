@@ -59,6 +59,34 @@
   </div>
   {% endif %}
 
+  {% if project.resources %}
+  <section class="project-resources" aria-label="Project brochure and poster">
+    <h3>Brochure & poster</h3>
+    <div class="resource-grid">
+      {% for resource in project.resources %}
+      <article class="resource-card">
+        {% if resource.type == 'image' %}
+        <div class="resource-preview">
+          <img src="{{ url_for(resource.endpoint, filename=resource.filename) }}" alt="{{ resource.label }}">
+        </div>
+        {% else %}
+        <div class="resource-preview resource-preview-placeholder">
+          <span>PDF</span>
+        </div>
+        {% endif %}
+        <div class="resource-copy">
+          <strong>{{ resource.label }}</strong>
+          <p>{{ resource.description }}</p>
+          <a href="{{ url_for(resource.endpoint, filename=resource.filename) }}" target="_blank" rel="noopener noreferrer"{% if resource.type == 'pdf' %} download{% endif %}>
+            {% if resource.type == 'image' %}View poster{% else %}Download brochure{% endif %}
+          </a>
+        </div>
+      </article>
+      {% endfor %}
+    </div>
+  </section>
+  {% endif %}
+
   <div class="stack-list" aria-label="Technology stack">
     <span class="role-chip">Role: {{ project.role }}</span>
     {% for item in project.stack %}

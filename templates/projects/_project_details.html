@@ -80,7 +80,7 @@
             <div class="resource-actions">
               {% if resource.filename.startswith('http') %}
               <a class="btn btn-open" href="{{ resource.filename }}" target="_blank" rel="noopener noreferrer">{{ resource.button_text }}</a>
-              <a class="btn btn-download" href="{{ resource.filename }}" target="_blank" rel="noopener noreferrer">Download {{ resource.label }}</a>
+              <a class="btn btn-download" href="{{ resource.download_url if resource.download_url else resource.filename }}" target="_blank" rel="noopener noreferrer">Download {{ resource.label }}</a>
               {% else %}
               <a class="btn btn-open" href="{{ url_for(resource.endpoint, filename=resource.filename) }}" target="_blank" rel="noopener noreferrer">{{ resource.button_text }}</a>
               <a class="btn btn-download" href="{{ url_for(resource.endpoint, filename=resource.filename) }}" download="{{ resource.filename }}" rel="noopener noreferrer">Download {{ resource.label }}</a>

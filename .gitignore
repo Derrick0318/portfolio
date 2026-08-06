@@ -15,6 +15,9 @@ __pycache__/
 *.pfx
 *.keystore
 
+# Ignore local uploads and temporary build caches
+static/uploads/
+
 .vercel/
 node_modules/
 dist/

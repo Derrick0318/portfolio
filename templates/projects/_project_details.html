@@ -67,19 +67,24 @@
       <article class="resource-card">
         {% if resource.type == 'image' %}
         <div class="resource-full resource-full-image">
-          <img src="{{ url_for(resource.endpoint, filename=resource.filename) }}" alt="{{ resource.label }}">
+          <img src="{{ resource.filename if resource.filename.startswith('http') else url_for(resource.endpoint, filename=resource.filename) }}" alt="{{ resource.label }}">
         </div>
-          {% else %}
-          <div class="resource-full resource-full-placeholder" aria-hidden="true">
-            <!-- PDF preview intentionally suppressed for box-free design; actions live in the copy area -->
-          </div>
-          {% endif %}
+        {% else %}
+        <div class="resource-full resource-full-placeholder" aria-hidden="true">
+          <!-- PDF preview intentionally suppressed for box-free design; actions live in the copy area -->
+        </div>
+        {% endif %}
         <div class="resource-copy">
           <strong>{{ resource.label }}</strong>
           <p>{{ resource.description }}</p>
             <div class="resource-actions">
+              {% if resource.filename.startswith('http') %}
+              <a class="btn btn-open" href="{{ resource.filename }}" target="_blank" rel="noopener noreferrer">{{ resource.button_text }}</a>
+              <a class="btn btn-download" href="{{ resource.filename }}" target="_blank" rel="noopener noreferrer">Download {{ resource.label }}</a>
+              {% else %}
               <a class="btn btn-open" href="{{ url_for(resource.endpoint, filename=resource.filename) }}" target="_blank" rel="noopener noreferrer">{{ resource.button_text }}</a>
               <a class="btn btn-download" href="{{ url_for(resource.endpoint, filename=resource.filename) }}" download="{{ resource.filename }}" rel="noopener noreferrer">Download {{ resource.label }}</a>
+              {% endif %}
             </div>
         </div>
       </article>

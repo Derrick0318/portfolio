@@ -1,2 +1,9 @@
 # Ignore local upload files from Vercel deployment
 static/uploads/
+
+# Exclude only large media files (PDFs, zips, large videos) from deployment bundle
+projects/**/assets/**/*.pdf
+projects/**/assets/**/*.zip
+projects/**/assets/**/*.mp4
+projects/**/assets/**/*.mov
+uploads/**

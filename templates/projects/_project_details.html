@@ -79,8 +79,8 @@
         <div class="resource-copy">
           <strong>{{ resource.label }}</strong>
           <p>{{ resource.description }}</p>
-          <a href="{{ url_for(resource.endpoint, filename=resource.filename) }}" target="_blank" rel="noopener noreferrer"{% if resource.type == 'pdf' %} download{% endif %}>
-            {% if resource.type == 'image' %}View poster{% else %}Download brochure{% endif %}
+          <a href="{{ url_for(resource.endpoint, filename=resource.filename) }}" target="_blank" rel="noopener noreferrer">
+            {{ resource.button_text }}
           </a>
         </div>
       </article>

@@ -175,9 +175,9 @@ body::before,
   padding: 0 18px !important;
 }
 
-.project-card {
+..project-card {
   display: grid !important;
-  grid-template-columns: minmax(360px, 46%) minmax(340px, 54%) !important;
+  grid-template-columns: 1fr !important;
   gap: 28px !important;
   width: 100% !important;
   padding: 32px !important;
@@ -186,7 +186,7 @@ body::before,
   background: rgba(255, 255, 255, 0.08) !important;
   backdrop-filter: blur(16px) !important;
   border-radius: 24px !important;
-  align-items: start !important;
+  align-items: stretch !important;
   justify-items: stretch !important;
 }
 
@@ -197,11 +197,10 @@ body::before,
 .project-body {
   display: grid !important;
   gap: 18px !important;
-  grid-column: 1 / span 1 !important;
+  grid-column: auto !important;
 }
 
 .project-visual {
-  grid-column: 2 / span 1 !important;
   border-radius: 22px !important;
   border: 1px solid rgba(255, 255, 255, 0.10) !important;
   background: rgba(255, 255, 255, 0.08) !important;

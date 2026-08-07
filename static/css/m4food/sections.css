@@ -25,22 +25,45 @@
 
 .tech-section {
   display: grid;
-  grid-template-columns: minmax(0, 0.7fr) minmax(300px, 1fr);
-  gap: 34px;
-  align-items: start;
+  grid-template-columns: minmax(0, 0.55fr) minmax(280px, 1fr);
+  gap: 42px;
+  align-items: center;
   border-top: 1px solid var(--m4-line);
+  padding-top: 36px;
+}
+
+.tech-copy {
+  max-width: 520px;
+}
+
+.tech-description {
+  margin: 0;
+  color: var(--m4-muted);
+  line-height: 1.75;
 }
 
 .tech-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 14px;
 }
 
 .tech-list span {
-  padding: 10px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 76px;
+  padding: 16px 18px;
   border: 1px solid var(--m4-line);
-  border-radius: 8px;
-  background: var(--m4-white);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.94);
   font-weight: 800;
+  text-align: center;
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.tech-list span:hover {
+  transform: translateY(-2px);
+  border-color: rgba(148, 111, 5, 0.35);
+  box-shadow: 0 18px 30px rgba(36, 27, 18, 0.08);
 }

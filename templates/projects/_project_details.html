@@ -1,102 +1,66 @@
-<section class="project-details project-details-{{ project.detail_variant }}" id="project-details">
-  <div class="details-copy">
-    <p class="section-kicker">Project Details / {{ project.year }}</p>
+<section class="project-details" id="project-details">
+  <div class="details-intro">
+    <p class="section-label">Project overview</p>
     <h2>{{ project.background }}</h2>
     <p>{{ project.short_description }}</p>
   </div>
 
-  {% if project.detail_variant == "chat" %}
-  <div class="chat-detail">
-    {% for detail in project.details %}
-    <article class="{{ 'from-user' if loop.index is even else 'from-bot' }}">
-      <span>{{ 'User flow' if loop.index is even else 'UTSmartBot' }}</span>
-      <p>{{ detail }}</p>
-    </article>
-    {% endfor %}
-  </div>
-  {% elif project.detail_variant == "property" %}
-  <div class="property-detail">
-    {% for detail in project.details %}
-    <article>
-      <span>{{ ['Showcase', 'Explore', 'Connect'][loop.index0] }}</span>
-      <p>{{ detail }}</p>
-    </article>
-    {% endfor %}
-  </div>
-  {% elif project.detail_variant == "app" %}
-  <div class="app-detail">
-    <div class="app-flow-labels">
-      <span>Login</span>
-      <span>Browse</span>
-      <span>Cart</span>
-      <span>Orders</span>
-    </div>
-    <div class="app-notes">
+  <div class="details-layout">
+    <dl class="case-facts" aria-label="Project facts">
+      <div>
+        <dt>Year</dt>
+        <dd>{{ project.year }}</dd>
+      </div>
+      <div>
+        <dt>Technology</dt>
+        <dd>{{ project.stack | join(', ') }}</dd>
+      </div>
+    </dl>
+
+    <div class="contribution-list">
+      <h3>What I worked on</h3>
       {% for detail in project.details %}
       <p>{{ detail }}</p>
       {% endfor %}
     </div>
   </div>
-  {% elif project.detail_variant == "ai" %}
-  <div class="ai-detail">
-    <div class="ai-workflow">
+
+  {% if project.workflow %}
+  <section class="workflow-section" aria-label="Project workflow">
+    <h3>How it works</h3>
+    <div class="workflow-list">
       {% for step in project.workflow %}
       <article>
         <strong>{{ step.label }}</strong>
-        <span>{{ step.text }}</span>
-      </article>
-      {% endfor %}
-    </div>
-  </div>
-  {% else %}
-  <div class="details-river">
-    {% for detail in project.details %}
-    <article class="detail-node">
-      <span aria-hidden="true"></span>
-      <p>{{ detail }}</p>
-    </article>
-    {% endfor %}
-  </div>
-  {% endif %}
-
-  {% if project.resources %}
-  <section class="project-resources" aria-label="Project brochure and poster">
-    <h3>Brochure & poster</h3>
-    <div class="resource-grid">
-      {% for resource in project.resources %}
-      <article class="resource-card">
-        {% if resource.type == 'image' %}
-        <div class="resource-full resource-full-image">
-          <img src="{{ resource.filename if resource.filename.startswith('http') else url_for(resource.endpoint, filename=resource.filename) }}" alt="{{ resource.label }}">
-        </div>
-        {% else %}
-        <div class="resource-full resource-full-placeholder" aria-hidden="true">
-          <!-- PDF preview intentionally suppressed for box-free design; actions live in the copy area -->
-        </div>
-        {% endif %}
-        <div class="resource-copy">
-          <strong>{{ resource.label }}</strong>
-          <p>{{ resource.description }}</p>
-            <div class="resource-actions">
-              {% if resource.filename.startswith('http') %}
-              <a class="btn btn-open" href="{{ resource.filename }}" target="_blank" rel="noopener noreferrer">{{ resource.button_text }}</a>
-              <a class="btn btn-download" href="{{ resource.download_url if resource.download_url else resource.filename }}" target="_blank" rel="noopener noreferrer">Download {{ resource.label }}</a>
-              {% else %}
-              <a class="btn btn-open" href="{{ url_for(resource.endpoint, filename=resource.filename) }}" target="_blank" rel="noopener noreferrer">{{ resource.button_text }}</a>
-              <a class="btn btn-download" href="{{ url_for(resource.endpoint, filename=resource.filename) }}" download="{{ resource.filename }}" rel="noopener noreferrer">Download {{ resource.label }}</a>
-              {% endif %}
-            </div>
-        </div>
+        <p>{{ step.text }}</p>
       </article>
       {% endfor %}
     </div>
   </section>
   {% endif %}
 
-  <div class="stack-list" aria-label="Technology stack">
-    <span class="role-chip">Role: {{ project.role }}</span>
-    {% for item in project.stack %}
-    <span>{{ item }}</span>
-    {% endfor %}
-  </div>
+  {% if project.resources %}
+  <section class="project-resources" aria-label="Project resources">
+    <h3>Project resources</h3>
+    <div class="resource-list">
+      {% for resource in project.resources %}
+      <article class="resource-item">
+        <div>
+          <strong>{{ resource.label }}</strong>
+          <p>{{ resource.description }}</p>
+        </div>
+        <div class="resource-actions">
+          {% if resource.filename.startswith('http') %}
+          <a href="{{ resource.filename }}" target="_blank" rel="noopener noreferrer">{{ resource.button_text }}</a>
+          <a href="{{ resource.download_url if resource.download_url else resource.filename }}" target="_blank" rel="noopener noreferrer">Download</a>
+          {% else %}
+          <a href="{{ url_for(resource.endpoint, filename=resource.filename) }}" target="_blank" rel="noopener noreferrer">{{ resource.button_text }}</a>
+          <a href="{{ url_for(resource.endpoint, filename=resource.filename) }}" download="{{ resource.filename }}">Download</a>
+          {% endif %}
+        </div>
+      </article>
+      {% endfor %}
+    </div>
+  </section>
+  {% endif %}
 </section>

@@ -1,95 +1,30 @@
-<section class="section" id="projects">
+<section class="work-section" id="projects">
   <div class="section-inner">
-    <div class="section-heading reveal-on-scroll">
-      <h2>Coursework and final-year projects, arranged for quick review.</h2>
-      <p>
-        Each project opens into its own review page with a live demo window,
-        role summary, technology stack, and short project background.
-      </p>
+    <div class="section-heading motion-enter">
+      <p class="eyebrow">Selected work <span>/</span> 2024-2025</p>
+      <h2>A record of things I have made.</h2>
+      <p>Four working projects across applied AI, web systems, mobile interfaces, and backend integration.</p>
     </div>
-    <div class="project-summary-strip reveal-on-scroll delay-100" aria-label="Project presentation summary">
-      <span>Original project pages protected</span>
-      <span>Role and stack visible first</span>
-      <span>Built for desktop and phone viewing</span>
-    </div>
-
-    <div class="project-grid">
+    <div class="project-list">
       {% for project in projects %}
-      <a class="project-card reveal-on-scroll delay-{{ loop.index * 100 }}" href="{{ project.url }}">
-        <span class="project-number">{{ project.number }}</span>
-        <div class="project-visual {{ project.visual_style or '' }}">
-          {% if project.visual_style == "chatbot" %}
-          <div class="chat-preview" aria-hidden="true">
-            <div class="chat-sidebar">
-              <span></span>
-              <span></span>
-              <span></span>
+      <article class="project-entry motion-enter">
+        <a class="project-entry-link" href="{{ project.url }}" aria-label="View {{ project.title }} project">
+          <div class="project-visual">
+            <img src="{{ url_for('static', filename='images/portfolio/' ~ project.slug ~ '.webp') }}" alt="{{ project.title }} working demo preview" width="1440" height="900" loading="{{ 'eager' if loop.first else 'lazy' }}">
+          </div>
+          <div class="project-body">
+            <div class="project-meta">
+              <span>{{ project.year }}</span>
+              <span>{{ project.category }}</span>
             </div>
-            <div class="chat-panel">
-              <div class="bot-bubble">Hi, I am UTSmartBot.</div>
-              <div class="user-bubble">Show me UTS info</div>
-              <div class="bot-bubble small">Courses / Fees / Contacts</div>
-            </div>
+            <h3>{{ project.title }}</h3>
+            <p class="project-summary">{{ project.summary }}</p>
+            <p class="project-role"><span>Contribution</span>{{ project.role }}</p>
+            <p class="project-stack">{{ project.preview_stack | join(' / ') }}</p>
+            <span class="project-link-label">Open project <b aria-hidden="true">↗</b></span>
           </div>
-          {% elif project.visual_style == "m4food" %}
-          <div class="food-preview" aria-hidden="true">
-            <img class="food-main" src="{{ project.image }}" alt="">
-            <img class="food-thumb one" src="/projects/m4food/assets/glazeddonut.png" alt="">
-            <img class="food-thumb two" src="/projects/m4food/assets/muffin.png" alt="">
-            <span>M4Food</span>
-          </div>
-          {% elif project.visual_style == "crop-ai" %}
-          <div class="crop-preview" aria-hidden="true">
-            <div class="field-map">
-              <span></span>
-              <span></span>
-              <span></span>
-              <span></span>
-              <span></span>
-              <span></span>
-            </div>
-            <div class="analysis-path">
-              <i></i>
-              <i></i>
-              <i></i>
-            </div>
-            <div class="scan-line"></div>
-            <div class="crop-readout">
-              <strong>AI Yield Scan</strong>
-              <span>Supabase backend</span>
-            </div>
-          </div>
-          {% elif project.image %}
-            {% set _img = project.image %}
-            {% if _img and _img[0] == '/' %}
-              <img src="{{ _img }}" alt="{{ project.title }} preview">
-            {% else %}
-              <img src="{{ url_for('static', filename=_img) }}" alt="{{ project.title }} preview">
-            {% endif %}
-          {% else %}
-          <div class="project-symbol">
-            <span>{{ project.number }}</span>
-            <strong>{{ project.category }}</strong>
-          </div>
-          {% endif %}
-        </div>
-        <div class="project-body">
-          <div class="project-meta">
-            <span>{{ project.year }}</span>
-            <span>{{ project.status }}</span>
-          </div>
-          <h3>{{ project.title }}</h3>
-          <p class="project-summary">{{ project.summary }}</p>
-          <p class="project-background">{{ project.background }}</p>
-          <div class="project-stack-preview" aria-label="{{ project.title }} technology stack">
-            <span class="role-chip">Role: {{ project.role }}</span>
-            {% for item in project.preview_stack %}
-            <span>{{ item }}</span>
-            {% endfor %}
-          </div>
-          <span class="project-link-label">Open project</span>
-        </div>
-      </a>
+        </a>
+      </article>
       {% endfor %}
     </div>
   </div>

@@ -1,0 +1,175 @@
+/* Refined layout: tighter type scale and a quieter capability index. */
+:root {
+  --refined-ink: #18263b;
+  --refined-muted: #687383;
+  --refined-line: #d8d6ce;
+  --refined-accent: #d96951;
+}
+
+.section,
+.about-section { padding-top: clamp(68px, 8vw, 104px) !important; padding-bottom: clamp(68px, 8vw, 104px) !important; }
+.section-heading { gap: clamp(28px, 5vw, 64px) !important; margin-bottom: 44px !important; }
+.section-heading h2 { font-size: clamp(2rem, 3.8vw, 4rem) !important; line-height: .98 !important; }
+.section-heading p { max-width: 500px !important; font-size: .94rem !important; line-height: 1.65 !important; }
+
+/* Technical stack as a clean index rather than four separate panels. */
+.skills-section { padding-top: clamp(74px, 9vw, 120px) !important; }
+.skills-section .section-heading { max-width: 960px !important; margin-bottom: 48px !important; }
+.skills-section .section-heading h2 { max-width: 600px !important; }
+.skills-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  gap: 0 !important;
+  padding: 24px 0 0 !important;
+  border-top: 1px solid var(--refined-line) !important;
+  border-bottom: 1px solid var(--refined-line) !important;
+}
+.skill-panel,
+.skill-panel:hover {
+  min-height: 148px !important;
+  padding: 18px 28px 22px 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  transform: none !important;
+}
+.skill-panel + .skill-panel { padding-left: 28px !important; border-left: 1px solid var(--refined-line) !important; }
+.skill-panel::before { display: none !important; }
+.skill-panel h3 {
+  margin-bottom: 20px !important;
+  color: var(--refined-ink) !important;
+  font-size: 1.18rem !important;
+  letter-spacing: -.025em !important;
+}
+.skill-panel h3::after {
+  content: "";
+  display: inline-block;
+  width: 18px;
+  height: 2px;
+  margin-left: 10px;
+  vertical-align: middle;
+  background: var(--refined-accent);
+}
+.skill-panel div { gap: 7px 17px !important; }
+.skill-panel span { font-size: .8rem !important; font-weight: 700 !important; color: var(--refined-muted) !important; }
+
+/* Reduce visual bulk in the project rows while keeping the image-led layout. */
+#projects .section-heading { margin-bottom: 48px !important; }
+#projects .section-heading h2 { font-size: clamp(2.15rem, 4.2vw, 4.8rem) !important; }
+#projects .project-card { min-height: 390px !important; padding-top: clamp(32px, 4vw, 58px) !important; padding-bottom: clamp(32px, 4vw, 58px) !important; }
+#projects .project-visual { height: clamp(270px, 23vw, 350px) !important; min-height: 270px !important; }
+#projects .project-card h3 { font-size: clamp(2rem, 3.4vw, 4rem) !important; }
+
+/* Experience timeline: restore readable ink and align the axis to the content. */
+.experience-section .experience-main-title,
+.experience-section .where-title,
+.experience-section .where-card h3,
+.experience-section .where-card p,
+.experience-section .where-card li {
+  color: var(--refined-ink) !important;
+  -webkit-text-fill-color: var(--refined-ink) !important;
+  background: none !important;
+  background-image: none !important;
+  -webkit-background-clip: border-box !important;
+  background-clip: border-box !important;
+  opacity: 1 !important;
+  text-shadow: none !important;
+  filter: none !important;
+}
+.experience-section .where-title,
+.experience-section .where-subtitle,
+.experience-section .where-bullets li {
+  text-shadow: none !important;
+  filter: none !important;
+  mix-blend-mode: normal !important;
+}
+.experience-section .experience-main-title { font-size: clamp(2rem, 3.8vw, 4rem) !important; line-height: .98 !important; }
+.experience-section .where-timeline { padding-left: 0 !important; }
+.experience-section .where-item { grid-template-columns: 178px 34px minmax(0, 1fr) !important; column-gap: 20px !important; padding-bottom: 58px !important; }
+.experience-section .where-meta { padding-top: 3px !important; }
+.experience-section .where-date,
+.experience-section .where-location { color: var(--refined-accent) !important; }
+.experience-section .where-axis::before { background: var(--refined-line) !important; width: 1px !important; }
+.experience-section .where-dot { width: 9px !important; height: 9px !important; margin-top: 7px !important; background: var(--refined-accent) !important; border-radius: 50% !important; box-shadow: 0 0 0 5px #f1e3dd !important; }
+.experience-section .where-title { font-size: clamp(1.25rem, 2vw, 1.7rem) !important; line-height: 1.2 !important; margin-bottom: 7px !important; }
+.experience-section .where-subtitle { color: var(--refined-muted) !important; -webkit-text-fill-color: var(--refined-muted) !important; font-size: .92rem !important; margin-bottom: 15px !important; }
+.experience-section .where-bullets li { color: var(--refined-muted) !important; -webkit-text-fill-color: var(--refined-muted) !important; font-size: .94rem !important; line-height: 1.65 !important; }
+.experience-section .where-bullets li::before { width: 5px !important; height: 5px !important; top: 10px !important; background: var(--refined-accent) !important; border-radius: 50% !important; }
+
+@media (max-width: 760px) {
+  .section-heading { margin-bottom: 34px !important; }
+  .section-heading h2 { font-size: clamp(1.9rem, 9vw, 3rem) !important; }
+  .skills-grid { grid-template-columns: 1fr 1fr !important; gap: 0 18px !important; }
+  .skill-panel,
+  .skill-panel + .skill-panel { min-height: 132px !important; padding: 18px 0 !important; border-left: 0 !important; border-bottom: 1px solid var(--refined-line) !important; }
+  #projects .project-card { min-height: 0 !important; }
+  #projects .project-visual { height: 230px !important; min-height: 230px !important; }
+  .experience-section .where-item { grid-template-columns: 1fr !important; row-gap: 14px !important; padding-left: 26px !important; }
+  .experience-section .where-axis { position: absolute !important; left: 0 !important; top: 0 !important; bottom: 0 !important; width: 12px !important; }
+  .experience-section .where-meta { padding-top: 0 !important; }
+}
+
+@media (max-width: 430px) {
+  .skills-grid { grid-template-columns: 1fr !important; }
+}
+
+/* Quiet motion layer inspired by the reference: depth without decorative clutter. */
+.hero-shell { perspective: 1200px; }
+.hero-content > * {
+  opacity: 0;
+  transform: translateY(18px);
+  animation: refined-enter 800ms cubic-bezier(.16, 1, .3, 1) forwards;
+}
+.hero-content > *:nth-child(1) { animation-delay: 120ms; }
+.hero-content > *:nth-child(2) { animation-delay: 210ms; }
+.hero-content > *:nth-child(3) { animation-delay: 300ms; }
+.hero-content > *:nth-child(4) { animation-delay: 390ms; }
+.hero-content > *:nth-child(5) { animation-delay: 480ms; }
+.hero-content > *:nth-child(6) { animation-delay: 570ms; }
+.hero h1 span { display: inline-block; opacity: 0; transform: translateY(28px); animation: refined-word 900ms cubic-bezier(.16, 1, .3, 1) forwards; }
+.hero h1 span:nth-child(1) { animation-delay: 220ms; }
+.hero h1 span:nth-child(2) { animation-delay: 320ms; }
+.hero h1 span:nth-child(3) { animation-delay: 420ms; }
+.hero .holo-stage {
+  transform: translate3d(var(--hero-x, 0px), var(--hero-y, 0px), 0);
+  transition: transform 700ms cubic-bezier(.16, 1, .3, 1);
+}
+.hero .holo-stage::before {
+  display: block !important;
+  width: min(380px, 54vw) !important;
+  height: min(380px, 54vw) !important;
+  border: 1px solid rgba(23, 38, 58, .18) !important;
+  border-radius: 50% !important;
+  background: transparent !important;
+  box-shadow: 24px 24px 0 -23px var(--display-accent) !important;
+  opacity: 1 !important;
+  filter: none !important;
+  animation: refined-orbit 18s linear infinite !important;
+}
+.hero .holo-stage::after {
+  content: "";
+  position: absolute;
+  width: min(240px, 36vw);
+  height: 1px;
+  background: var(--display-accent);
+  transform: rotate(-28deg) translateX(30px);
+  opacity: .65;
+  animation: refined-scan 5s ease-in-out infinite;
+}
+.hero .holo-caption { transform: translateY(var(--hero-caption-y, 0px)); transition: transform 500ms ease-out; }
+
+@keyframes refined-enter { to { opacity: 1; transform: translateY(0); } }
+@keyframes refined-word { to { opacity: 1; transform: translateY(0); } }
+@keyframes refined-orbit { to { transform: rotate(360deg); } }
+@keyframes refined-scan { 50% { transform: rotate(-28deg) translateX(-30px); opacity: .32; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-content > *, .hero h1 span { opacity: 1; transform: none; animation: none !important; }
+  .hero .holo-stage::before, .hero .holo-stage::after { animation: none !important; }
+  .hero .holo-stage { transform: none !important; }
+}
+
+@media (max-width: 760px) {
+  .hero .holo-stage::before { width: 230px !important; height: 230px !important; }
+  .hero .holo-stage::after { width: 150px; }
+}

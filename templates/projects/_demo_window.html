@@ -1,20 +1,19 @@
 <section class="project-hero">
   <div class="project-title-block">
-    <p>{{ project.category }}</p>
+    <p>{{ project.category }} / {{ project.year }}</p>
     <h1>{{ project.title }}</h1>
-    <span>{{ project.summary }} Built in {{ project.year }}.</span>
+    <span>{{ project.summary }}</span>
+    <div class="project-hero-facts">
+      <span><strong>Role</strong>{{ project.role }}</span>
+      <span><strong>Stack</strong>{{ project.preview_stack | join(', ') }}</span>
+    </div>
   </div>
 
   <div class="demo-window">
     <div class="window-topbar">
-      <div class="window-dots" aria-hidden="true">
-        <span></span>
-        <span></span>
-        <span></span>
-      </div>
-      <strong>{{ project.title }} Demo</strong>
-      <a href="{{ project.demo_url }}" target="_blank" rel="noopener noreferrer">Open Full Demo</a>
+      <strong>Working demo</strong>
+      <a href="{{ project.demo_url }}" target="_blank" rel="noopener noreferrer">Open full demo</a>
     </div>
-    <iframe src="{{ project.demo_url }}" title="{{ project.title }} demo"></iframe>
+    <iframe src="{{ project.demo_url }}" title="{{ project.title }} demo" loading="eager"></iframe>
   </div>
 </section>

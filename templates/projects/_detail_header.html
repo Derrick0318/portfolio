@@ -1,19 +1,10 @@
 <header class="project-detail-header">
-  <div class="header-left">
-    <a class="brand-link" href="/#intro">(Derrick) Cheng Qing Hong</a>
-    <nav class="project-links" aria-label="Other projects">
-      {% for item in projects %}
-      <a class="{{ 'active' if item.slug == project.slug else '' }}" href="{{ item.url }}">
-        <span></span>{{ item.title }}
-      </a>
-      {% endfor %}
-    </nav>
-  </div>
-  <nav class="main-links" aria-label="Portfolio navigation">
-    <a href="/#intro">Home</a>
-    <a href="/#skills">Skills</a>
-    <a href="/#projects">Projects</a>
-    <a href="/#experience">Experience</a>
+  <a class="detail-brand" href="/#intro">
+    <span class="brand-mark" aria-hidden="true">DC</span>
+    <span>Derrick Cheng</span>
+  </a>
+  <nav class="detail-nav" aria-label="Project navigation">
+    <a href="/#projects">All projects</a>
     <a href="/#contact">Contact</a>
   </nav>
 </header>

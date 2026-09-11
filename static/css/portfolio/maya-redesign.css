@@ -82,6 +82,8 @@ section { padding: 6.9rem 0; }
 .motion-ready .proj-row { opacity: 0; transform: translateX(-20px); }
 .motion-ready .proj-row.is-visible { opacity: 1; transform: none; }
 .no-gsap .proj-row { transition: opacity .85s var(--ease), transform .85s var(--ease); }
+.no-gsap #hover-preview { transition: opacity .28s var(--ease), transform .35s var(--ease); }
+.no-gsap #hover-preview.is-visible { opacity: 1; }
 .proj-num { padding-top: .75rem; color: var(--muted); font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: .72rem; }
 .proj-title-big { display: block; color: var(--ink); font-family: 'Space Grotesk', Arial, sans-serif; font-size: clamp(2.2rem, 6.2vw, 5.25rem); font-weight: 700; letter-spacing: -.04em; line-height: .98; transition: color .3s var(--ease), transform .35s var(--ease); }
 .proj-row:nth-child(2n) .proj-title-big, .proj-row:nth-child(4n) .proj-title-big { color: var(--blue); }

@@ -156,10 +156,10 @@ document.addEventListener("DOMContentLoaded", () => {
       const fitsBelow = event.clientY + gap + height <= window.innerHeight - margin;
       const targetX = fitsRight ? event.clientX + gap : event.clientX - width - gap;
       const targetY = fitsBelow ? event.clientY + gap : event.clientY - height - gap;
-      const clampX = gsap.utils.clamp(margin, Math.max(margin, window.innerWidth - width - margin));
-      const clampY = gsap.utils.clamp(margin, Math.max(margin, window.innerHeight - height - margin));
-      const x = clampX(targetX);
-      const y = clampY(targetY);
+      const maxX = Math.max(margin, window.innerWidth - width - margin);
+      const maxY = Math.max(margin, window.innerHeight - height - margin);
+      const x = Math.min(Math.max(targetX, margin), maxX);
+      const y = Math.min(Math.max(targetY, margin), maxY);
       if (hasGsap) {
         moveX(x);
         moveY(y);

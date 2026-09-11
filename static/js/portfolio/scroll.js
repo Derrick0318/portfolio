@@ -39,7 +39,7 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   const setupHero = () => {
-    const lines = gsap?.utils?.toArray(".hero-line") || [];
+    const lines = gsap?.utils?.toArray(".hero-line") || Array.from(document.querySelectorAll(".hero-line"));
     lines.forEach((line) => {
       const words = line.textContent.trim().split(/\s+/);
       line.textContent = "";
@@ -87,8 +87,32 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   };
 
+  const setupScrollReveals = () => {
+    const elements = Array.from(document.querySelectorAll("[data-reveal]"));
+    if (!elements.length) return;
+    if (reduceMotion) {
+      elements.forEach((element) => element.classList.add("is-visible"));
+      return;
+    }
+
+    document.body.classList.add("reveal-ready");
+    if (!("IntersectionObserver" in window)) {
+      elements.forEach((element) => element.classList.add("is-visible"));
+      return;
+    }
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add("is-visible");
+        observer.unobserve(entry.target);
+      });
+    }, { rootMargin: "0px 0px -12% 0px", threshold: .01 });
+    elements.forEach((element) => observer.observe(element));
+  };
+
   const setupProjects = () => {
-    const rows = gsap?.utils?.toArray("[data-proj]") || [];
+    const rows = gsap?.utils?.toArray("[data-proj]") || Array.from(document.querySelectorAll("[data-proj]"));
     const preview = document.querySelector("#hover-preview");
     const previewImage = document.querySelector("#hp-image");
     const previewName = document.querySelector("#hp-name");
@@ -96,21 +120,47 @@ document.addEventListener("DOMContentLoaded", () => {
     if (hasGsap && !reduceMotion) {
       rows.forEach((row, index) => {
         gsap.fromTo(row,
-          { clipPath: "inset(0 100% 0 0)" },
-          { clipPath: "inset(0 0% 0 0)", duration: .85, ease: "power3.out", delay: index * .06,
-            scrollTrigger: { trigger: row, start: "top 88%", toggleActions: "play none none reverse" } }
+          { autoAlpha: 0, x: -20 },
+          { autoAlpha: 1, x: 0, duration: .72, ease: "power3.out", delay: index * .06,
+            immediateRender: false,
+            scrollTrigger: { trigger: row, start: "top 88%", once: true, invalidateOnRefresh: true } }
         );
       });
     } else {
-      rows.forEach((row) => { row.classList.add("is-visible"); });
+      if (reduceMotion || !("IntersectionObserver" in window)) {
+        rows.forEach((row) => row.classList.add("is-visible"));
+      } else {
+        document.body.classList.add("no-gsap");
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach((entry) => {
+            if (!entry.isIntersecting) return;
+            entry.target.classList.add("is-visible");
+            observer.unobserve(entry.target);
+          });
+        }, { rootMargin: "0px 0px -12% 0px", threshold: .01 });
+        rows.forEach((row) => observer.observe(row));
+      }
     }
 
     if (!preview || !previewImage || !previewName || !window.matchMedia("(hover: hover)").matches || !hasGsap) return;
-    const clampX = gsap.utils.clamp(12, Math.max(12, window.innerWidth - 260));
-    const clampY = gsap.utils.clamp(16, Math.max(16, window.innerHeight - 210));
     const moveX = gsap.quickTo(preview, "x", { duration: .35, ease: "power3.out" });
     const moveY = gsap.quickTo(preview, "y", { duration: .35, ease: "power3.out" });
     let activeRow = null;
+
+    const movePreview = (event) => {
+      const gap = 24;
+      const margin = 16;
+      const width = preview.offsetWidth || 240;
+      const height = preview.offsetHeight || 210;
+      const fitsRight = event.clientX + gap + width <= window.innerWidth - margin;
+      const fitsBelow = event.clientY + gap + height <= window.innerHeight - margin;
+      const targetX = fitsRight ? event.clientX + gap : event.clientX - width - gap;
+      const targetY = fitsBelow ? event.clientY + gap : event.clientY - height - gap;
+      const clampX = gsap.utils.clamp(margin, Math.max(margin, window.innerWidth - width - margin));
+      const clampY = gsap.utils.clamp(margin, Math.max(margin, window.innerHeight - height - margin));
+      moveX(clampX(targetX));
+      moveY(clampY(targetY));
+    };
 
     const hidePreview = () => {
       activeRow = null;
@@ -119,19 +169,19 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     rows.forEach((row, index) => {
-      row.addEventListener("pointerenter", () => {
+      row.addEventListener("pointerenter", (event) => {
         activeRow = row;
         gsap.killTweensOf(preview);
         previewImage.src = row.dataset.image;
         previewImage.alt = `${row.dataset.title} project preview`;
         previewName.textContent = row.dataset.title;
         gsap.set(preview, { rotation: index % 2 ? 3 : -3 });
+        movePreview(event);
         gsap.to(preview, { autoAlpha: 1, scale: 1, duration: .28, ease: "power3.out", overwrite: true });
       });
       row.addEventListener("pointermove", (event) => {
         if (activeRow !== row) return;
-        moveX(clampX(event.clientX + 24));
-        moveY(clampY(event.clientY - 205));
+        movePreview(event);
       });
       row.addEventListener("pointerleave", hidePreview);
       row.addEventListener("pointercancel", hidePreview);
@@ -146,7 +196,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const setupTimeline = () => {
     const timeline = document.querySelector("#timeline");
-    const items = gsap?.utils?.toArray("[data-tl]") || [];
+    const items = gsap?.utils?.toArray("[data-tl]") || Array.from(document.querySelectorAll("[data-tl]"));
     const fill = document.querySelector(".timeline-fill");
     if (!timeline || !hasGsap || reduceMotion) {
       items.forEach((item) => item.classList.add("in"));
@@ -170,7 +220,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const setupToolbox = () => {
     const toolbox = document.querySelector("#toolbox");
-    if (!toolbox) return;
+    if (!toolbox || !hasGsap) return;
     const chips = gsap?.utils?.toArray("[data-chip]", toolbox) || [];
     chips.forEach((chip) => {
       let startX = 0;
@@ -224,6 +274,7 @@ document.addEventListener("DOMContentLoaded", () => {
   setupNavigation();
   setupHero();
   setupStatement();
+  setupScrollReveals();
   setupProjects();
   setupTimeline();
   setupToolbox();

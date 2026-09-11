@@ -11,9 +11,11 @@
   <title>Derrick Cheng - Computer Science Portfolio</title>
   <link rel="icon" href="data:,">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/portfolio/maya-redesign.css') }}?v=1">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/portfolio/crosshair.css') }}?v=1">
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js" defer></script>
   <script src="{{ url_for('static', filename='js/portfolio/scroll.js') }}?v=7" defer></script>
+  <script src="{{ url_for('static', filename='js/portfolio/crosshair.js') }}?v=1" defer></script>
 </head>
 <body>
   <!--
@@ -26,6 +28,12 @@
   -->
   <a class="skip-link" href="#main-content">Skip to content</a>
   {% include "portfolio/_header.html" %}
+  <div class="cs-crosshair" data-cs-crosshair aria-hidden="true">
+    <span class="cs-crosshair__bar cs-crosshair__bar--top"></span>
+    <span class="cs-crosshair__bar cs-crosshair__bar--right"></span>
+    <span class="cs-crosshair__bar cs-crosshair__bar--bottom"></span>
+    <span class="cs-crosshair__bar cs-crosshair__bar--left"></span>
+  </div>
   <div id="hover-preview" aria-hidden="true">
     <div class="hp-card">
       <img id="hp-image" src="{{ url_for('static', filename='images/portfolio/crop-yield.webp') }}" alt="Project preview">

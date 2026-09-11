@@ -1,30 +1,20 @@
-<section class="work-section" id="projects">
-  <div class="section-inner">
-    <div class="section-heading motion-enter">
-      <p class="eyebrow">Selected work <span>/</span> 2024-2025</p>
-      <h2>A record of things I have made.</h2>
-      <p>Four working projects across applied AI, web systems, mobile interfaces, and backend integration.</p>
+<section id="projects">
+  <div class="wrap">
+    <div class="index-label">INDEX / SELECTED WORK</div>
+    <div class="section-head">
+      <h2>Projects I have built.</h2>
+      <p>Four academic projects across applied AI, web systems, mobile interfaces, and backend integration.</p>
     </div>
-    <div class="project-list">
+    <div class="proj-list" id="proj-list">
       {% for project in projects %}
-      <article class="project-entry motion-enter">
-        <a class="project-entry-link" href="{{ project.url }}" aria-label="View {{ project.title }} project">
-          <div class="project-visual">
-            <img src="{{ url_for('static', filename='images/portfolio/' ~ project.slug ~ '.webp') }}" alt="{{ project.title }} working demo preview" width="1440" height="900" loading="{{ 'eager' if loop.first else 'lazy' }}">
-          </div>
-          <div class="project-body">
-            <div class="project-meta">
-              <span>{{ project.year }}</span>
-              <span>{{ project.category }}</span>
-            </div>
-            <h3>{{ project.title }}</h3>
-            <p class="project-summary">{{ project.summary }}</p>
-            <p class="project-role"><span>Contribution</span>{{ project.role }}</p>
-            <p class="project-stack">{{ project.preview_stack | join(' / ') }}</p>
-            <span class="project-link-label">Open project <b aria-hidden="true">↗</b></span>
-          </div>
-        </a>
-      </article>
+      <a class="proj-row" href="{{ project.url }}" data-proj data-title="{{ project.title }}" data-image="{{ url_for('static', filename='images/portfolio/' ~ project.slug ~ '.webp') }}" aria-label="Open {{ project.title }} project">
+        <span class="proj-num">{{ project.number }}</span>
+        <span>
+          <span class="proj-title-big">{{ project.title }}</span>
+          <span class="proj-sub">{{ project.summary }} · {{ project.preview_stack | join(', ') }}</span>
+        </span>
+        <span class="proj-row-arrow" aria-hidden="true">↗</span>
+      </a>
       {% endfor %}
     </div>
   </div>

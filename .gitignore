@@ -23,5 +23,11 @@ node_modules/
 dist/
 build/
 
+# Local visual QA artifacts
+.playwright-cli/
+output/
+portfolio-site.zip
+portfolio-site/
+
 .DS_Store
 Thumbs.db

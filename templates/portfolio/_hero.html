@@ -1,58 +1,13 @@
-<section class="hero" id="intro">
-  <div class="hero-shell">
-    <div class="hero-content motion-enter">
-      <p class="eyebrow">Derrick Cheng <span>/</span> Computer Science</p>
-      <p class="availability"><span aria-hidden="true"></span>Open to collaboration</p>
-      <h1>
-        <span class="hero-line">I build digital tools</span>
-        <span class="hero-line">that feel <em>clear</em> to use.</span>
-      </h1>
-      <p class="hero-summary">Final-year Computer Science student making practical web, mobile, and AI-supported projects with considered interfaces and reliable technical foundations.</p>
-      <div class="hero-actions">
-        <a class="primary-action" href="#projects">Explore projects</a>
-        <a class="text-action" href="mailto:derrickcheng0318@gmail.com">Get in touch</a>
-      </div>
-    </div>
-    <div class="hero-project motion-enter motion-delay" data-project-reel>
-      <figure>
-        <div class="hero-image-wrap">
-          <span class="hero-scan" aria-hidden="true"></span>
-          {% for project in projects %}
-          <a
-            class="hero-reel-slide{% if loop.first %} is-active{% endif %}"
-            href="{{ project.url }}"
-            data-reel-slide
-            data-title="{{ project.title }}"
-            aria-label="View {{ project.title }} project"
-            {% if not loop.first %}aria-hidden="true" tabindex="-1"{% endif %}
-          >
-            <img
-              src="{{ url_for('static', filename='images/portfolio/' ~ project.slug ~ '.webp') }}"
-              alt="{{ project.title }} working demo preview"
-              width="1440"
-              height="900"
-              loading="{{ 'eager' if loop.first else 'lazy' }}"
-            >
-          </a>
-          {% endfor %}
-        </div>
-        <div class="hero-reel-progress" aria-hidden="true"><span></span></div>
-        <figcaption>
-          <div class="hero-caption-copy">
-            <span>Live portfolio preview</span>
-            <strong data-reel-title>{{ projects[0].title }}</strong>
-          </div>
-          <div class="hero-reel-controls">
-            <span class="hero-reel-count"><span data-reel-index>01</span> / {{ projects | length }}</span>
-            <button type="button" data-reel-previous aria-label="Show previous project" title="Previous project">
-              <span aria-hidden="true">&larr;</span>
-            </button>
-            <button type="button" data-reel-next aria-label="Show next project" title="Next project">
-              <span aria-hidden="true">&rarr;</span>
-            </button>
-          </div>
-        </figcaption>
-      </figure>
+<header class="hero" id="intro">
+  <div class="dotgrid" aria-hidden="true"></div>
+  <div class="wrap hero-wrap">
+    <p class="eyebrow-free">Computer Science student, University of Technology Sarawak</p>
+    <h1 class="hero-title"><span class="hero-line">I build software</span><span class="hero-line hero-line-accent">that feels clear to use.</span></h1>
+    <p class="hero-sub">I turn coursework into practical web, mobile, backend, and AI-supported projects that people can understand and use.</p>
+    <div class="hero-actions">
+      <a class="btn btn-primary" href="#projects">See my work</a>
+      <a class="btn btn-ghost" href="#contact">Get in touch</a>
     </div>
   </div>
-</section>
+  <div class="scrollcue" aria-hidden="true"><span class="scrollcue-bar"></span><span>scroll to explore</span></div>
+</header>

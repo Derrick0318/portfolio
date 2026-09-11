@@ -2,35 +2,37 @@
 
 ## Direction
 
-An editorial Computer Science portfolio with a warm creme foundation and precise engineering details. The work should feel composed and credible, never glossy, transparent, or built from stacked cards.
+A reference-led Computer Science portfolio with a cool paper foundation, oversized work typography, one blue signal color, and tactile interactions. The work should feel direct and credible, with the interface receding behind the projects.
 
 ## Visual Tokens
 
-- Canvas: `#FBF9F6`
-- Paper: `#F5F2EB`
+- Canvas: `#F7F8FA`
 - Surface: `#FFFFFF`
-- Ink: `#25231F`
-- Muted text: `#69665E`
-- Rule: `#DDD8CE`
-- Accent: `#516451`
-- Signal: `#B65F4C`
+- Ink: `#12141A`
+- Muted text: `#6B7280`
+- Rule: `#E4E7EC`
+- Signal: `#2E5BFF`
+- Secondary signal: `#FFB020`
 
 ## Type
 
-- Interface and headings: `Manrope`, with a robust system fallback.
-- Technical metadata: `IBM Plex Mono`, with a monospace fallback.
-- Display type stays compact and legible. No forced multi-line, oversized slogans.
+- Interface and body: `Inter`, with a robust system fallback.
+- Display type: `Space Grotesk`, with a robust system fallback.
+- Technical metadata: system monospace.
+- Display type uses short statement lines and oversized project names, while body copy stays readable.
 
 ## Layout
 
-- Navigation is a simple ruled header, not a floating container.
-- Projects read as open editorial spreads with a real preview, metadata, and a direct route to each project.
-- The site uses a single horizontal ticker for real technologies only.
-- Desktop uses generous lateral space. Mobile collapses to a simple vertical reading order with no sideways overflow.
+- Navigation is fixed and lightly translucent with a single ruled edge.
+- The hero is a statement-led page opening with a restrained dot field and two clear actions.
+- Projects are an oversized typographic index with direct links and real image previews on hover.
+- Skills use a draggable tool field instead of a card grid.
+- Desktop uses generous lateral space. Mobile collapses to one readable column with no sideways overflow.
 
 ## Motion
 
-- Intro content enters once with a small opacity and vertical transform.
-- Project rows and experience entries reveal as they enter the viewport.
-- The technology ticker moves continuously and pauses for reduced-motion users.
-- Motion is transform and opacity only, with no scroll hijacking or permanent pinned sections.
+- Intro words enter once in sequence.
+- The statement reveals word by word as it enters the viewport.
+- Project rows reveal with a horizontal clip, exhibition entries draw along a timeline, and project images follow the pointer on desktop.
+- Tool chips can be moved with pointer input.
+- Motion uses GSAP and ScrollTrigger with transform and opacity changes, no scroll hijacking, and a reduced-motion fallback.

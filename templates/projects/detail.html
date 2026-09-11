@@ -9,11 +9,8 @@
   <meta property="og:description" content="{{ project.summary }}">
   <title>{{ project.title }} - Derrick Cheng</title>
   <link rel="icon" href="data:,">
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/portfolio/atelier-portfolio.css') }}?v=1">
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/projects/case-study-atelier.css') }}?v=1">
-  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js" defer></script>
-  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js" defer></script>
-  <script src="{{ url_for('static', filename='js/portfolio/scroll.js') }}?v=6" defer></script>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/portfolio/maya-redesign.css') }}?v=2">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/projects/case-study-atelier.css') }}?v=2">
 </head>
 <body class="project-page">
   <a class="skip-link" href="#main-content">Skip to content</a>
@@ -22,6 +19,5 @@
     {% include "projects/_demo_window.html" %}
     {% include "projects/_project_details.html" %}
   </main>
-  {% include "portfolio/_footer.html" %}
 </body>
 </html>

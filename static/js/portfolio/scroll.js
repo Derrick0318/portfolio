@@ -222,33 +222,56 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const setupToolbox = () => {
     const toolbox = document.querySelector("#toolbox");
-    if (!toolbox || !hasGsap) return;
-    const chips = gsap?.utils?.toArray("[data-chip]", toolbox) || [];
+    if (!toolbox) return;
+    const chips = Array.from(toolbox.querySelectorAll("[data-chip]"));
     chips.forEach((chip) => {
-      let startX = 0;
-      let startY = 0;
+      const state = {
+        pointerId: null,
+        startPointerX: 0,
+        startPointerY: 0,
+        startX: 0,
+        startY: 0,
+        x: 0,
+        y: 0
+      };
+      const clamp = (min, max, value) => Math.min(Math.max(value, min), Math.max(min, max));
+      const render = () => {
+        chip.style.transform = `translate3d(${state.x}px, ${state.y}px, 0)`;
+      };
       const move = (event) => {
+        if (event.pointerId !== state.pointerId) return;
         const bounds = toolbox.getBoundingClientRect();
+        const baseX = chip.offsetLeft;
+        const baseY = chip.offsetTop;
         const maxX = bounds.width - chip.offsetWidth - 8;
         const maxY = bounds.height - chip.offsetHeight - 8;
-        const nextX = gsap.utils.clamp(8, maxX)(chip.offsetLeft + event.clientX - startX);
-        const nextY = gsap.utils.clamp(8, maxY)(chip.offsetTop + event.clientY - startY);
-        gsap.set(chip, { x: nextX - chip.offsetLeft, y: nextY - chip.offsetTop });
-        startX = event.clientX;
-        startY = event.clientY;
+        const nextX = clamp(8, maxX, state.startX + event.clientX - state.startPointerX);
+        const nextY = clamp(8, maxY, state.startY + event.clientY - state.startPointerY);
+        state.x = nextX - baseX;
+        state.y = nextY - baseY;
+        render();
       };
       const stop = (event) => {
+        if (event.pointerId !== state.pointerId) return;
+        state.pointerId = null;
         chip.classList.remove("is-dragging");
+        chip.setAttribute("aria-grabbed", "false");
         chip.releasePointerCapture?.(event.pointerId);
         chip.removeEventListener("pointermove", move);
         chip.removeEventListener("pointerup", stop);
         chip.removeEventListener("pointercancel", stop);
       };
       chip.addEventListener("pointerdown", (event) => {
+        if (event.button !== undefined && event.button !== 0) return;
         event.preventDefault();
-        startX = event.clientX;
-        startY = event.clientY;
+        state.pointerId = event.pointerId;
+        state.startPointerX = event.clientX;
+        state.startPointerY = event.clientY;
+        state.startX = chip.offsetLeft + state.x;
+        state.startY = chip.offsetTop + state.y;
         chip.classList.add("is-dragging");
+        chip.setAttribute("aria-grabbed", "true");
+        render();
         chip.setPointerCapture?.(event.pointerId);
         chip.addEventListener("pointermove", move);
         chip.addEventListener("pointerup", stop);

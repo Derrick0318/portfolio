@@ -106,9 +106,9 @@ section { padding: 6.9rem 0; }
 .toolbox { position: relative; height: 20rem; overflow: hidden; border: 1px dashed var(--line); border-radius: 1rem; background: var(--surface); }
 .toolbox::before { position: absolute; inset: 0; content: ''; opacity: .35; background-image: radial-gradient(circle, #d7dbe3 1px, transparent 1px); background-size: 22px 22px; pointer-events: none; }
 .toolbox-hint { margin: 1rem 0 0; color: var(--muted); font-size: .76rem; text-align: center; }
-.chip-drag { position: absolute; z-index: 1; padding: .7rem 1.15rem; border: 0; border-radius: 999px; font-size: .82rem; font-weight: 600; white-space: nowrap; user-select: none; cursor: grab; touch-action: none; box-shadow: 0 6px 16px rgba(18, 20, 26, .12); transition: box-shadow .2s ease, transform .2s var(--ease); }
+.chip-drag { position: absolute; z-index: 1; padding: .7rem 1.15rem; border: 0; border-radius: 999px; font-size: .82rem; font-weight: 600; white-space: nowrap; user-select: none; cursor: grab; touch-action: none; will-change: transform; box-shadow: 0 6px 16px rgba(18, 20, 26, .12); transition: box-shadow .2s ease, transform .2s var(--ease); }
 .chip-drag:hover { transform: translateY(-2px); }
-.chip-drag:active, .chip-drag.is-dragging { z-index: 4; cursor: grabbing; box-shadow: 0 12px 25px rgba(18, 20, 26, .18); }
+.chip-drag:active, .chip-drag.is-dragging { z-index: 4; cursor: grabbing; box-shadow: 0 12px 25px rgba(18, 20, 26, .18); transition: none; }
 .chip-dark { color: #fff; background: var(--ink); }
 .chip-blue { color: #fff; background: var(--blue); }
 .chip-light { color: var(--ink); border: 1px solid var(--line); background: #eef1f6; }

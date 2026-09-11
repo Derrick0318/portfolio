@@ -143,8 +143,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     if (!preview || !previewImage || !previewName || !window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
-    const moveX = hasGsap ? gsap.quickTo(preview, "x", { duration: .35, ease: "power3.out" }) : null;
-    const moveY = hasGsap ? gsap.quickTo(preview, "y", { duration: .35, ease: "power3.out" }) : null;
     let activeRow = null;
 
     const movePreview = (event) => {
@@ -160,42 +158,28 @@ document.addEventListener("DOMContentLoaded", () => {
       const maxY = Math.max(margin, window.innerHeight - height - margin);
       const x = Math.min(Math.max(targetX, margin), maxX);
       const y = Math.min(Math.max(targetY, margin), maxY);
-      if (hasGsap) {
-        moveX(x);
-        moveY(y);
-      } else {
-        const rotation = preview.dataset.rotation || -3;
-        preview.style.transform = `translate3d(${x}px, ${y}px, 0) rotate(${rotation}deg) scale(1)`;
-      }
+      const rotation = preview.dataset.rotation || -3;
+      preview.style.transform = `translate3d(${x}px, ${y}px, 0) rotate(${rotation}deg) scale(1)`;
     };
 
     const hidePreview = () => {
       activeRow = null;
-      if (hasGsap) {
-        gsap.killTweensOf(preview);
-        gsap.to(preview, { autoAlpha: 0, scale: .88, duration: .18, ease: "power2.out", overwrite: true });
-      } else {
-        preview.classList.remove("is-visible");
-        preview.style.transform = "translate3d(-999px, -999px, 0) rotate(-3deg) scale(.88)";
-      }
+      preview.classList.remove("is-visible");
+      preview.style.opacity = "0";
+      preview.style.transform = "translate3d(-999px, -999px, 0) rotate(-3deg) scale(.88)";
     };
 
     rows.forEach((row, index) => {
       row.addEventListener("pointerenter", (event) => {
         activeRow = row;
-        if (hasGsap) gsap.killTweensOf(preview);
         previewImage.src = row.dataset.image;
         previewImage.alt = `${row.dataset.title} project preview`;
         previewName.textContent = row.dataset.title;
         const rotation = index % 2 ? 3 : -3;
         preview.dataset.rotation = rotation;
-        if (hasGsap) gsap.set(preview, { rotation });
         movePreview(event);
-        if (hasGsap) {
-          gsap.to(preview, { autoAlpha: 1, scale: 1, duration: .28, ease: "power3.out", overwrite: true });
-        } else {
-          preview.classList.add("is-visible");
-        }
+        preview.style.opacity = "1";
+        preview.classList.add("is-visible");
       });
       row.addEventListener("pointermove", (event) => {
         if (activeRow !== row) return;

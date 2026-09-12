@@ -144,26 +144,44 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (!preview || !previewImage || !previewName || !window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
     let activeRow = null;
+    let pointerX = 0;
+    let pointerY = 0;
+    let previewWidth = 240;
+    let previewHeight = 210;
+    let frameId = 0;
 
-    const movePreview = (event) => {
+    const measurePreview = () => {
+      previewWidth = preview.offsetWidth || 240;
+      previewHeight = preview.offsetHeight || 210;
+    };
+
+    const renderPreview = () => {
+      frameId = 0;
+      if (!activeRow) return;
       const gap = 24;
       const margin = 16;
-      const width = preview.offsetWidth || 240;
-      const height = preview.offsetHeight || 210;
-      const fitsRight = event.clientX + gap + width <= window.innerWidth - margin;
-      const fitsBelow = event.clientY + gap + height <= window.innerHeight - margin;
-      const targetX = fitsRight ? event.clientX + gap : event.clientX - width - gap;
-      const targetY = fitsBelow ? event.clientY + gap : event.clientY - height - gap;
-      const maxX = Math.max(margin, window.innerWidth - width - margin);
-      const maxY = Math.max(margin, window.innerHeight - height - margin);
+      const fitsRight = pointerX + gap + previewWidth <= window.innerWidth - margin;
+      const fitsBelow = pointerY + gap + previewHeight <= window.innerHeight - margin;
+      const targetX = fitsRight ? pointerX + gap : pointerX - previewWidth - gap;
+      const targetY = fitsBelow ? pointerY + gap : pointerY - previewHeight - gap;
+      const maxX = Math.max(margin, window.innerWidth - previewWidth - margin);
+      const maxY = Math.max(margin, window.innerHeight - previewHeight - margin);
       const x = Math.min(Math.max(targetX, margin), maxX);
       const y = Math.min(Math.max(targetY, margin), maxY);
       const rotation = preview.dataset.rotation || -3;
-      preview.style.transform = `translate3d(${x}px, ${y}px, 0) rotate(${rotation}deg) scale(1)`;
+      preview.style.transform = `translate3d(${x}px, ${y}px, 0) rotate(${rotation}deg)`;
+    };
+
+    const movePreview = (event) => {
+      pointerX = event.clientX;
+      pointerY = event.clientY;
+      if (!frameId) frameId = requestAnimationFrame(renderPreview);
     };
 
     const hidePreview = () => {
       activeRow = null;
+      if (frameId) cancelAnimationFrame(frameId);
+      frameId = 0;
       preview.classList.remove("is-visible");
       preview.style.opacity = "0";
       preview.style.transform = "translate3d(-999px, -999px, 0) rotate(-3deg) scale(.88)";
@@ -177,6 +195,7 @@ document.addEventListener("DOMContentLoaded", () => {
         previewName.textContent = row.dataset.title;
         const rotation = index % 2 ? 3 : -3;
         preview.dataset.rotation = rotation;
+        measurePreview();
         movePreview(event);
         preview.style.opacity = "1";
         preview.classList.add("is-visible");
@@ -190,10 +209,14 @@ document.addEventListener("DOMContentLoaded", () => {
       row.addEventListener("click", hidePreview);
     });
 
-    window.addEventListener("scroll", hidePreview, { passive: true });
-    window.addEventListener("resize", hidePreview, { passive: true });
+    window.addEventListener("resize", () => {
+      measurePreview();
+      if (activeRow && !frameId) frameId = requestAnimationFrame(renderPreview);
+    }, { passive: true });
     window.addEventListener("blur", hidePreview);
-    document.addEventListener("visibilitychange", hidePreview);
+    document.addEventListener("visibilitychange", () => {
+      if (document.hidden) hidePreview();
+    });
   };
 
   const setupTimeline = () => {

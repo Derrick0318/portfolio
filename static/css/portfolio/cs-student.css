@@ -503,7 +503,10 @@ section { padding: clamp(6rem, 10vw, 9rem) 0; }
 .work-experience-head > p { max-width: 27rem; justify-self: end; margin: 0; color: var(--muted); line-height: 1.7; }
 .work-experience-card { display: grid; grid-template-columns: 6.5rem minmax(0, 1fr) auto; gap: clamp(1.5rem, 5vw, 4.5rem); align-items: start; padding: 1.45rem 1.5rem 1.6rem; border: 1px solid var(--line-strong); border-radius: .85rem; background: rgba(255, 255, 255, .72); box-shadow: 0 1.2rem 3rem rgba(30, 45, 75, .06); transition: border-color .25s ease, background .25s ease, box-shadow .35s var(--ease), transform .35s var(--ease); }
 .work-experience-card:hover { border-color: rgba(36, 87, 255, .42); background: #fff; box-shadow: 0 1.5rem 3.5rem rgba(30, 45, 75, .1); transform: translateY(-3px); }
-.work-date { padding-top: .18rem; color: var(--blue); font-family: var(--mono); }
+.work-date { position: relative; padding-top: .18rem; padding-left: 1rem; color: var(--blue); font-family: var(--mono); }
+.work-date::before { position: absolute; top: .37rem; left: .04rem; width: .42rem; height: .42rem; border-radius: 50%; content: ""; background: var(--blue); box-shadow: 0 0 0 4px rgba(36, 87, 255, .14), 0 0 .8rem rgba(36, 87, 255, .28); animation: work-date-pulse 2.4s ease-in-out infinite; }
+.work-date::after { position: absolute; top: .95rem; bottom: .1rem; left: .23rem; width: 1px; content: ""; background: linear-gradient(var(--blue), rgba(36, 87, 255, .16)); }
+@keyframes work-date-pulse { 50% { box-shadow: 0 0 0 7px rgba(36, 87, 255, 0), 0 0 .8rem rgba(36, 87, 255, 0); } }
 .work-date span, .work-date strong { display: block; }
 .work-date span { font-size: .62rem; }
 .work-date strong { margin-top: .25rem; color: var(--ink); font-size: .7rem; font-weight: 600; }

@@ -33,7 +33,7 @@
 .case-facts dd { margin-top: .35rem; font-size: .88rem; font-weight: 700; line-height: 1.6; overflow-wrap: anywhere; }
 .contribution-list h3, .workflow-section h3, .project-resources h3 { margin: 0; font-size: 1.4rem; font-weight: 750; }
 .contribution-list p { max-width: 43rem; margin: 1.2rem 0 0; padding-top: 1.2rem; border-top: 1px solid var(--line); color: var(--muted); line-height: 1.68; }
-.workflow-section, .project-resources { margin-top: 5.5rem; }
+.workflow-section, .project-resources { margin-top: 4rem; padding: 0; }
 .workflow-list, .resource-list { margin-top: 1.8rem; border-top: 1px solid var(--line); }
 .workflow-list article { display: grid; grid-template-columns: minmax(11rem, .4fr) minmax(0, 1.6fr); gap: 2rem; padding: 1.5rem 0; border-bottom: 1px solid var(--line); }
 .workflow-list strong { color: var(--accent); font-family: "Cascadia Mono", Consolas, monospace; font-size: .72rem; }

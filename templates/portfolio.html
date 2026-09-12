@@ -13,7 +13,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/portfolio/cs-student.css') }}?v=6">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/portfolio/cs-student.css') }}?v=10">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/portfolio/crosshair.css') }}?v=4">
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js" defer></script>
@@ -50,9 +50,9 @@
   <main id="main-content">
     {% include "portfolio/_hero.html" %}
     {% include "portfolio/_about.html" %}
+    {% include "portfolio/_experience.html" %}
     {% include "portfolio/_projects.html" %}
     {% include "portfolio/_skills.html" %}
-    {% include "portfolio/_experience.html" %}
   </main>
   {% include "portfolio/_footer.html" %}
 </body>

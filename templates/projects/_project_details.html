@@ -1,36 +1,40 @@
 <section class="project-details" id="project-details">
-  <div class="details-intro">
-    <p class="section-label">Project overview</p>
+  <div class="details-intro" data-detail-reveal>
+    <p class="section-label">readme / overview</p>
     <h2>{{ project.background }}</h2>
     <p>{{ project.short_description }}</p>
   </div>
 
-  <div class="details-layout">
+  <div class="details-layout" data-detail-reveal>
     <dl class="case-facts" aria-label="Project facts">
       <div>
+        <span class="fact-index">01</span>
         <dt>Year</dt>
         <dd>{{ project.year }}</dd>
       </div>
       <div>
+        <span class="fact-index">02</span>
         <dt>Technology</dt>
         <dd>{{ project.stack | join(', ') }}</dd>
       </div>
     </dl>
 
     <div class="contribution-list">
+      <p class="section-label">contribution / build notes</p>
       <h3>What I worked on</h3>
       {% for detail in project.details %}
-      <p>{{ detail }}</p>
+      <p class="contribution-note"><span aria-hidden="true">+</span>{{ detail }}</p>
       {% endfor %}
     </div>
   </div>
 
   {% if project.workflow %}
-  <section class="workflow-section" aria-label="Project workflow">
-    <h3>How it works</h3>
+  <section class="workflow-section" aria-label="Project workflow" data-detail-reveal>
+    <div class="detail-section-heading"><p class="section-label">system / workflow</p><h3>How it works</h3></div>
     <div class="workflow-list">
       {% for step in project.workflow %}
-      <article>
+      <article style="--spot-x: 50%; --spot-y: 50%;">
+        <span class="row-index">0{{ loop.index }}</span>
         <strong>{{ step.label }}</strong>
         <p>{{ step.text }}</p>
       </article>
@@ -40,11 +44,12 @@
   {% endif %}
 
   {% if project.resources %}
-  <section class="project-resources" aria-label="Project resources">
-    <h3>Project resources</h3>
+  <section class="project-resources" aria-label="Project resources" data-detail-reveal>
+    <div class="detail-section-heading"><p class="section-label">artifacts / links</p><h3>Project resources</h3></div>
     <div class="resource-list">
       {% for resource in project.resources %}
-      <article class="resource-item">
+      <article class="resource-item" style="--spot-x: 50%; --spot-y: 50%;">
+        <span class="row-index">0{{ loop.index }}</span>
         <div>
           <strong>{{ resource.label }}</strong>
           <p>{{ resource.description }}</p>
@@ -63,4 +68,9 @@
     </div>
   </section>
   {% endif %}
+
+  <div class="detail-endcap" data-detail-reveal>
+    <span>more work in the index</span>
+    <a href="/#projects">Back to selected work <span aria-hidden="true">↗</span></a>
+  </div>
 </section>

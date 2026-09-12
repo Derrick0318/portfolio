@@ -1,19 +1,26 @@
-<section class="project-hero">
-  <div class="project-title-block">
-    <p>{{ project.category }} / {{ project.year }}</p>
-    <h1>{{ project.title }}</h1>
-    <span>{{ project.summary }}</span>
-    <div class="project-hero-facts">
-      <span><strong>Role</strong>{{ project.role }}</span>
-      <span><strong>Stack</strong>{{ project.preview_stack | join(', ') }}</span>
+<section class="project-hero" data-detail-hero>
+  <div class="hero-grid" aria-hidden="true"></div>
+  <div class="project-hero-inner">
+    <div class="project-title-block" data-detail-reveal>
+      <div class="detail-kicker"><span>project/{{ project.number }}</span><span>{{ project.category }} / {{ project.year }}</span></div>
+      <h1>{{ project.title }}</h1>
+      <p class="project-summary">{{ project.summary }}</p>
+      <div class="project-hero-facts">
+        <span><strong>Role</strong>{{ project.role }}</span>
+        <span><strong>Stack</strong>{{ project.preview_stack | join(', ') }}</span>
+      </div>
     </div>
-  </div>
 
-  <div class="demo-window">
-    <div class="window-topbar">
-      <span class="window-status"><i aria-hidden="true"></i> Working demo</span>
-      <a href="{{ project.demo_url }}" target="_blank" rel="noopener noreferrer">Watch review</a>
+    <div class="demo-window" data-detail-reveal style="--spot-x: 50%; --spot-y: 50%;">
+      <div class="window-topbar">
+        <span class="window-path"><i aria-hidden="true"></i> src/{{ project.slug }}/preview</span>
+        <span class="window-status">live / embedded</span>
+        <a href="{{ project.demo_url }}" target="_blank" rel="noopener noreferrer">Open demo <span aria-hidden="true">↗</span></a>
+      </div>
+      <div class="window-viewport">
+        <iframe src="{{ project.demo_url }}" title="{{ project.title }} demo" loading="lazy" referrerpolicy="same-origin"></iframe>
+        <span class="window-scan" aria-hidden="true"></span>
+      </div>
     </div>
-    <iframe src="{{ project.demo_url }}" title="{{ project.title }} demo" loading="lazy" referrerpolicy="same-origin"></iframe>
   </div>
 </section>

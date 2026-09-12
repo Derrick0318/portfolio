@@ -5,8 +5,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (!finePointer || reduceMotion) return;
 
-  const clamp = (min, max, value) => Math.min(Math.max(value, min), max);
-
   const hero = document.querySelector(".hero");
   if (hero) {
     let heroFrame = 0;
@@ -30,42 +28,6 @@ document.addEventListener("DOMContentLoaded", () => {
       if (!heroFrame) heroFrame = requestAnimationFrame(renderHeroLight);
     }, { passive: true });
   }
-
-  document.querySelectorAll(".proj-row").forEach((row) => {
-    const image = row.querySelector(".proj-thumb img");
-    let rowFrame = 0;
-    let rowBounds = row.getBoundingClientRect();
-    let localX = rowBounds.width / 2;
-    let localY = rowBounds.height / 2;
-
-    const renderProjectDepth = () => {
-      rowFrame = 0;
-      row.style.setProperty("--spot-x", `${localX}px`);
-      row.style.setProperty("--spot-y", `${localY}px`);
-      if (!image) return;
-      const depthX = clamp(-5, 5, (localX / rowBounds.width - .5) * 10);
-      const depthY = clamp(-4, 4, (localY / rowBounds.height - .5) * 8);
-      image.style.setProperty("--image-x", `${depthX}px`);
-      image.style.setProperty("--image-y", `${depthY}px`);
-    };
-
-    row.addEventListener("pointerenter", () => {
-      rowBounds = row.getBoundingClientRect();
-    });
-
-    row.addEventListener("pointermove", (event) => {
-      localX = event.clientX - rowBounds.left;
-      localY = event.clientY - rowBounds.top;
-      if (!rowFrame) rowFrame = requestAnimationFrame(renderProjectDepth);
-    }, { passive: true });
-
-    row.addEventListener("pointerleave", () => {
-      if (rowFrame) cancelAnimationFrame(rowFrame);
-      rowFrame = 0;
-      image?.style.setProperty("--image-x", "0px");
-      image?.style.setProperty("--image-y", "0px");
-    });
-  });
 
   document.querySelectorAll(".section-tag").forEach((tag) => {
     const original = tag.textContent.trim();

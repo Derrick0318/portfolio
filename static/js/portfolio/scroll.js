@@ -165,6 +165,8 @@ document.addEventListener("DOMContentLoaded", () => {
     let previewWidth = 240;
     let previewHeight = 210;
     let frameId = 0;
+    let activeImage = null;
+    let activeRowBounds = null;
 
     const measurePreview = () => {
       previewWidth = preview.offsetWidth || 240;
@@ -174,6 +176,18 @@ document.addEventListener("DOMContentLoaded", () => {
     const renderPreview = () => {
       frameId = 0;
       if (!activeRow) return;
+      const rowBounds = activeRowBounds;
+      if (!rowBounds) return;
+      const localX = pointerX - rowBounds.left;
+      const localY = pointerY - rowBounds.top;
+      activeRow.style.setProperty("--spot-x", `${localX}px`);
+      activeRow.style.setProperty("--spot-y", `${localY}px`);
+      if (activeImage) {
+        const depthX = Math.max(-5, Math.min(5, (localX / rowBounds.width - .5) * 10));
+        const depthY = Math.max(-4, Math.min(4, (localY / rowBounds.height - .5) * 8));
+        activeImage.style.setProperty("--image-x", `${depthX}px`);
+        activeImage.style.setProperty("--image-y", `${depthY}px`);
+      }
       const gap = 24;
       const margin = 16;
       const fitsRight = pointerX + gap + previewWidth <= window.innerWidth - margin;
@@ -195,7 +209,13 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     const hidePreview = () => {
+      if (activeRow) activeRow.style.setProperty("--spot-x", "50%");
+      if (activeRow) activeRow.style.setProperty("--spot-y", "50%");
+      activeImage?.style.setProperty("--image-x", "0px");
+      activeImage?.style.setProperty("--image-y", "0px");
       activeRow = null;
+      activeImage = null;
+      activeRowBounds = null;
       if (frameId) cancelAnimationFrame(frameId);
       frameId = 0;
       preview.classList.remove("is-visible");
@@ -206,6 +226,8 @@ document.addEventListener("DOMContentLoaded", () => {
     rows.forEach((row, index) => {
       row.addEventListener("pointerenter", (event) => {
         activeRow = row;
+        activeImage = row.querySelector(".proj-thumb img");
+        activeRowBounds = row.getBoundingClientRect();
         previewImage.src = row.dataset.image;
         previewImage.alt = `${row.dataset.title} project preview`;
         previewName.textContent = row.dataset.title;
@@ -227,6 +249,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     window.addEventListener("resize", () => {
       measurePreview();
+      if (activeRow) activeRowBounds = activeRow.getBoundingClientRect();
       if (activeRow && !frameId) frameId = requestAnimationFrame(renderPreview);
     }, { passive: true });
     window.addEventListener("blur", hidePreview);

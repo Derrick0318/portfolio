@@ -359,7 +359,7 @@ h1, h2, h3, p { text-wrap: pretty; }
 section { padding: clamp(4.75rem, 7vw, 6.5rem) 0; }
 .section-tag { margin: 0 0 1.2rem; color: var(--blue); font-family: var(--mono); font-size: .73rem; font-weight: 600; }
 .section-tag::before { margin-right: .45rem; color: var(--line-strong); content: "./"; }
-.scroll-reveal { will-change: transform, opacity; }
+.scroll-reveal { will-change: auto; }
 .reveal-ready .scroll-reveal { opacity: 0; transform: translateY(24px); transition: opacity .75s var(--ease), transform .75s var(--ease); }
 .reveal-ready .scroll-reveal.is-visible { opacity: 1; transform: none; }
 .reveal-ready .motion-heading { clip-path: inset(0 0 100% 0); transform: translateY(2.2rem); transition: opacity .85s var(--ease), transform .85s var(--ease), clip-path 1s var(--ease); }
@@ -466,10 +466,10 @@ section { padding: clamp(4.75rem, 7vw, 6.5rem) 0; }
 .axis-label { position: absolute; z-index: 1; color: var(--blue); font-family: var(--mono); font-size: .62rem; }
 .axis-x { right: .55rem; top: calc(50% + .35rem); }
 .axis-y { left: calc(50% + .4rem); top: .45rem; }
-.chip-drag { position: absolute; z-index: 2; padding: .7rem 1rem; border: 1px solid transparent; border-radius: .55rem; font-family: var(--mono); font-size: .7rem; font-weight: 600; white-space: nowrap; user-select: none; cursor: grab; touch-action: none; will-change: transform; box-shadow: 0 .45rem 1.2rem rgba(24, 35, 58, .11); transition: box-shadow .2s ease, transform .2s var(--ease), color .2s ease, background .2s ease; }
+.chip-drag { position: absolute; z-index: 2; padding: .7rem 1rem; border: 1px solid transparent; border-radius: .55rem; font-family: var(--mono); font-size: .7rem; font-weight: 600; white-space: nowrap; user-select: none; cursor: grab; touch-action: none; box-shadow: 0 .45rem 1.2rem rgba(24, 35, 58, .11); transition: box-shadow .2s ease, transform .2s var(--ease), color .2s ease, background .2s ease; }
 .chip-drag::before { margin-right: .45rem; opacity: .55; content: "::"; }
 .chip-drag:hover { box-shadow: 0 .75rem 1.6rem rgba(24, 35, 58, .17); transform: translateY(-2px) rotate(-1deg); }
-.chip-drag:active, .chip-drag.is-dragging { z-index: 5; cursor: grabbing; box-shadow: 0 1rem 2rem rgba(24, 35, 58, .2); transition: none; }
+.chip-drag:active, .chip-drag.is-dragging { z-index: 5; cursor: grabbing; box-shadow: 0 1rem 2rem rgba(24, 35, 58, .2); transition: none; will-change: transform; }
 .chip-dark { color: #fff; background: var(--ink); }
 .chip-blue { color: #fff; background: var(--blue); }
 .chip-light { color: var(--ink); border-color: var(--line); background: #fff; }

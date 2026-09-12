@@ -11,14 +11,15 @@
   pointer-events: none;
   opacity: 0;
   transform: translate3d(-100px, -100px, 0);
-  transition: opacity .16s ease, transform .16s var(--ease);
+  will-change: transform, opacity;
+  transition: opacity .16s ease;
 }
 
 .cs-crosshair__bar {
   position: absolute;
   display: block;
   background: var(--crosshair-color);
-  box-shadow: 0 0 0 1px rgba(247, 248, 250, .78);
+  box-shadow: 0 0 0 1px rgba(243, 245, 247, .82);
   transition: background-color .16s ease, box-shadow .16s ease;
 }
 
@@ -56,7 +57,7 @@
 
 .cs-crosshair.is-hovering .cs-crosshair__bar {
   --crosshair-color: var(--ink);
-  box-shadow: 0 0 0 1px rgba(247, 248, 250, .92);
+  box-shadow: 0 0 0 1px rgba(243, 245, 247, .94);
 }
 
 @media (hover: none), (pointer: coarse) {

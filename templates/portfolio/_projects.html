@@ -1,21 +1,27 @@
 <section id="projects">
   <div class="wrap">
-    <div class="index-label scroll-reveal" data-reveal>INDEX / SELECTED WORK</div>
-    <div class="section-head">
-      <h2 class="scroll-reveal" data-reveal>Projects I have built.</h2>
-      <p class="scroll-reveal" data-reveal>Four academic projects across applied AI, web systems, mobile interfaces, and backend integration.</p>
-    </div>
-    <div class="proj-list" id="proj-list">
-      {% for project in projects %}
-      <a class="proj-row" href="{{ project.url }}" data-proj data-title="{{ project.title }}" data-image="{{ url_for('static', filename='images/portfolio/' ~ project.slug ~ '.webp') }}" aria-label="Open {{ project.title }} project">
-        <span class="proj-num">{{ project.number }}</span>
-        <span>
-          <span class="proj-title-big">{{ project.title }}</span>
-          <span class="proj-sub">{{ project.summary }} · {{ project.preview_stack | join(', ') }}</span>
-        </span>
-        <span class="proj-row-arrow" aria-hidden="true">↗</span>
-      </a>
-      {% endfor %}
+    <div class="projects-layout">
+      <div class="projects-intro">
+        <div class="section-tag scroll-reveal" data-reveal>selected_work/</div>
+        <h2 class="scroll-reveal motion-heading" data-reveal>Built to work,<br>not just to demo.</h2>
+        <p class="scroll-reveal" data-reveal>Four academic projects across applied AI, web systems, mobile interfaces, and backend integration.</p>
+        <span class="hover-instruction scroll-reveal" data-reveal><span aria-hidden="true">+</span> Hover a project to inspect</span>
+      </div>
+      <div class="proj-list" id="proj-list">
+        {% for project in projects %}
+        <a class="proj-row" href="{{ project.url }}" data-proj data-title="{{ project.title }}" data-image="{{ url_for('static', filename='images/portfolio/' ~ project.slug ~ '.webp') }}" aria-label="Open {{ project.title }} project">
+          <span class="proj-num">{{ project.number }}</span>
+          <span class="proj-thumb"><img src="{{ url_for('static', filename='images/portfolio/' ~ project.slug ~ '.webp') }}" alt="" loading="lazy"></span>
+          <span class="proj-body">
+            <span class="proj-overline"><span>{{ project.category }}</span><span>{{ project.year }}</span></span>
+            <span class="proj-title-big">{{ project.title }}</span>
+            <span class="proj-sub">{{ project.summary }}</span>
+            <span class="proj-stack">{% for item in project.preview_stack %}<span>{{ item }}</span>{% endfor %}</span>
+          </span>
+          <span class="proj-row-arrow" aria-hidden="true">↗</span>
+        </a>
+        {% endfor %}
+      </div>
     </div>
   </div>
 </section>

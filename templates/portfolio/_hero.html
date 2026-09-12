@@ -1,13 +1,41 @@
 <header class="hero" id="intro">
-  <div class="dotgrid" aria-hidden="true"></div>
+  <div class="hero-grid-bg" aria-hidden="true"></div>
   <div class="wrap hero-wrap">
-    <p class="eyebrow-free">Computer Science student, University of Technology Sarawak</p>
-    <h1 class="hero-title"><span class="hero-line">I build software</span><span class="hero-line hero-line-accent">that feels clear to use.</span></h1>
-    <p class="hero-sub">I turn coursework into practical web, mobile, backend, and AI-supported projects that people can understand and use.</p>
-    <div class="hero-actions">
-      <a class="btn btn-primary" href="#projects">See my work</a>
-      <a class="btn btn-ghost" href="#contact">Get in touch</a>
+    <div class="hero-copy">
+      <p class="hero-kicker"><span class="terminal-prompt">~/portfolio</span><span class="branch-name">main</span></p>
+      <h1 class="hero-title"><span class="hero-line">I build software</span><span class="hero-line hero-line-accent">that feels clear to use.</span></h1>
+      <p class="hero-sub">Computer Science student turning coursework into practical web, mobile, backend, and AI-supported products.</p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="#projects"><span>Explore projects</span><span aria-hidden="true">↘</span></a>
+        <a class="btn btn-ghost" href="#contact"><span>Start a conversation</span><span aria-hidden="true">↗</span></a>
+      </div>
+      <dl class="hero-metrics" aria-label="Portfolio summary">
+        <div class="hero-metric"><dt>Projects</dt><dd>04</dd></div>
+        <div class="hero-metric"><dt>Exhibitions</dt><dd>02</dd></div>
+        <div class="hero-metric"><dt>Focus</dt><dd>Backend + AI</dd></div>
+      </dl>
     </div>
+    <aside class="hero-console" data-tilt aria-label="Developer profile snapshot">
+      <div class="console-bar">
+        <span class="console-path">src/profile.ts</span>
+        <span class="console-state"><i aria-hidden="true"></i>ready</span>
+      </div>
+      <ol class="code-lines" data-code-lines>
+        <li><code><span class="syntax-key">const</span> derrick = {</code></li>
+        <li><code>&nbsp;&nbsp;role: <span class="syntax-string">"CS student"</span>,</code></li>
+        <li><code>&nbsp;&nbsp;basedAt: <span class="syntax-string">"UTS"</span>,</code></li>
+        <li><code>&nbsp;&nbsp;focus: [</code></li>
+        <li><code>&nbsp;&nbsp;&nbsp;&nbsp;<span class="syntax-string">"backend"</span>, <span class="syntax-string">"web"</span>, <span class="syntax-string">"applied AI"</span></code></li>
+        <li><code>&nbsp;&nbsp;],</code></li>
+        <li><code>&nbsp;&nbsp;status: <span class="syntax-value">shipping</span></code></li>
+        <li><code>};</code></li>
+      </ol>
+      <div class="console-output">
+        <span class="console-check" aria-hidden="true">✓</span>
+        <span>Build completed</span>
+        <span class="console-cursor" aria-hidden="true"></span>
+      </div>
+      <div class="console-footer"><span>Python</span><span>Flask</span><span>JavaScript</span><span>Supabase</span></div>
+    </aside>
   </div>
-  <div class="scrollcue" aria-hidden="true"><span class="scrollcue-bar"></span><span>scroll to explore</span></div>
 </header>

@@ -52,16 +52,23 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     const words = document.querySelectorAll(".hero-word");
+    const codeLines = document.querySelectorAll(".code-lines li");
     if (!hasGsap || reduceMotion) {
       words.forEach((word) => { word.style.opacity = "1"; word.style.transform = "none"; });
+      codeLines.forEach((line) => { line.style.opacity = "1"; line.style.transform = "none"; });
       return;
     }
 
     gsap.timeline({ defaults: { ease: "power3.out" } })
       .from(".site-header", { y: -18, autoAlpha: 0, duration: .6 })
-      .to(words, { y: 0, autoAlpha: 1, duration: .65, stagger: .055 }, "-=.2")
-      .from(".hero-sub", { y: 16, autoAlpha: 0, duration: .55 }, "-=.22")
-      .from(".hero-actions > *", { y: 14, autoAlpha: 0, duration: .45, stagger: .08 }, "-=.22");
+      .from(".hero-kicker", { y: 12, autoAlpha: 0, duration: .45 }, "-=.2")
+      .to(words, { y: 0, autoAlpha: 1, duration: .68, stagger: .05 }, "-=.18")
+      .from(".hero-sub", { y: 16, autoAlpha: 0, duration: .55 }, "-=.28")
+      .from(".hero-actions > *", { y: 14, autoAlpha: 0, duration: .45, stagger: .08 }, "-=.24")
+      .from(".hero-metric", { y: 12, autoAlpha: 0, duration: .42, stagger: .07 }, "-=.22")
+      .from(".hero-console", { x: 42, y: 18, rotation: 2.2, scale: .97, autoAlpha: 0, duration: .9 }, "-=1.15")
+      .to(codeLines, { x: 0, autoAlpha: 1, duration: .32, stagger: .055, ease: "power2.out" }, "-=.58")
+      .from(".console-output", { y: 8, autoAlpha: 0, duration: .4 }, "-=.18");
   };
 
   const setupStatement = () => {
@@ -101,14 +108,23 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
+    const revealTargets = new Map();
+    elements.forEach((element) => {
+      const target = element.classList.contains("motion-heading") ? element.parentElement : element;
+      if (!target) return;
+      const groupedElements = revealTargets.get(target) || [];
+      groupedElements.push(element);
+      revealTargets.set(target, groupedElements);
+    });
+
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         if (!entry.isIntersecting) return;
-        entry.target.classList.add("is-visible");
+        (revealTargets.get(entry.target) || []).forEach((element) => element.classList.add("is-visible"));
         observer.unobserve(entry.target);
       });
     }, { rootMargin: "0px 0px -12% 0px", threshold: .01 });
-    elements.forEach((element) => observer.observe(element));
+    revealTargets.forEach((_, target) => observer.observe(target));
   };
 
   const setupProjects = () => {
@@ -120,8 +136,8 @@ document.addEventListener("DOMContentLoaded", () => {
     if (hasGsap && !reduceMotion) {
       rows.forEach((row, index) => {
         gsap.fromTo(row,
-          { autoAlpha: 0, x: -20 },
-          { autoAlpha: 1, x: 0, duration: .72, ease: "power3.out", delay: index * .06,
+          { autoAlpha: 0, y: 28 },
+          { autoAlpha: 1, y: 0, duration: .72, ease: "power3.out", delay: index * .06,
             immediateRender: false,
             scrollTrigger: { trigger: row, start: "top 88%", once: true, invalidateOnRefresh: true } }
         );
@@ -252,14 +268,17 @@ document.addEventListener("DOMContentLoaded", () => {
         pointerId: null,
         startPointerX: 0,
         startPointerY: 0,
+        lastPointerX: 0,
         startX: 0,
         startY: 0,
         x: 0,
-        y: 0
+        y: 0,
+        angle: 0,
+        scale: 1
       };
       const clamp = (min, max, value) => Math.min(Math.max(value, min), Math.max(min, max));
       const render = () => {
-        chip.style.transform = `translate3d(${state.x}px, ${state.y}px, 0)`;
+        chip.style.transform = `translate3d(${state.x}px, ${state.y}px, 0) rotate(${state.angle}deg) scale(${state.scale})`;
       };
       const move = (event) => {
         if (event.pointerId !== state.pointerId) return;
@@ -272,17 +291,22 @@ document.addEventListener("DOMContentLoaded", () => {
         const nextY = clamp(8, maxY, state.startY + event.clientY - state.startPointerY);
         state.x = nextX - baseX;
         state.y = nextY - baseY;
+        state.angle = clamp(-4, 4, (event.clientX - state.lastPointerX) * .32);
+        state.lastPointerX = event.clientX;
         render();
       };
       const stop = (event) => {
         if (event.pointerId !== state.pointerId) return;
         state.pointerId = null;
+        state.angle = 0;
+        state.scale = 1;
         chip.classList.remove("is-dragging");
         chip.setAttribute("aria-grabbed", "false");
         chip.releasePointerCapture?.(event.pointerId);
         chip.removeEventListener("pointermove", move);
         chip.removeEventListener("pointerup", stop);
         chip.removeEventListener("pointercancel", stop);
+        render();
       };
       chip.addEventListener("pointerdown", (event) => {
         if (event.button !== undefined && event.button !== 0) return;
@@ -290,8 +314,10 @@ document.addEventListener("DOMContentLoaded", () => {
         state.pointerId = event.pointerId;
         state.startPointerX = event.clientX;
         state.startPointerY = event.clientY;
+        state.lastPointerX = event.clientX;
         state.startX = chip.offsetLeft + state.x;
         state.startY = chip.offsetTop + state.y;
+        state.scale = 1.055;
         chip.classList.add("is-dragging");
         chip.setAttribute("aria-grabbed", "true");
         render();

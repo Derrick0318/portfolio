@@ -6,12 +6,20 @@ document.addEventListener("DOMContentLoaded", () => {
   document.body.classList.add("cs-cursor-enabled");
 
   const interactiveSelector = "a, button, [role='button'], input, textarea, select, summary";
+  let frameId = 0;
+  let pointerX = -100;
+  let pointerY = -100;
 
-  const moveCrosshair = (event) => {
-    crosshair.style.transform = `translate3d(${event.clientX}px, ${event.clientY}px, 0)`;
+  const renderCrosshair = () => {
+    frameId = 0;
+    crosshair.style.transform = `translate3d(${pointerX}px, ${pointerY}px, 0)`;
   };
 
-  document.addEventListener("pointermove", moveCrosshair, { passive: true });
+  document.addEventListener("pointermove", (event) => {
+    pointerX = event.clientX;
+    pointerY = event.clientY;
+    if (!frameId) frameId = requestAnimationFrame(renderCrosshair);
+  }, { passive: true });
   document.addEventListener("pointerover", (event) => {
     if (event.target.closest(interactiveSelector)) crosshair.classList.add("is-hovering");
   }, { passive: true });

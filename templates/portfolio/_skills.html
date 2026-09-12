@@ -1,18 +1,28 @@
 <section id="skills">
   <div class="wrap">
-    <div class="index-label scroll-reveal" data-reveal>INDEX / TOOLBOX</div>
-    <div class="toolbox scroll-reveal" id="toolbox" data-reveal aria-label="Technical tools. Drag a tool to move it.">
-      <button class="chip-drag chip-dark" type="button" data-chip style="left:8%;top:18%">Python</button>
-      <button class="chip-drag chip-blue" type="button" data-chip style="left:32%;top:12%">JavaScript</button>
-      <button class="chip-drag chip-light" type="button" data-chip style="left:62%;top:20%">C#</button>
-      <button class="chip-drag chip-amber" type="button" data-chip style="left:78%;top:52%">HTML / CSS</button>
-      <button class="chip-drag chip-blue" type="button" data-chip style="left:18%;top:58%">Flask</button>
-      <button class="chip-drag chip-dark" type="button" data-chip style="left:43%;top:46%">.NET MAUI</button>
-      <button class="chip-drag chip-light" type="button" data-chip style="left:66%;top:72%">Supabase</button>
-      <button class="chip-drag chip-blue" type="button" data-chip style="left:5%;top:78%">Gemini AI</button>
-      <button class="chip-drag chip-dark" type="button" data-chip style="left:38%;top:78%">Git</button>
-      <button class="chip-drag chip-amber" type="button" data-chip style="left:82%;top:18%">SQLite</button>
+    <div class="skills-head">
+      <div>
+        <div class="section-tag scroll-reveal" data-reveal>toolbox.json</div>
+        <h2 class="scroll-reveal motion-heading" data-reveal>Tools I reach for.</h2>
+      </div>
+      <p class="scroll-reveal" data-reveal>A working set for building interfaces, APIs, databases, mobile apps, and AI-assisted products.</p>
     </div>
-    <p class="toolbox-hint scroll-reveal" data-reveal>Move a tool around the field.</p>
+    <div class="toolbox-shell scroll-reveal" data-reveal>
+      <div class="toolbox-bar"><span>skill_map.canvas</span><span>drag_enabled: true</span></div>
+      <div class="toolbox" id="toolbox" aria-label="Technical tools. Drag a tool to move it.">
+        <span class="axis-label axis-x" aria-hidden="true">x</span><span class="axis-label axis-y" aria-hidden="true">y</span>
+        <button class="chip-drag chip-dark" type="button" data-chip style="left:8%;top:18%">Python</button>
+        <button class="chip-drag chip-blue" type="button" data-chip style="left:32%;top:12%">JavaScript</button>
+        <button class="chip-drag chip-light" type="button" data-chip style="left:62%;top:20%">C#</button>
+        <button class="chip-drag chip-outline" type="button" data-chip style="left:78%;top:52%">HTML / CSS</button>
+        <button class="chip-drag chip-blue" type="button" data-chip style="left:18%;top:58%">Flask</button>
+        <button class="chip-drag chip-dark" type="button" data-chip style="left:43%;top:46%">.NET MAUI</button>
+        <button class="chip-drag chip-light" type="button" data-chip style="left:66%;top:72%">Supabase</button>
+        <button class="chip-drag chip-blue" type="button" data-chip style="left:5%;top:78%">Gemini AI</button>
+        <button class="chip-drag chip-dark" type="button" data-chip style="left:38%;top:78%">Git</button>
+        <button class="chip-drag chip-outline" type="button" data-chip style="left:82%;top:18%">SQLite</button>
+      </div>
+      <div class="toolbox-status"><span><i aria-hidden="true"></i>10 modules loaded</span><span>Move any module around the field</span></div>
+    </div>
   </div>
 </section>

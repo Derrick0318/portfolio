@@ -14,11 +14,34 @@
     <div class="demo-window" data-detail-reveal style="--spot-x: 50%; --spot-y: 50%;">
       <div class="window-topbar">
         <span class="window-path"><i aria-hidden="true"></i> src/{{ project.slug }}/preview</span>
-        <span class="window-status">live / embedded</span>
-        <a href="{{ project.demo_url }}" target="_blank" rel="noopener noreferrer">Open demo <span aria-hidden="true">↗</span></a>
+        <span class="window-status">{{ 'interactive / demo' if project.preview_mode == 'native_demo' else ('native / expo' if project.preview_mode == 'native' else 'live / embedded') }}</span>
+        {% if project.demo_url %}<a href="{{ project.demo_url }}" target="_blank" rel="noopener noreferrer">Open demo <span aria-hidden="true">↗</span></a>{% endif %}
       </div>
       <div class="window-viewport">
-        <iframe src="{{ project.demo_url }}" title="{{ project.title }} demo" loading="lazy" referrerpolicy="same-origin"></iframe>
+        {% if project.preview_mode == 'native' %}
+          <div class="native-app-preview">
+            <div class="native-app-device" aria-hidden="true">
+              <div class="native-app-device-bar"><span></span><span></span><span></span></div>
+              <div class="native-app-screen">
+                <div class="native-app-brand"><img src="{{ project.preview_image }}" alt=""><span>TrackWize</span></div>
+                <div class="native-app-greeting">Good morning<span>Keep your month clear.</span></div>
+                <div class="native-app-balance"><span>Available balance</span><strong>RM 2,480.00</strong></div>
+                <div class="native-app-bars"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+                <div class="native-app-cards"><span>Transactions</span><span>Budget Waterfall</span><span>Utilities</span></div>
+              </div>
+            </div>
+            <div class="native-app-copy">
+              <span class="native-app-kicker">real source / mobile build</span>
+              <h2>Track spending without losing the thread.</h2>
+              <p>Built with the uploaded Expo / React Native source, local SQLite data, and native mobile workflows.</p>
+              <div class="native-app-tags"><span>Offline-first</span><span>MYR</span><span>Private local data</span></div>
+            </div>
+            </div>
+        {% elif project.preview_mode == 'native_demo' %}
+          {% include "projects/_trackwize_demo.html" %}
+        {% else %}
+          <iframe src="{{ project.demo_url }}" title="{{ project.title }} demo" loading="lazy" referrerpolicy="same-origin"></iframe>
+        {% endif %}
         <span class="window-scan" aria-hidden="true"></span>
       </div>
     </div>

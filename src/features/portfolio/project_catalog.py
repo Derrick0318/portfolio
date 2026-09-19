@@ -1,7 +1,37 @@
 PROJECTS = [
     {
-        "slug": "crop-yield",
+        "slug": "trackwize",
         "number": "01",
+        "title": "TrackWize",
+        "category": "Expo / React Native App",
+        "year": "2026",
+        "role": "Mobile App Development",
+        "summary": "An offline-first MYR expense tracker built for everyday budgeting and private financial planning.",
+        "background": "React Native, Expo, SQLite, device utilities, and a focused mobile-first design system.",
+        "short_description": (
+            "TrackWize is an offline-first MYR expense tracker with transactions, budgets, utilities, "
+            "analytics, backup tools, app lock, and private local data."
+        ),
+        "url": "/projects/trackwize/",
+        "demo_url": None,
+        "status": "Native app build",
+        "image": None,
+        "preview_image": "/static/images/portfolio/trackwize-ui.png",
+        "preview_mode": "native_demo",
+        "visual_style": "trackwize",
+        "detail_variant": "app",
+        "featured": True,
+        "details": [
+            "Built an Expo / React Native app with a clear monthly overview for income, spending, and remaining balance.",
+            "Implemented local SQLite storage for transactions, categories, budgets, utilities, analytics, and backup flows.",
+            "Added practical mobile safeguards including app lock, biometric support, private local data, and offline-first behaviour.",
+        ],
+        "preview_stack": ["React Native", "Expo", "SQLite", "TypeScript"],
+        "stack": ["React Native", "Expo", "TypeScript", "SQLite", "React Navigation", "EAS Build"],
+    },
+    {
+        "slug": "crop-yield",
+        "number": "02",
         "title": "Crop Yield AI",
         "category": "Final Year Project",
         "year": "2025",
@@ -17,6 +47,7 @@ PROJECTS = [
         "demo_url": "/projects/crop-yield/demo/",
         "status": "Interactive preview",
         "image": None,
+        "featured": True,
         "visual_style": "crop-ai",
         "detail_variant": "ai",
         "workflow": [
@@ -63,7 +94,7 @@ PROJECTS = [
     },
     {
         "slug": "residential",
-        "number": "02",
+        "number": "03",
         "title": "168 Park Selayang",
         "category": "Residential Website",
         "year": "2025",
@@ -79,6 +110,7 @@ PROJECTS = [
         "demo_url": "/projects/residential/demo/",
         "status": "Original pages",
         "image": "/projects/residential/assets/home/park_selayang.jpg",
+        "featured": True,
         "detail_variant": "property",
         "details": [
             "Supported the backend and database side for a full residential property website.",
@@ -90,7 +122,7 @@ PROJECTS = [
     },
     {
         "slug": "m4food",
-        "number": "03",
+        "number": "04",
         "title": "M4Food",
         "category": "MAUI Food Donation App",
         "year": "2025",
@@ -106,6 +138,7 @@ PROJECTS = [
         "demo_url": "/projects/m4food/demo/",
         "status": "Portfolio showcase",
         "image": "/projects/m4food/assets/chococake.png",
+        "featured": True,
         "visual_style": "m4food",
         "detail_variant": "app",
         "details": [
@@ -118,7 +151,7 @@ PROJECTS = [
     },
     {
         "slug": "utsmartbot",
-        "number": "04",
+        "number": "05",
         "title": "UTSmartBot",
         "category": "AI Chatbot",
         "year": "2024",
@@ -134,6 +167,7 @@ PROJECTS = [
         "demo_url": "/projects/utsmartbot/demo/",
         "status": "Local demo",
         "image": None,
+        "featured": False,
         "visual_style": "chatbot",
         "detail_variant": "chat",
         "details": [

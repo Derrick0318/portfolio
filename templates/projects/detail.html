@@ -12,7 +12,9 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  {% if project.preview_mode == 'native_demo' %}<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">{% endif %}
   <link rel="stylesheet" href="{{ url_for('static', filename='css/projects/cs-student-detail.css') }}?v=1">
+  {% if project.preview_mode == 'native_demo' %}<link rel="stylesheet" href="{{ url_for('static', filename='css/projects/trackwize-demo.css') }}?v=5">{% endif %}
   <link rel="stylesheet" href="{{ url_for('static', filename='css/portfolio/crosshair.css') }}?v=4">
 </head>
 <body class="project-page">
@@ -30,6 +32,7 @@
     {% include "projects/_project_details.html" %}
   </main>
   <script src="{{ url_for('static', filename='js/projects/detail-effects.js') }}?v=1" defer></script>
+  {% if project.preview_mode == 'native_demo' %}<script src="{{ url_for('static', filename='js/projects/trackwize-demo.js') }}?v=3" defer></script>{% endif %}
   <script src="{{ url_for('static', filename='js/portfolio/crosshair.js') }}?v=4" defer></script>
 </body>
 </html>

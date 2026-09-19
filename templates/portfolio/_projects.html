@@ -1,26 +1,47 @@
+{% macro project_row(project, is_additional=false) %}
+  {% set preview_image = project.preview_image if project.preview_image else url_for('static', filename='images/portfolio/' ~ project.slug ~ '.webp') %}
+  <a class="proj-row" href="{{ project.url }}" data-proj{% if is_additional %} data-project-disclosure-row{% endif %} data-title="{{ project.title }}" data-image="{{ preview_image }}" aria-label="Open {{ project.title }} project">
+    <span class="proj-num">{{ project.number }}</span>
+    <span class="proj-thumb"><img src="{{ preview_image }}" alt="" loading="lazy"></span>
+    <span class="proj-body">
+      <span class="proj-overline"><span>{{ project.category }}</span><span>{{ project.year }}</span></span>
+      <span class="proj-title-big">{{ project.title }}</span>
+      <span class="proj-sub">{{ project.summary }}</span>
+      <span class="proj-stack">{% for item in project.preview_stack %}<span>{{ item }}</span>{% endfor %}</span>
+    </span>
+    <span class="proj-row-arrow" aria-hidden="true">↗</span>
+  </a>
+{% endmacro %}
+
 <section id="projects">
   <div class="wrap">
     <div class="projects-layout">
       <div class="projects-intro">
         <div class="section-tag scroll-reveal" data-reveal>selected_work/</div>
         <h2 class="scroll-reveal motion-heading" data-reveal>Built to work,<br>not just to demo.</h2>
-        <p class="scroll-reveal" data-reveal>Four academic projects across applied AI, web systems, mobile interfaces, and backend integration.</p>
+        <p class="scroll-reveal" data-reveal>Four selected builds across applied AI, web systems, mobile interfaces, and native app development.</p>
         <span class="hover-instruction scroll-reveal" data-reveal><span aria-hidden="true">+</span> Hover a project to inspect</span>
       </div>
-      <div class="proj-list" id="proj-list">
-        {% for project in projects %}
-        <a class="proj-row" href="{{ project.url }}" data-proj data-title="{{ project.title }}" data-image="{{ url_for('static', filename='images/portfolio/' ~ project.slug ~ '.webp') }}" aria-label="Open {{ project.title }} project">
-          <span class="proj-num">{{ project.number }}</span>
-          <span class="proj-thumb"><img src="{{ url_for('static', filename='images/portfolio/' ~ project.slug ~ '.webp') }}" alt="" loading="lazy"></span>
-          <span class="proj-body">
-            <span class="proj-overline"><span>{{ project.category }}</span><span>{{ project.year }}</span></span>
-            <span class="proj-title-big">{{ project.title }}</span>
-            <span class="proj-sub">{{ project.summary }}</span>
-            <span class="proj-stack">{% for item in project.preview_stack %}<span>{{ item }}</span>{% endfor %}</span>
-          </span>
-          <span class="proj-row-arrow" aria-hidden="true">↗</span>
-        </a>
-        {% endfor %}
+      <div class="projects-workspace">
+        <div class="proj-list" id="proj-list">
+          {% for project in featured_projects %}
+            {{ project_row(project) }}
+          {% endfor %}
+        </div>
+        {% if additional_projects %}
+          <div class="project-disclosure" data-project-disclosure>
+            <button class="projects-toggle" type="button" data-project-disclosure-toggle aria-expanded="false" aria-controls="additional-projects">
+              <span class="projects-toggle-icon" aria-hidden="true">+</span>
+              <span class="projects-toggle-label">View all projects</span>
+              <span class="projects-toggle-meta">{{ '%02d'|format(additional_projects|length) }} more build{{ '' if additional_projects|length == 1 else 's' }}</span>
+            </button>
+            <div class="proj-list project-disclosure-panel" id="additional-projects" data-project-disclosure-panel hidden inert>
+              {% for project in additional_projects %}
+                {{ project_row(project, true) }}
+              {% endfor %}
+            </div>
+          </div>
+        {% endif %}
       </div>
     </div>
   </div>

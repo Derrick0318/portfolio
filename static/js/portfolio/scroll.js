@@ -129,12 +129,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const setupProjects = () => {
     const rows = gsap?.utils?.toArray("[data-proj]") || Array.from(document.querySelectorAll("[data-proj]"));
+    const entranceRows = rows.filter((row) => !row.hasAttribute("data-project-disclosure-row"));
     const preview = document.querySelector("#hover-preview");
     const previewImage = document.querySelector("#hp-image");
     const previewName = document.querySelector("#hp-name");
 
     if (hasGsap && !reduceMotion) {
-      rows.forEach((row, index) => {
+      entranceRows.forEach((row, index) => {
         gsap.fromTo(row,
           { autoAlpha: 0, y: 28 },
           { autoAlpha: 1, y: 0, duration: .72, ease: "power3.out", delay: index * .06,
@@ -144,7 +145,7 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     } else {
       if (reduceMotion || !("IntersectionObserver" in window)) {
-        rows.forEach((row) => row.classList.add("is-visible"));
+        entranceRows.forEach((row) => row.classList.add("is-visible"));
       } else {
         document.body.classList.add("no-gsap");
         const observer = new IntersectionObserver((entries) => {
@@ -154,11 +155,10 @@ document.addEventListener("DOMContentLoaded", () => {
             observer.unobserve(entry.target);
           });
         }, { rootMargin: "0px 0px -12% 0px", threshold: .01 });
-        rows.forEach((row) => observer.observe(row));
+        entranceRows.forEach((row) => observer.observe(row));
       }
     }
 
-    if (!preview || !previewImage || !previewName || !window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
     let activeRow = null;
     let pointerX = 0;
     let pointerY = 0;
@@ -218,10 +218,15 @@ document.addEventListener("DOMContentLoaded", () => {
       activeRowBounds = null;
       if (frameId) cancelAnimationFrame(frameId);
       frameId = 0;
+      if (!preview) return;
       preview.classList.remove("is-visible");
       preview.style.opacity = "0";
       preview.style.transform = "translate3d(-999px, -999px, 0) rotate(-3deg) scale(.88)";
     };
+
+    window.addEventListener("project-disclosure:collapse", hidePreview);
+
+    if (!preview || !previewImage || !previewName || !window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
 
     rows.forEach((row, index) => {
       row.addEventListener("pointerenter", (event) => {

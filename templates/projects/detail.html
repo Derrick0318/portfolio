@@ -15,7 +15,7 @@
   {% if project.preview_mode == 'native_demo' %}<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">{% endif %}
   <link rel="stylesheet" href="{{ url_for('static', filename='css/projects/cs-student-detail.css') }}?v=1">
   {% if project.preview_mode == 'native_demo' %}<link rel="stylesheet" href="{{ url_for('static', filename='css/projects/trackwize-demo.css') }}?v=5">{% endif %}
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/portfolio/crosshair.css') }}?v=4">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/portfolio/crosshair.css') }}?v=5">
 </head>
 <body class="project-page">
   <a class="skip-link" href="#main-content">Skip to content</a>
@@ -33,6 +33,6 @@
   </main>
   <script src="{{ url_for('static', filename='js/projects/detail-effects.js') }}?v=1" defer></script>
   {% if project.preview_mode == 'native_demo' %}<script src="{{ url_for('static', filename='js/projects/trackwize-demo.js') }}?v=3" defer></script>{% endif %}
-  <script src="{{ url_for('static', filename='js/portfolio/crosshair.js') }}?v=4" defer></script>
+  <script src="{{ url_for('static', filename='js/portfolio/crosshair.js') }}?v=5" defer></script>
 </body>
 </html>

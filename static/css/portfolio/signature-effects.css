@@ -1,0 +1,208 @@
+/* Signature effects: grid flashlight, tech ticker, glow borders, border beam,
+   magnetic buttons, skill graph, inspector decode, click glyphs.
+   Everything here animates transform/opacity or small painted rings only. */
+
+@property --beam-angle {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+
+/* ---------- Hero: grid lights up around the pointer ---------- */
+.hero-grid-bg::after {
+  position: absolute;
+  inset: 0;
+  content: "";
+  opacity: 0;
+  background-image:
+    linear-gradient(rgba(36, 87, 255, .42) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(36, 87, 255, .42) 1px, transparent 1px);
+  background-size: 3rem 3rem;
+  -webkit-mask-image: radial-gradient(11rem circle at var(--pointer-x) var(--pointer-y), #000 0%, rgba(0, 0, 0, .35) 45%, transparent 72%);
+  mask-image: radial-gradient(11rem circle at var(--pointer-x) var(--pointer-y), #000 0%, rgba(0, 0, 0, .35) 45%, transparent 72%);
+  transition: opacity .45s ease;
+}
+.hero:hover .hero-grid-bg::after { opacity: 1; }
+
+/* ---------- Hero console: glare that follows the tilt ---------- */
+.hero-console > .console-glare {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  opacity: 0;
+  background: radial-gradient(22rem circle at var(--glare-x, 50%) var(--glare-y, 0%), rgba(126, 160, 255, .16), transparent 62%);
+  transition: opacity .35s ease;
+}
+.hero-console:hover > .console-glare { opacity: 1; }
+.console-status-text { white-space: pre; }
+
+/* ---------- Hero: scrolling tech ticker ---------- */
+.hero-ticker {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1;
+  display: flex;
+  overflow: hidden;
+  padding: .7rem 0;
+  border-top: 1px solid var(--line);
+  background: rgba(243, 245, 247, .72);
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
+}
+.hero-ticker-track {
+  display: flex;
+  flex-shrink: 0;
+  gap: 2.2rem;
+  padding-right: 2.2rem;
+  animation: ticker-scroll 38s linear infinite;
+}
+.hero-ticker:hover .hero-ticker-track { animation-play-state: paused; }
+.hero-ticker span {
+  color: var(--muted);
+  font-family: var(--mono);
+  font-size: .72rem;
+  white-space: nowrap;
+  transition: color .2s ease;
+}
+.hero-ticker span::before { margin-right: .55rem; color: var(--blue); content: "/"; }
+.hero-ticker span:hover { color: var(--ink); }
+@keyframes ticker-scroll { to { transform: translateX(-100%); } }
+
+/* ---------- Magnetic buttons ---------- */
+.btn { transition: color .2s ease, background .2s ease, border-color .2s ease, transform .25s var(--ease), box-shadow .25s var(--ease), translate .45s var(--ease); }
+.nav-availability { transition: translate .45s var(--ease), color .2s ease; }
+.nav-availability:hover { color: var(--blue); }
+[data-magnetic].is-magnetized { transition-duration: .2s, .2s, .2s, .25s, .25s, .12s; }
+.nav-availability.is-magnetized { transition-duration: .12s, .2s; }
+
+/* ---------- Glow border that follows the pointer across a group ---------- */
+.tl-copy, .work-experience-card { position: relative; }
+.glow-card::after {
+  position: absolute;
+  inset: var(--glow-inset, -1px);
+  z-index: 3;
+  padding: 1px;
+  pointer-events: none;
+  content: "";
+  border-radius: inherit;
+  opacity: 0;
+  background: radial-gradient(15rem circle at var(--glow-x, -30rem) var(--glow-y, -30rem), rgba(36, 87, 255, .85), rgba(36, 87, 255, .22) 42%, transparent 70%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+  transition: opacity .35s ease;
+}
+.stat.glow-card { --glow-inset: 0; }
+.stat.glow-card::before {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  content: "";
+  opacity: 0;
+  background: radial-gradient(12rem circle at var(--glow-x, -30rem) var(--glow-y, -30rem), rgba(36, 87, 255, .07), transparent 70%);
+  transition: opacity .35s ease;
+}
+.glow-group.is-glowing .glow-card::after,
+.glow-group.is-glowing .stat.glow-card::before { opacity: 1; }
+
+/* ---------- Project rows: rotating border beam on hover ---------- */
+.proj-row::after {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  padding: 1px;
+  pointer-events: none;
+  content: "";
+  border-radius: inherit;
+  opacity: 0;
+  background: conic-gradient(from var(--beam-angle), transparent 0 62%, rgba(36, 87, 255, .15) 72%, rgba(36, 87, 255, .95) 86%, #9db4ff 90%, transparent 94%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+  transition: opacity .3s ease;
+}
+.proj-row:hover::after,
+.proj-row:focus-visible::after { opacity: 1; animation: beam-spin 2.8s linear infinite; }
+@keyframes beam-spin { to { --beam-angle: 360deg; } }
+.proj-num { transition: color .25s ease; }
+.proj-row:hover .proj-num { color: var(--blue); }
+
+/* ---------- Project inspector: decode scan when the image swaps ---------- */
+.hp-card { position: relative; }
+.hp-scan {
+  position: absolute;
+  right: .55rem;
+  left: .55rem;
+  top: 0;
+  z-index: 2;
+  height: 2px;
+  pointer-events: none;
+  opacity: 0;
+  background: linear-gradient(90deg, transparent, #7ea0ff, transparent);
+  box-shadow: 0 0 12px rgba(126, 160, 255, .8);
+}
+.hp-status::before {
+  display: inline-block;
+  width: .38rem;
+  height: .38rem;
+  margin-right: .35rem;
+  border-radius: 50%;
+  content: "";
+  background: var(--green);
+  vertical-align: .05rem;
+  animation: cursor-blink 1s steps(1) infinite;
+}
+
+#hover-preview { scale: .94; transition: opacity .15s ease-out, scale .28s cubic-bezier(.34, 1.56, .64, 1); }
+#hover-preview.is-visible { scale: 1; }
+
+/* ---------- Toolbox: node graph between skills ---------- */
+.toolbox-links {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+}
+.toolbox-links line {
+  stroke: rgba(36, 87, 255, .4);
+  stroke-width: 1;
+  stroke-dasharray: 3 5;
+  transition: stroke .2s ease, opacity .2s ease;
+}
+.toolbox-links line.is-hidden { opacity: 0; }
+.toolbox-links line.is-active {
+  stroke: rgba(36, 87, 255, .85);
+  stroke-dasharray: 5 4;
+  animation: link-flow .7s linear infinite;
+}
+@keyframes link-flow { to { stroke-dashoffset: -18; } }
+.chip-drag.is-gliding { z-index: 4; transition: none; will-change: transform; }
+.toolbox-links { transition: opacity .8s ease .5s; }
+.reveal-ready .toolbox-shell:not(.is-visible) .toolbox-links { opacity: 0; }
+.toolbox-coords { font-variant-numeric: tabular-nums; transition: color .2s ease; }
+.toolbox-coords.is-live { color: var(--blue); }
+
+.reveal-ready .toolbox-shell:not(.is-visible) .chip-drag { opacity: 0; }
+.reveal-ready .toolbox-shell.is-visible .chip-drag { animation: chip-pop .62s cubic-bezier(.34, 1.56, .64, 1) both; animation-delay: calc(var(--chip-i, 0) * 60ms + .2s); }
+@keyframes chip-pop { from { opacity: 0; scale: .55; } to { opacity: 1; scale: 1; } }
+
+/* ---------- Contact terminal typing ---------- */
+.contact-terminal a.is-typing { text-overflow: clip; }
+
+@media (max-width: 48rem) {
+  .hero-ticker { padding: .6rem 0; }
+  .hero-ticker span { font-size: .68rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-ticker-track { animation: none; }
+  .proj-row:hover::after { animation: none; }
+  .reveal-ready .toolbox-shell .chip-drag { opacity: 1 !important; animation: none !important; }
+  .toolbox-links line.is-active { animation: none; }
+}

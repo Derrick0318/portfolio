@@ -71,6 +71,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const rotateX = Math.max(-4, Math.min(4, y * -7));
     const rotateY = Math.max(-5, Math.min(5, x * 8));
     panel.style.transform = `perspective(1100px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translate3d(0, -3px, 0)`;
+    panel.style.setProperty("--glare-x", `${(x + .5) * 100}%`);
+    panel.style.setProperty("--glare-y", `${(y + .5) * 100}%`);
   };
 
   panel.addEventListener("pointerenter", () => {

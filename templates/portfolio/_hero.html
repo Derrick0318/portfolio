@@ -6,8 +6,8 @@
       <h1 class="hero-title"><span class="hero-line">I build software</span><span class="hero-line hero-line-accent">that feels clear to use.</span></h1>
       <p class="hero-sub">Computer Science student turning coursework into practical web, mobile, backend, and AI-supported products.</p>
       <div class="hero-actions">
-        <a class="btn btn-primary" href="#projects"><span>Explore projects</span><span aria-hidden="true">↘</span></a>
-        <a class="btn btn-ghost" href="#contact"><span>Start a conversation</span><span aria-hidden="true">↗</span></a>
+        <a class="btn btn-primary" href="#projects" data-magnetic><span>Explore projects</span><span aria-hidden="true">↘</span></a>
+        <a class="btn btn-ghost" href="#contact" data-magnetic><span>Start a conversation</span><span aria-hidden="true">↗</span></a>
       </div>
       <dl class="hero-metrics" aria-label="Portfolio summary">
         <div class="hero-metric"><dt>Projects</dt><dd>04</dd></div>
@@ -32,10 +32,15 @@
       </ol>
       <div class="console-output">
         <span class="console-check" aria-hidden="true">✓</span>
-        <span>Build completed</span>
+        <span class="console-status-text" data-console-status>Build completed</span>
         <span class="console-cursor" aria-hidden="true"></span>
       </div>
       <div class="console-footer"><span>Python</span><span>Flask</span><span>JavaScript</span><span>Supabase</span></div>
+      <span class="console-glare" aria-hidden="true"></span>
     </aside>
+  </div>
+  <div class="hero-ticker" aria-hidden="true">
+    {% set ticker = ["Python", "Flask", "JavaScript", "TypeScript", "React Native", "Expo", "C#", ".NET MAUI", "Supabase", "SQLite", "Firebase", "OpenCV", "scikit-learn", "Gemini AI", "Git"] %}
+    {% for _ in range(2) %}<div class="hero-ticker-track">{% for item in ticker %}<span>{{ item }}</span>{% endfor %}</div>{% endfor %}
   </div>
 </header>

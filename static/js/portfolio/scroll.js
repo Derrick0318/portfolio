@@ -202,6 +202,21 @@ document.addEventListener("DOMContentLoaded", () => {
       preview.style.transform = `translate3d(${x}px, ${y}px, 0) rotate(${rotation}deg)`;
     };
 
+    const previewScan = preview?.querySelector(".hp-scan");
+    const playInspectorScan = () => {
+      if (reduceMotion || !previewImage.animate) return;
+      const top = previewImage.offsetTop;
+      const height = previewImage.offsetHeight;
+      previewImage.animate(
+        [{ clipPath: "inset(0 0 100% 0)", filter: "brightness(1.5) saturate(.2)" }, { clipPath: "inset(0 0 0% 0)", filter: "none" }],
+        { duration: 320, easing: "cubic-bezier(.16, .84, .44, 1)" }
+      );
+      previewScan?.animate(
+        [{ transform: `translateY(${top}px)`, opacity: 1 }, { transform: `translateY(${top + height}px)`, opacity: 0 }],
+        { duration: 340, easing: "cubic-bezier(.16, .84, .44, 1)" }
+      );
+    };
+
     const movePreview = (event) => {
       pointerX = event.clientX;
       pointerY = event.clientY;
@@ -242,6 +257,7 @@ document.addEventListener("DOMContentLoaded", () => {
         movePreview(event);
         preview.style.opacity = "1";
         preview.classList.add("is-visible");
+        playInspectorScan();
       });
       row.addEventListener("pointermove", (event) => {
         if (activeRow !== row) return;
@@ -291,70 +307,252 @@ document.addEventListener("DOMContentLoaded", () => {
     const toolbox = document.querySelector("#toolbox");
     if (!toolbox) return;
     const chips = Array.from(toolbox.querySelectorAll("[data-chip]"));
-    chips.forEach((chip) => {
-      const state = {
-        pointerId: null,
-        startPointerX: 0,
-        startPointerY: 0,
-        lastPointerX: 0,
-        startX: 0,
-        startY: 0,
-        x: 0,
-        y: 0,
-        angle: 0,
-        scale: 1
+    const linksLayer = toolbox.querySelector("[data-toolbox-links]");
+    const coords = document.querySelector("[data-toolbox-coords]");
+    const coordsIdle = coords ? coords.textContent : "";
+    const svgNS = "http://www.w3.org/2000/svg";
+    const edge = 8;
+    const clamp = (min, max, value) => Math.min(Math.max(value, min), Math.max(min, max));
+    const lines = [];
+    let fieldWidth = 0;
+    let fieldHeight = 0;
+    let linkFrame = 0;
+    let focusIndex = -1;
+    let coordsTimer = 0;
+
+    const nodes = chips.map((chip, index) => {
+      chip.style.setProperty("--chip-i", index);
+      return {
+        chip, index, pointerId: null,
+        startPointerX: 0, startPointerY: 0, startX: 0, startY: 0,
+        lastPointerX: 0, lastPointerY: 0, lastTime: 0,
+        x: 0, y: 0, vx: 0, vy: 0, angle: 0, scale: 1,
+        baseX: 0, baseY: 0, width: 0, height: 0, glideFrame: 0
       };
-      const clamp = (min, max, value) => Math.min(Math.max(value, min), Math.max(min, max));
-      const render = () => {
-        chip.style.transform = `translate3d(${state.x}px, ${state.y}px, 0) rotate(${state.angle}deg) scale(${state.scale})`;
+    });
+
+    const render = (node) => {
+      node.chip.style.transform = `translate3d(${node.x}px, ${node.y}px, 0) rotate(${node.angle}deg) scale(${node.scale})`;
+    };
+    const limits = (node) => ({
+      minX: edge - node.baseX,
+      maxX: fieldWidth - node.width - edge - node.baseX,
+      minY: edge - node.baseY,
+      maxY: fieldHeight - node.height - edge - node.baseY
+    });
+
+    // Link every skill to its two nearest neighbours so the field reads as a live node graph.
+    const drawLinks = () => {
+      linkFrame = 0;
+      if (!linksLayer) return;
+      const centers = nodes.map((node) => [node.baseX + node.x + node.width / 2, node.baseY + node.y + node.height / 2]);
+      const pairs = new Map();
+      centers.forEach((center, i) => {
+        centers
+          .map((other, j) => [j, (other[0] - center[0]) ** 2 + (other[1] - center[1]) ** 2])
+          .filter(([j]) => j !== i)
+          .sort((a, b) => a[1] - b[1])
+          .slice(0, 2)
+          .forEach(([j]) => pairs.set(i < j ? `${i}-${j}` : `${j}-${i}`, [Math.min(i, j), Math.max(i, j)]));
+      });
+      const edges = Array.from(pairs.values());
+      while (lines.length < edges.length) {
+        const line = document.createElementNS(svgNS, "line");
+        linksLayer.appendChild(line);
+        lines.push(line);
+      }
+      lines.forEach((line, k) => {
+        const pair = edges[k];
+        line.classList.toggle("is-hidden", !pair);
+        if (!pair) return;
+        const [a, b] = pair;
+        line.setAttribute("x1", centers[a][0].toFixed(1));
+        line.setAttribute("y1", centers[a][1].toFixed(1));
+        line.setAttribute("x2", centers[b][0].toFixed(1));
+        line.setAttribute("y2", centers[b][1].toFixed(1));
+        line.classList.toggle("is-active", a === focusIndex || b === focusIndex);
+      });
+    };
+    const queueLinks = () => {
+      if (!linkFrame) linkFrame = requestAnimationFrame(drawLinks);
+    };
+
+    const showCoords = (node) => {
+      if (!coords) return;
+      window.clearTimeout(coordsTimer);
+      coords.textContent = `${node.chip.textContent.trim()} → x:${Math.round(node.baseX + node.x)} y:${Math.round(node.baseY + node.y)}`;
+      coords.classList.add("is-live");
+    };
+    const resetCoords = () => {
+      if (!coords) return;
+      window.clearTimeout(coordsTimer);
+      coordsTimer = window.setTimeout(() => {
+        coords.textContent = coordsIdle;
+        coords.classList.remove("is-live");
+      }, 1200);
+    };
+
+    const measure = () => {
+      fieldWidth = toolbox.clientWidth;
+      fieldHeight = toolbox.clientHeight;
+      nodes.forEach((node) => {
+        node.baseX = node.chip.offsetLeft;
+        node.baseY = node.chip.offsetTop;
+        node.width = node.chip.offsetWidth;
+        node.height = node.chip.offsetHeight;
+        const { minX, maxX, minY, maxY } = limits(node);
+        node.x = clamp(minX, maxX, node.x);
+        node.y = clamp(minY, maxY, node.y);
+        if (node.x || node.y) render(node);
+      });
+      queueLinks();
+    };
+
+    const stopGlide = (node) => {
+      if (node.glideFrame) cancelAnimationFrame(node.glideFrame);
+      node.glideFrame = 0;
+      node.chip.classList.remove("is-gliding");
+    };
+
+    // After a flick, the chip keeps sliding with friction and bounces off the field edges.
+    const glide = (node) => {
+      let last = performance.now();
+      node.chip.classList.add("is-gliding");
+      const step = (now) => {
+        const dt = Math.min(32, now - last);
+        last = now;
+        const { minX, maxX, minY, maxY } = limits(node);
+        node.x += node.vx * dt;
+        node.y += node.vy * dt;
+        if (node.x < minX) { node.x = minX; node.vx = Math.abs(node.vx) * .55; }
+        else if (node.x > maxX) { node.x = maxX; node.vx = -Math.abs(node.vx) * .55; }
+        if (node.y < minY) { node.y = minY; node.vy = Math.abs(node.vy) * .55; }
+        else if (node.y > maxY) { node.y = maxY; node.vy = -Math.abs(node.vy) * .55; }
+        const friction = Math.pow(.935, dt / 16);
+        node.vx *= friction;
+        node.vy *= friction;
+        node.angle = clamp(-6, 6, node.vx * 5);
+        render(node);
+        showCoords(node);
+        queueLinks();
+        if (Math.hypot(node.vx, node.vy) > .02) {
+          node.glideFrame = requestAnimationFrame(step);
+          return;
+        }
+        node.angle = 0;
+        render(node);
+        stopGlide(node);
+        resetCoords();
       };
+      node.glideFrame = requestAnimationFrame(step);
+    };
+
+    nodes.forEach((node) => {
+      const { chip } = node;
       const move = (event) => {
-        if (event.pointerId !== state.pointerId) return;
-        const bounds = toolbox.getBoundingClientRect();
-        const baseX = chip.offsetLeft;
-        const baseY = chip.offsetTop;
-        const maxX = bounds.width - chip.offsetWidth - 8;
-        const maxY = bounds.height - chip.offsetHeight - 8;
-        const nextX = clamp(8, maxX, state.startX + event.clientX - state.startPointerX);
-        const nextY = clamp(8, maxY, state.startY + event.clientY - state.startPointerY);
-        state.x = nextX - baseX;
-        state.y = nextY - baseY;
-        state.angle = clamp(-4, 4, (event.clientX - state.lastPointerX) * .32);
-        state.lastPointerX = event.clientX;
-        render();
+        if (event.pointerId !== node.pointerId) return;
+        const { minX, maxX, minY, maxY } = limits(node);
+        node.x = clamp(minX, maxX, node.startX + event.clientX - node.startPointerX);
+        node.y = clamp(minY, maxY, node.startY + event.clientY - node.startPointerY);
+        const now = performance.now();
+        const elapsed = Math.max(1, now - node.lastTime);
+        node.vx = node.vx * .6 + ((event.clientX - node.lastPointerX) / elapsed) * .4;
+        node.vy = node.vy * .6 + ((event.clientY - node.lastPointerY) / elapsed) * .4;
+        node.angle = clamp(-4, 4, (event.clientX - node.lastPointerX) * .32);
+        node.lastPointerX = event.clientX;
+        node.lastPointerY = event.clientY;
+        node.lastTime = now;
+        render(node);
+        showCoords(node);
+        queueLinks();
       };
       const stop = (event) => {
-        if (event.pointerId !== state.pointerId) return;
-        state.pointerId = null;
-        state.angle = 0;
-        state.scale = 1;
+        if (event.pointerId !== node.pointerId) return;
+        node.pointerId = null;
+        node.angle = 0;
+        node.scale = 1;
         chip.classList.remove("is-dragging");
         chip.setAttribute("aria-grabbed", "false");
         chip.releasePointerCapture?.(event.pointerId);
         chip.removeEventListener("pointermove", move);
         chip.removeEventListener("pointerup", stop);
         chip.removeEventListener("pointercancel", stop);
-        render();
+        const stale = performance.now() - node.lastTime > 90;
+        const speed = Math.hypot(node.vx, node.vy);
+        if (!reduceMotion && !stale && speed > .12) {
+          const cap = Math.min(1, 2.4 / speed);
+          node.vx *= cap;
+          node.vy *= cap;
+          glide(node);
+          return;
+        }
+        render(node);
+        resetCoords();
       };
+
       chip.addEventListener("pointerdown", (event) => {
         if (event.button !== undefined && event.button !== 0) return;
         event.preventDefault();
-        state.pointerId = event.pointerId;
-        state.startPointerX = event.clientX;
-        state.startPointerY = event.clientY;
-        state.lastPointerX = event.clientX;
-        state.startX = chip.offsetLeft + state.x;
-        state.startY = chip.offsetTop + state.y;
-        state.scale = 1.055;
+        stopGlide(node);
+        node.pointerId = event.pointerId;
+        node.startPointerX = event.clientX;
+        node.startPointerY = event.clientY;
+        node.lastPointerX = event.clientX;
+        node.lastPointerY = event.clientY;
+        node.lastTime = performance.now();
+        node.startX = node.x;
+        node.startY = node.y;
+        node.vx = 0;
+        node.vy = 0;
+        node.scale = 1.055;
+        focusIndex = node.index;
         chip.classList.add("is-dragging");
         chip.setAttribute("aria-grabbed", "true");
-        render();
+        render(node);
+        queueLinks();
         chip.setPointerCapture?.(event.pointerId);
         chip.addEventListener("pointermove", move);
         chip.addEventListener("pointerup", stop);
         chip.addEventListener("pointercancel", stop);
       });
+
+      const focusNode = () => {
+        focusIndex = node.index;
+        queueLinks();
+      };
+      const blurNode = () => {
+        if (node.pointerId !== null) return;
+        if (focusIndex === node.index) focusIndex = -1;
+        queueLinks();
+      };
+      chip.addEventListener("pointerenter", focusNode);
+      chip.addEventListener("pointerleave", blurNode);
+      chip.addEventListener("focus", focusNode);
+      chip.addEventListener("blur", blurNode);
+
+      chip.addEventListener("keydown", (event) => {
+        const distance = event.shiftKey ? 32 : 12;
+        const delta = { ArrowLeft: [-distance, 0], ArrowRight: [distance, 0], ArrowUp: [0, -distance], ArrowDown: [0, distance] }[event.key];
+        if (!delta) return;
+        event.preventDefault();
+        stopGlide(node);
+        const { minX, maxX, minY, maxY } = limits(node);
+        node.x = clamp(minX, maxX, node.x + delta[0]);
+        node.y = clamp(minY, maxY, node.y + delta[1]);
+        render(node);
+        showCoords(node);
+        resetCoords();
+        queueLinks();
+      });
     });
+
+    measure();
+    let resizeFrame = 0;
+    window.addEventListener("resize", () => {
+      if (!resizeFrame) resizeFrame = requestAnimationFrame(() => { resizeFrame = 0; measure(); });
+    }, { passive: true });
+    window.addEventListener("load", measure, { once: true });
+    document.fonts?.ready.then(measure);
   };
 
   const setupCounters = () => {

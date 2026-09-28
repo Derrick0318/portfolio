@@ -16,9 +16,12 @@ function renderPrediction(data) {
   resultFile.textContent = data.fileName;
   yieldValue.textContent = `${data.predictedYield.toFixed(2)} T/Ha`;
   yieldClass.textContent = data.yieldClass;
-  recommendations.innerHTML = data.crops
-    .map((crop) => `<span>${crop.name} - ${crop.reason}</span>`)
-    .join("");
+  recommendations.replaceChildren();
+  (Array.isArray(data.crops) ? data.crops : []).forEach((crop) => {
+    const recommendation = document.createElement("span");
+    recommendation.textContent = `${crop.name} - ${crop.reason}`;
+    recommendations.appendChild(recommendation);
+  });
 
   const entry = document.createElement("li");
   entry.textContent = `${data.fileName} - ${data.predictedYield.toFixed(2)} T/Ha - ${data.yieldClass}`;

@@ -62,15 +62,20 @@ document.getElementById('contactForm')?.addEventListener('submit', function (eve
   
     emailjs.sendForm('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', this)
       .then(() => {
-        document.getElementById('formMessage').innerHTML =
-          '<div class="alert alert-success rounded-pill text-center">Thank you! Your message has been sent.</div>';
+        showContactMessage('success', 'Thank you! Your message has been sent.');
         form.reset();
       }, (err) => {
         console.error('EmailJS error:', err);
-        document.getElementById('formMessage').innerHTML =
-          '<div class="alert alert-danger rounded-pill text-center">Sorry, something went wrong. Please try again later.</div>';
+        showContactMessage('error', 'Sorry, something went wrong. Please try again later.');
       });
   });
+
+  function showContactMessage(status, text) {
+    const message = document.createElement('div');
+    message.className = `alert ${status === 'success' ? 'alert-success' : 'alert-danger'} rounded-pill text-center`;
+    message.textContent = text;
+    document.getElementById('formMessage')?.replaceChildren(message);
+  }
   
 
 document.getElementById('mortgageForm')?.addEventListener('submit', function (event) {
@@ -99,50 +104,52 @@ document.getElementById('mortgageForm')?.addEventListener('submit', function (ev
     const fmt = amt => 
       amt.toLocaleString('en-MY', { style: 'currency', currency: 'MYR' });
   
-    document.getElementById('result').innerHTML = `
-      <div class="card" data-aos="fade-up">
-        <div class="card-body">
-          <h5 class="card-title">Your Financial Plan</h5>
-          <p><strong>Loan Amount:</strong> ${fmt(loanAmount)}</p>
-          <p><strong>Down Payment:</strong> ${fmt(downPayment)}</p>
-          <p><strong>Principal:</strong> ${fmt(principal)}</p>
-          <p><strong>Interest Rate:</strong> ${annualRatePct.toFixed(2)}%</p>
-          <p><strong>Tenure:</strong> ${tenureYears} years (${monthsTotal} months)</p>
-          <hr>
-          <p><strong>Monthly Payment:</strong> ${fmt(monthlyPayment)}</p>
-          <p><strong>Total Payment:</strong> ${fmt(totalPayment)}</p>
-          <p><strong>Total Interest:</strong> ${fmt(totalInterest)}</p>
-          <p class="text-muted small">*This is an estimate. Contact us for a detailed schedule.</p>
-        </div>
-      </div>
-    `;
+    const resultCard = document.createElement('div');
+    resultCard.className = 'card';
+    resultCard.dataset.aos = 'fade-up';
+    const resultBody = document.createElement('div');
+    resultBody.className = 'card-body';
+    const heading = document.createElement('h5');
+    heading.className = 'card-title';
+    heading.textContent = 'Your Financial Plan';
+    resultBody.appendChild(heading);
+
+    const addResultLine = (label, value) => {
+      const line = document.createElement('p');
+      const labelElement = document.createElement('strong');
+      labelElement.textContent = `${label}: `;
+      line.append(labelElement, document.createTextNode(value));
+      resultBody.appendChild(line);
+    };
+    addResultLine('Loan Amount', fmt(loanAmount));
+    addResultLine('Down Payment', fmt(downPayment));
+    addResultLine('Principal', fmt(principal));
+    addResultLine('Interest Rate', `${annualRatePct.toFixed(2)}%`);
+    addResultLine('Tenure', `${tenureYears} years (${monthsTotal} months)`);
+    resultBody.appendChild(document.createElement('hr'));
+    addResultLine('Monthly Payment', fmt(monthlyPayment));
+    addResultLine('Total Payment', fmt(totalPayment));
+    addResultLine('Total Interest', fmt(totalInterest));
+    const note = document.createElement('p');
+    note.className = 'text-muted small';
+    note.textContent = '*This is an estimate. Contact us for a detailed schedule.';
+    resultBody.appendChild(note);
+    resultCard.appendChild(resultBody);
+    document.getElementById('result').replaceChildren(resultCard);
   });
-  
 
 document.getElementById('loanTenure')?.addEventListener('input', function () {
     document.getElementById('tenureValue').textContent = `${this.value} Years`;
 });
 
-const floorModal = document.getElementById('floorPlanModal');
-floorModal.addEventListener('show.bs.modal', e => {
-  const card = e.relatedTarget;
-  const imgSrc  = card.getAttribute('data-img');
-  const title   = card.getAttribute('data-title');
-  const desc    = card.getAttribute('data-desc');
-
-  floorModal.querySelector('.modal-title').textContent       = title;
-  floorModal.querySelector('#modalFloorImage').src           = imgSrc;
-  floorModal.querySelector('#modalFloorImage').alt           = title;
-  floorModal.querySelector('#modalFloorDescription').innerHTML = `<p>${desc}</p>`;
-});
-
 document.addEventListener("DOMContentLoaded", () => {
     const modalEl   = document.getElementById("floorPlanModal");
+    if (!modalEl) return;
     const wrapper   = modalEl.querySelector("#modalWrapper");
     const floorModal = new bootstrap.Modal(modalEl);
   
     modalEl.addEventListener("hidden.bs.modal", () => {
-      wrapper.innerHTML = "";
+      wrapper.replaceChildren();
       document.body.classList.remove("modal-open");
       document.querySelectorAll(".modal-backdrop").forEach(b => b.remove());
     });
@@ -150,7 +157,7 @@ document.addEventListener("DOMContentLoaded", () => {
     document.querySelectorAll(".floor-plans-section .card").forEach(card => {
       card.style.cursor = "pointer";
       card.addEventListener("click", () => {
-        wrapper.innerHTML = "";
+        wrapper.replaceChildren();
   
         const style = getComputedStyle(card);
         wrapper.style.backgroundColor = style.backgroundColor;
@@ -194,4 +201,3 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     });
   });
-  

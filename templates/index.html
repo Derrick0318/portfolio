@@ -303,8 +303,14 @@
             } else {
                 messageElement.classList.add('ai-message');
             }
-            const messageContent = message.sender === 'UTSmartBot' ? `<strong>${message.content}</strong>` : message.content;
-            messageElement.innerHTML = `<strong>${message.sender}:</strong> ${message.content.replace(/\n/g, '<br>')}`;
+            const senderLabel = document.createElement('strong');
+            senderLabel.textContent = `${message.sender}: `;
+            messageElement.appendChild(senderLabel);
+
+            String(message.content).split('\n').forEach((line, index) => {
+                if (index > 0) messageElement.appendChild(document.createElement('br'));
+                messageElement.appendChild(document.createTextNode(line));
+            });
             chatBox.appendChild(messageElement);
             chatBox.scrollTop = chatBox.scrollHeight;
         }

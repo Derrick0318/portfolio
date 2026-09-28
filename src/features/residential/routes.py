@@ -21,12 +21,13 @@ def detail():
 
 @residential_bp.route("/demo/")
 def demo_home():
-    return serve_file(RESIDENTIAL_DIR, "index.html")
+    return serve_file(RESIDENTIAL_DIR, "index.html", conditional=False)
 
 
 @residential_bp.route("/demo/<path:filename>")
 def demo_file(filename):
-    return serve_file(RESIDENTIAL_DIR, filename)
+    is_html = filename.lower().endswith((".html", ".htm"))
+    return serve_file(RESIDENTIAL_DIR, filename, conditional=not is_html)
 
 
 @residential_bp.route("/assets/<path:filename>")

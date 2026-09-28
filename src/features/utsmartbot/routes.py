@@ -34,6 +34,11 @@ def project_css():
     return serve_file(UTSMARTBOT_TEMPLATE_DIR, "website.css", mimetype="text/css")
 
 
+@utsmartbot_pages_bp.route("/app.js")
+def project_javascript():
+    return serve_file(UTSMARTBOT_TEMPLATE_DIR, "app.js", mimetype="text/javascript")
+
+
 @utsmartbot_api_bp.route("/website.css")
 def legacy_css():
     return serve_file(UTSMARTBOT_TEMPLATE_DIR, "website.css", mimetype="text/css")

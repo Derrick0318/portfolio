@@ -57,7 +57,7 @@
     <!-- Persistent Sidebar -->
     <aside class="app-sidebar">
         <!-- Close button for mobile -->
-        <button class="menu-close-btn" onclick="toggleSidebar()" style="display: none; position: absolute; top: 1rem; right: 1rem; color: white; background: none; border: none; font-size: 1.5rem; z-index: 1001;">
+        <button class="menu-close-btn" data-action="toggle-sidebar" style="display: none; position: absolute; top: 1rem; right: 1rem; color: white; background: none; border: none; font-size: 1.5rem; z-index: 1001;">
             <i data-lucide="x"></i>
         </button>
 
@@ -70,7 +70,7 @@
                 <p>Smart Agriculture</p>
             </div>
             <!-- Visible Close Button for Mobile -->
-            <button class="menu-close-btn-visible" onclick="toggleSidebar()" style="display: none; background: none; border: none; color: white; margin-left: auto;">
+            <button class="menu-close-btn-visible" data-action="toggle-sidebar" style="display: none; background: none; border: none; color: white; margin-left: auto;">
                 <i data-lucide="x"></i>
             </button>
         </div>
@@ -78,28 +78,28 @@
 
         <nav class="sidebar-nav">
             <div class="nav-group">
-                <a href="#" class="nav-link active" id="nav-upload" onclick="showSection('dashboard','upload-section'); return false;">
+                <a href="#" class="nav-link active" id="nav-upload" data-action="show-section" data-view="dashboard" data-section="upload-section">
                     <i data-lucide="upload-cloud"></i>
                     <span>Upload & Analyze</span>
                 </a>
 
-                <a href="#" class="nav-link" id="nav-results" onclick="showSection('dashboard','results'); return false;">
+                <a href="#" class="nav-link" id="nav-results" data-action="show-section" data-view="dashboard" data-section="results">
                     <i data-lucide="bar-chart-2"></i>
                     <span>Results</span>
                 </a>
 
-                <a href="#" class="nav-link" id="nav-history" onclick="showSection('dashboard','history-section'); return false;">
+                <a href="#" class="nav-link" id="nav-history" data-action="show-section" data-view="dashboard" data-section="history-section">
                     <i data-lucide="history"></i>
                     <span>History</span>
                 </a>
             </div>
 
             <div class="nav-group" style="margin-top: auto; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 1rem;">
-                <a href="#" class="nav-link" id="nav-settings" onclick="showSection('settings'); return false;">
+                <a href="#" class="nav-link" id="nav-settings" data-action="show-section" data-view="settings">
                     <i data-lucide="settings"></i>
                     <span>Settings</span>
                 </a>
-                <a href="#" class="nav-link" id="nav-help" onclick="showSection('help'); return false;">
+                <a href="#" class="nav-link" id="nav-help" data-action="show-section" data-view="help">
                     <i data-lucide="help-circle"></i>
                     <span>Help</span>
                 </a>
@@ -125,7 +125,7 @@
             <div id="user-profile-menu" style="display: none; flex-direction: column; align-items: center; gap: 10px; background: rgba(255,255,255,0.05); border-radius: 12px; padding: 1.25rem 1rem; border: 1px solid rgba(255,255,255,0.1); margin-top: 1rem;">
                 <img id="user-avatar" src="" alt="User Avatar" referrerpolicy="no-referrer" style="width: 56px; height: 56px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary-light); margin-bottom: 4px;">
                 <span id="user-name-display" style="font-size: 1rem; font-weight: 700; color: #ffffff; text-align: center; display: block; letter-spacing: 0.02em;"></span>
-                <button class="btn-ghost" onclick="handleLogout()" style="padding: 0.6rem 1rem; font-size: 0.85rem; width: 100%; margin-top: 10px; color: #111827; background: #ffffff; border: 1px solid rgba(0,0,0,0.1); font-weight: 700; text-transform: uppercase; border-radius: 100px;">Logout</button>
+                <button class="btn-ghost" data-action="logout" style="padding: 0.6rem 1rem; font-size: 0.85rem; width: 100%; margin-top: 10px; color: #111827; background: #ffffff; border: 1px solid rgba(0,0,0,0.1); font-weight: 700; text-transform: uppercase; border-radius: 100px;">Logout</button>
 
             </div>
 
@@ -133,14 +133,14 @@
     </aside>
 
     <!-- Overlay for mobile sidebar -->
-    <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+    <div class="sidebar-overlay" id="sidebarOverlay" data-action="toggle-sidebar"></div>
 
     <!-- Main Content Area -->
 
     <main class="app-main">
         <!-- Minimal Top Nav -->
         <header class="app-header">
-            <button class="menu-toggle" onclick="toggleSidebar()">
+            <button class="menu-toggle" data-action="toggle-sidebar">
                 <i data-lucide="layout-panel-left"></i>
             </button>
             <div class="header-divider"></div>
@@ -218,7 +218,7 @@
                 <h3 style="font-size: 1.1rem; font-weight: 700;">No Image? Try an Example</h3>
             </div>
             <section class="examples-grid">
-                <div class="example-card tilt-card" onclick="selectExampleImage('{{ url_for('crop_yield.assets', filename='field25.png') }}', 'example_1.png')">
+                <div class="example-card tilt-card" data-action="select-example" data-url="{{ url_for('crop_yield.assets', filename='field25.png') }}" data-filename="example_1.png">
                     <img src="{{ url_for('crop_yield.assets', filename='field25.png') }}" alt="Example Field 1">
                     <div class="example-overlay">
                         <div class="example-overlay-btn"><i data-lucide="play"></i> Try This</div>
@@ -227,7 +227,7 @@
                         <h4>Example 1</h4>
                     </div>
                 </div>
-                <div class="example-card tilt-card" onclick="selectExampleImage('{{ url_for('crop_yield.assets', filename='grass1-4.jpg') }}', 'example_2.jpg')">
+                <div class="example-card tilt-card" data-action="select-example" data-url="{{ url_for('crop_yield.assets', filename='grass1-4.jpg') }}" data-filename="example_2.jpg">
                     <img src="{{ url_for('crop_yield.assets', filename='grass1-4.jpg') }}" alt="Example Field 2">
                     <div class="example-overlay">
                         <div class="example-overlay-btn"><i data-lucide="play"></i> Try This</div>
@@ -236,7 +236,7 @@
                         <h4>Example 2</h4>
                     </div>
                 </div>
-                <div class="example-card tilt-card" onclick="selectExampleImage('{{ url_for('crop_yield.assets', filename='grass1-5.jpg') }}', 'example_3.jpg')">
+                <div class="example-card tilt-card" data-action="select-example" data-url="{{ url_for('crop_yield.assets', filename='grass1-5.jpg') }}" data-filename="example_3.jpg">
                     <img src="{{ url_for('crop_yield.assets', filename='grass1-5.jpg') }}" alt="Example Field 3">
                     <div class="example-overlay">
                         <div class="example-overlay-btn"><i data-lucide="play"></i> Try This</div>
@@ -294,10 +294,10 @@
                     <i data-lucide="history" class="header-icon"></i>
                     <h3>Prediction History</h3>
                     <div class="header-actions">
-                        <button class="btn-text" onclick="exportHistory()">
+                        <button class="btn-text" data-action="export-history">
                             <i data-lucide="download"></i> Export
                         </button>
-                        <button class="btn-text btn-danger" onclick="clearHistory()">
+                        <button class="btn-text btn-danger" data-action="clear-history">
                             <i data-lucide="trash-2"></i> Clear
                         </button>
                     </div>
@@ -333,7 +333,7 @@
                     <div class="profile-area">
                         <div class="avatar-wrapper">
                             <div class="avatar" id="avatarDisplay">U</div>
-                            <button class="avatar-edit-btn" id="avatarEditBtn" onclick="triggerAvatarChange()" title="Change avatar color" style="display: none;">
+                            <button class="avatar-edit-btn" id="avatarEditBtn" data-action="change-avatar" title="Change avatar color" style="display: none;">
                                 <i data-lucide="pencil"></i>
                             </button>
                         </div>
@@ -349,11 +349,11 @@
                             <div class="settings-field">
                                 <label>Organisation / Institution</label>
                                 <div class="custom-select" id="orgDropdown">
-                                    <div class="custom-select-trigger disabled" id="orgTrigger" onclick="toggleOrgDropdown()">Select your organisation...</div>
+                                    <div class="custom-select-trigger disabled" id="orgTrigger" data-action="toggle-org-dropdown">Select your organisation...</div>
                                     <div class="custom-select-options" id="orgOptions">
-                                        <input type="text" class="custom-select-search" id="orgSearch" placeholder="Search universities..." onkeyup="filterOrgs()" />
+                                        <input type="text" class="custom-select-search" id="orgSearch" placeholder="Search universities..." data-action="filter-orgs" />
                                         <div class="custom-select-list" id="orgList"></div>
-                                        <div class="custom-select-option" onclick="selectOrg('other')" style="border-top: 1px solid var(--border); font-weight: bold;">Other...</div>
+                                        <div class="custom-select-option" data-action="select-org" data-org="other" style="border-top: 1px solid var(--border); font-weight: bold;">Other...</div>
                                     </div>
                                 </div>
                                 <input type="hidden" id="profileOrg" />
@@ -361,7 +361,7 @@
                             </div>
                             <div class="settings-field">
                                 <label>Role</label>
-                                <select id="profileRole" disabled onchange="handleRoleChange()">
+                                <select id="profileRole" disabled data-change-action="role-change">
                                     <option value="researcher">Researcher</option>
                                     <option value="farmer">Farmer</option>
                                     <option value="agronomist">Agronomist</option>
@@ -373,10 +373,10 @@
                         </div>
                     </div>
                     <div class="settings-actions" style="display: flex; gap: 0.75rem;">
-                        <button class="btn-ghost" id="editProfileBtn" onclick="enableProfileEdit()" style="border: 1.5px solid var(--primary); color: var(--primary);">
+                        <button class="btn-ghost" id="editProfileBtn" data-action="edit-profile" style="border: 1.5px solid var(--primary); color: var(--primary);">
                             <i data-lucide="pencil"></i> Edit Profile
                         </button>
-                        <button class="btn-primary" id="saveProfileBtn" onclick="saveProfile()" style="display: none;">
+                        <button class="btn-primary" id="saveProfileBtn" data-action="save-profile" style="display: none;">
                             <i data-lucide="save"></i> Save Profile
                         </button>
                     </div>
@@ -396,7 +396,7 @@
                             <p class="settings-row-sub">Choose your preferred measurement unit for yield values</p>
                         </div>
                         <div class="settings-control">
-                            <select id="prefUnit" onchange="savePref('yieldUnit', this.value)">
+                            <select id="prefUnit" data-change-action="yield-unit">
                                 <option value="tha">Tonnes / Ha (T/Ha)</option>
                                 <option value="kgha">Kg / Ha</option>
                                 <option value="bushels">Bushels / Acre</option>
@@ -420,7 +420,7 @@
                         </div>
                         <div class="settings-control">
                             <label class="toggle-switch">
-                                <input type="checkbox" id="notifAnalysis" checked onchange="savePref('notifAnalysis', this.checked)">
+                                <input type="checkbox" id="notifAnalysis" checked data-change-action="notif-analysis">
                                 <span class="toggle-slider"></span>
                             </label>
                         </div>
@@ -432,7 +432,7 @@
                         </div>
                         <div class="settings-control">
                             <label class="toggle-switch">
-                                <input type="checkbox" id="notifLowYield" checked onchange="savePref('notifLowYield', this.checked)">
+                                <input type="checkbox" id="notifLowYield" checked data-change-action="notif-low-yield">
                                 <span class="toggle-slider"></span>
                             </label>
                         </div>
@@ -453,10 +453,10 @@
                             <p class="settings-row-sub" id="storageInfo">Loading storage info...</p>
                         </div>
                         <div class="settings-control" style="gap:0.5rem; display:flex; flex-direction:column;">
-                            <button class="btn-ghost btn-sm" onclick="exportHistoryFromSettings()">
+                            <button class="btn-ghost btn-sm" data-action="export-history-settings">
                                 <i data-lucide="download"></i> Export CSV
                             </button>
-                            <button class="btn-ghost btn-sm btn-danger-outline" onclick="clearHistoryFromSettings()">
+                            <button class="btn-ghost btn-sm btn-danger-outline" data-action="clear-history-settings">
                                 <i data-lucide="trash-2"></i> Clear History
                             </button>
                         </div>
@@ -467,7 +467,7 @@
                             <p class="settings-row-sub">Reset all preferences and profile data to defaults</p>
                         </div>
                         <div class="settings-control">
-                            <button class="btn-ghost btn-sm btn-danger-outline" onclick="resetAllSettings()">
+                            <button class="btn-ghost btn-sm btn-danger-outline" data-action="reset-settings">
                                 <i data-lucide="rotate-ccw"></i> Reset
                             </button>
                         </div>
@@ -537,7 +537,7 @@
                     <div class="faq-list">
 
                         <div class="faq-item">
-                            <button class="faq-q" onclick="toggleFaq(this)">
+                            <button class="faq-q" data-action="toggle-faq">
                                 <span>What image types give the best results?</span>
                                 <i data-lucide="chevron-down"></i>
                             </button>
@@ -545,7 +545,7 @@
                         </div>
 
                         <div class="faq-item">
-                            <button class="faq-q" onclick="toggleFaq(this)">
+                            <button class="faq-q" data-action="toggle-faq">
                                 <span>How is Predicted Yield calculated?</span>
                                 <i data-lucide="chevron-down"></i>
                             </button>
@@ -553,7 +553,7 @@
                         </div>
 
                         <div class="faq-item">
-                            <button class="faq-q" onclick="toggleFaq(this)">
+                            <button class="faq-q" data-action="toggle-faq">
                                 <span>What do Good / Fair / Poor yield classes mean?</span>
                                 <i data-lucide="chevron-down"></i>
                             </button>
@@ -561,7 +561,7 @@
                         </div>
 
                         <div class="faq-item">
-                            <button class="faq-q" onclick="toggleFaq(this)">
+                            <button class="faq-q" data-action="toggle-faq">
                                 <span>How are crop recommendations chosen?</span>
                                 <i data-lucide="chevron-down"></i>
                             </button>
@@ -569,7 +569,7 @@
                         </div>
 
                         <div class="faq-item">
-                            <button class="faq-q" onclick="toggleFaq(this)">
+                            <button class="faq-q" data-action="toggle-faq">
                                 <span>Can I upload multiple images at once?</span>
                                 <i data-lucide="chevron-down"></i>
                             </button>
@@ -577,7 +577,7 @@
                         </div>
 
                         <div class="faq-item">
-                            <button class="faq-q" onclick="toggleFaq(this)">
+                            <button class="faq-q" data-action="toggle-faq">
                                 <span>Is my data stored on the server?</span>
                                 <i data-lucide="chevron-down"></i>
                             </button>
@@ -585,7 +585,7 @@
                         </div>
 
                         <div class="faq-item">
-                            <button class="faq-q" onclick="toggleFaq(this)">
+                            <button class="faq-q" data-action="toggle-faq">
                                 <span>What GPS coordinates should I enter?</span>
                                 <i data-lucide="chevron-down"></i>
                             </button>
@@ -648,7 +648,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h3><i data-lucide="map-pin"></i> Add Location Data</h3>
-                <button class="close-modal" onclick="closeLocationModal()">
+                <button class="close-modal" data-action="close-location-modal">
                     <i data-lucide="x"></i>
                 </button>
             </div>
@@ -663,13 +663,13 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button class="btn-ghost" onclick="closeLocationModal()">Cancel</button>
-                <button class="btn-primary" onclick="submitLocation()">Update Prediction</button>
+                <button class="btn-ghost" data-action="close-location-modal">Cancel</button>
+                <button class="btn-primary" data-action="submit-location">Update Prediction</button>
             </div>
         </div>
     </div>
 
-    <script>
+    <script nonce="{{ csp_nonce }}">
         lucide.createIcons();
 
         // DOM Elements
@@ -888,80 +888,141 @@
             const lonDisplay = formatCoordinate(data.longitude);
             const locationProvided = data.location_provided && latDisplay !== null;
 
-            const rankBadge = rank > 0 ? `
-                <div class="rank-badge">
-                    <i data-lucide="${rank === 1 ? 'award' : 'trending-up'}"></i>
-                    ${rank === 1 ? 'Best Yield' : rank + (rank === 2 ? 'nd' : (rank === 3 ? 'rd' : 'th')) + ' Best'}
-                </div>
-            ` : '';
-
-            return `
-                <div class="multi-result-card ${rank > 0 ? 'rank-' + rank : ''}">
-                    ${rankBadge}
-                    <div class="result-card-inner">
-                        <img src="${data.previewURL || data.image_url || ''}" class="res-preview" alt="Preview"/>
-                        <div class="res-content">
-                            <h3 class="res-filename">${data.fileName || data.file_name || 'Image'}</h3>
-                            <p class="env-sub" style="margin-top:-2px; margin-bottom:10px;"></p>
-                            <div class="res-metrics">
-                                <div class="metric-box">
-                                    <p class="m-label">Predicted Yield</p>
-                                    <p class="m-val">${convertYield(data.predicted_yield).val} <span class="m-unit">${convertYield(data.predicted_yield).label}</span></p>
-                                </div>
-                                <div class="metric-box">
-                                    <p class="m-label">Yield Class</p>
-                                    <span class="class-badge class-${data.predicted_class}">${data.predicted_class}</span>
-                                </div>
+            const safeRank = Number.isInteger(rank) && rank > 0 && rank <= 15 ? rank : 0;
+            const card = document.createElement('div');
+            card.className = `multi-result-card${safeRank ? ` rank-${safeRank}` : ''}`;
+            // Fixed structure only; API and localStorage values are assigned with textContent below.
+            card.innerHTML = `
+                <div class="result-card-inner">
+                    <img class="res-preview" alt="Prediction preview" />
+                    <div class="res-content">
+                        <h3 class="res-filename"></h3>
+                        <p class="env-sub" style="margin-top:-2px; margin-bottom:10px;"></p>
+                        <div class="res-metrics">
+                            <div class="metric-box">
+                                <p class="m-label">Predicted Yield</p>
+                                <p class="m-val"><span class="yield-value"></span> <span class="m-unit yield-unit"></span></p>
                             </div>
-                            <div class="crop-recs">
-                                <p class="crop-recs-title"><i data-lucide="sparkles"></i> Recommended Crops</p>
-                                <div class="crop-list">
-                                    ${(data.top3_crops || []).map(crop => {
-                                        const name = (crop.name || crop).replace(/_/g, ' ').toUpperCase();
-                                        return `
-                                            <div class="crop-tag">
-                                                <i data-lucide="leaf"></i>
-                                                ${name}
-                                            </div>
-                                        `;
-                                    }).join('') || '<p class="env-sub">No specific recommendations</p>'}
-                                </div>
+                            <div class="metric-box">
+                                <p class="m-label">Yield Class</p>
+                                <span class="class-badge"></span>
                             </div>
-
-                            <div class="env-section">
-                                <p class="env-title"><i data-lucide="globe"></i> Environment Snapshot</p>
-                                <div class="env-grid">
-                                    <div class="env-item">
-                                        <p class="env-label">LOCATION</p>
-                                        <p class="env-val">${data.location_name || (locationProvided ? latDisplay + ', ' + lonDisplay : 'Awaiting Location')}</p>
-                                        <button class="btn-location" onclick="openLocationModal(${index})">
-                                            <i data-lucide="map-pin"></i> ${data.latitude ? 'Update' : 'Add'}
-                                        </button>
-                                    </div>
-                                    <div class="env-item">
-                                        <p class="env-label">WEATHER</p>
-                                        <p class="env-val">${weather.temp_max ? weather.temp_max + '°C' : '—'}</p>
-                                        <p class="env-sub">${weather.precipitation ? weather.precipitation + 'mm precip' : 'Forecast data'}</p>
-                                    </div>
-                                    <div class="env-item">
-                                        <p class="env-label">SOIL</p>
-                                        <p class="env-val">${soil.soil_type || '—'}</p>
-                                        <p class="env-sub">${soil.soil_ph ? 'pH ' + (soil.soil_ph/10).toFixed(1) : 'Moisture & PH'}</p>
-                                    </div>
+                        </div>
+                        <div class="crop-recs">
+                            <p class="crop-recs-title"><i data-lucide="sparkles"></i> Recommended Crops</p>
+                            <div class="crop-list"></div>
+                        </div>
+                        <div class="env-section">
+                            <p class="env-title"><i data-lucide="globe"></i> Environment Snapshot</p>
+                            <div class="env-grid">
+                                <div class="env-item">
+                                    <p class="env-label">LOCATION</p>
+                                    <p class="env-val location-value"></p>
+                                    <button class="btn-location" type="button"><i data-lucide="map-pin"></i></button>
+                                </div>
+                                <div class="env-item">
+                                    <p class="env-label">WEATHER</p>
+                                    <p class="env-val temperature-value"></p>
+                                    <p class="env-sub precipitation-value"></p>
+                                </div>
+                                <div class="env-item">
+                                    <p class="env-label">SOIL</p>
+                                    <p class="env-val soil-value"></p>
+                                    <p class="env-sub ph-value"></p>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            `;
+                </div>`;
+
+            const setText = (selector, value) => {
+                card.querySelector(selector).textContent = String(value ?? '');
+            };
+            setText('.res-filename', data.fileName || data.file_name || 'Image');
+
+            const preview = card.querySelector('.res-preview');
+            const imageURL = data.previewURL || data.image_url;
+            if (typeof imageURL === 'string' && imageURL.length <= 2048) {
+                try {
+                    const parsedURL = new URL(imageURL, window.location.origin);
+                    const isSameOrigin = parsedURL.origin === window.location.origin && ['http:', 'https:'].includes(parsedURL.protocol);
+                    const isLocalBlob = parsedURL.protocol === 'blob:' && parsedURL.origin === window.location.origin;
+                    if (isSameOrigin || isLocalBlob) preview.src = parsedURL.href;
+                } catch (_) {
+                    // Ignore malformed preview URLs; the text prediction remains usable.
+                }
+            }
+
+            const numericYield = Number(data.predicted_yield);
+            const yieldDisplay = Number.isFinite(numericYield)
+                ? convertYield(numericYield)
+                : { val: '—', label: '' };
+            setText('.yield-value', yieldDisplay.val);
+            setText('.yield-unit', yieldDisplay.label);
+
+            const yieldClass = ['Good', 'Fair', 'Poor'].includes(data.predicted_class)
+                ? data.predicted_class
+                : 'Unknown';
+            const classBadge = card.querySelector('.class-badge');
+            classBadge.textContent = yieldClass;
+            if (yieldClass !== 'Unknown') classBadge.classList.add(`class-${yieldClass}`);
+
+            const cropList = card.querySelector('.crop-list');
+            const crops = Array.isArray(data.top3_crops) ? data.top3_crops.slice(0, 3) : [];
+            crops.forEach((crop) => {
+                const rawName = crop && typeof crop === 'object' ? crop.name : crop;
+                const name = String(rawName || '').replace(/_/g, ' ').toUpperCase();
+                if (!name) return;
+                const tag = document.createElement('div');
+                tag.className = 'crop-tag';
+                const icon = document.createElement('i');
+                icon.dataset.lucide = 'leaf';
+                tag.append(icon, document.createTextNode(name));
+                cropList.appendChild(tag);
+            });
+            if (!cropList.childElementCount) {
+                const empty = document.createElement('p');
+                empty.className = 'env-sub';
+                empty.textContent = 'No specific recommendations';
+                cropList.appendChild(empty);
+            }
+
+            setText('.location-value', data.location_name || (locationProvided ? `${latDisplay}, ${lonDisplay}` : 'Awaiting Location'));
+            const locationButton = card.querySelector('.btn-location');
+            locationButton.append(document.createTextNode(data.latitude ? ' Update' : ' Add'));
+            if (Number.isInteger(index) && index >= 0 && index < currentResults.length) {
+                locationButton.addEventListener('click', () => openLocationModal(index));
+            } else {
+                locationButton.remove();
+            }
+
+            const temperature = Number(weather.temp_max);
+            setText('.temperature-value', Number.isFinite(temperature) && weather.temp_max !== '' ? `${temperature}°C` : '—');
+            const precipitation = Number(weather.precipitation);
+            setText('.precipitation-value', Number.isFinite(precipitation) && weather.precipitation !== '' ? `${precipitation}mm precip` : 'Forecast data');
+            setText('.soil-value', soil.soil_type || '—');
+            const soilPH = Number(soil.soil_ph);
+            setText('.ph-value', Number.isFinite(soilPH) && soil.soil_ph !== '' ? `pH ${(soilPH / 10).toFixed(1)}` : 'Moisture & PH');
+
+            if (safeRank) {
+                const badge = document.createElement('div');
+                badge.className = 'rank-badge';
+                const icon = document.createElement('i');
+                icon.dataset.lucide = safeRank === 1 ? 'award' : 'trending-up';
+                const suffix = safeRank === 1 ? '' : safeRank === 2 ? 'nd' : safeRank === 3 ? 'rd' : 'th';
+                badge.append(icon, document.createTextNode(safeRank === 1 ? 'Best Yield' : `${safeRank}${suffix} Best`));
+                card.insertBefore(badge, card.firstChild);
+            }
+
+            return card;
         }
 
         function renderResults() {
             const sorted = [...currentResults].filter(r => !r.error)
                 .sort((a, b) => b.predicted_yield - a.predicted_yield);
-            predictionEl.innerHTML = '';
+            predictionEl.replaceChildren();
             sorted.forEach((data, i) => {
-                predictionEl.innerHTML += createResultCard(data, i + 1, currentResults.indexOf(data));
+                predictionEl.appendChild(createResultCard(data, i + 1, currentResults.indexOf(data)));
             });
             lucide.createIcons();
         }
@@ -1063,7 +1124,7 @@
             if (uploadedFiles.length === 0) return alert('Select images first!');
             loaderText.textContent = `🤖 Optimizing and analyzing ${uploadedFiles.length} images...`;
             loaderEl.style.display = 'block';
-            predictionEl.innerHTML = '';
+            predictionEl.replaceChildren();
 
             const p = JSON.parse(localStorage.getItem('userGoogleProfile') || '{}');
             const userEmail = p.email || guestId;
@@ -1138,23 +1199,55 @@
         }
 
         function renderHistory() {
+            historyList.replaceChildren();
             if (predictionHistory.length === 0) {
-                historyList.innerHTML = '<p class="empty-msg">No predictions yet.</p>';
+                const empty = document.createElement('p');
+                empty.className = 'empty-msg';
+                empty.textContent = 'No predictions yet.';
+                historyList.appendChild(empty);
                 return;
             }
-            historyList.innerHTML = predictionHistory.map((item, idx) => `
-                <div class="history-item-wrapper">
-                    <div class="history-item" id="h-item-${idx}" onclick="toggleHistoryResult(${idx})">
-                        <div class="h-icon"><i data-lucide="file-image"></i></div>
-                        <div class="h-info">
-                            <p class="h-name">${item.fileName}</p>
-                            <p class="h-meta">${new Date(item.timestamp).toLocaleDateString()}</p>
-                        </div>
-                        <p class="h-yield-val">${convertYield(item.yield).val} ${convertYield(item.yield).label}</p>
-                    </div>
-                    <div class="h-details-container" id="h-details-${idx}"></div>
-                </div>
-            `).join('');
+            predictionHistory.forEach((item, idx) => {
+                const wrapper = document.createElement('div');
+                wrapper.className = 'history-item-wrapper';
+
+                const row = document.createElement('div');
+                row.className = 'history-item';
+                row.id = `h-item-${idx}`;
+                row.addEventListener('click', () => toggleHistoryResult(idx));
+
+                const iconWrap = document.createElement('div');
+                iconWrap.className = 'h-icon';
+                const icon = document.createElement('i');
+                icon.dataset.lucide = 'file-image';
+                iconWrap.appendChild(icon);
+
+                const info = document.createElement('div');
+                info.className = 'h-info';
+                const name = document.createElement('p');
+                name.className = 'h-name';
+                name.textContent = String(item?.fileName || 'Image');
+                const date = document.createElement('p');
+                date.className = 'h-meta';
+                const timestamp = new Date(item?.timestamp);
+                date.textContent = Number.isNaN(timestamp.getTime()) ? 'Unknown date' : timestamp.toLocaleDateString();
+                info.append(name, date);
+
+                const amount = Number(item?.yield);
+                const yieldDisplay = Number.isFinite(amount)
+                    ? convertYield(amount)
+                    : { val: '—', label: '' };
+                const value = document.createElement('p');
+                value.className = 'h-yield-val';
+                value.textContent = `${yieldDisplay.val} ${yieldDisplay.label}`.trim();
+                row.append(iconWrap, info, value);
+
+                const details = document.createElement('div');
+                details.className = 'h-details-container';
+                details.id = `h-details-${idx}`;
+                wrapper.append(row, details);
+                historyList.appendChild(wrapper);
+            });
             lucide.createIcons();
         }
 
@@ -1182,8 +1275,8 @@
                 item.classList.remove('expanded');
             } else {
                 // Render the result card if empty
-                if (!container.innerHTML) {
-                    container.innerHTML = createResultCard(data, 0, -1); // rank 0 to hide badge
+                if (!container.firstElementChild) {
+                    container.appendChild(createResultCard(data, 0, -1)); // rank 0 to hide badge
                     // Hide the location update button in history expansion
                     const btn = container.querySelector('.btn-location');
                     if (btn) btn.style.display = 'none';
@@ -1359,7 +1452,7 @@
                         globalUniversities = data;
                         
                         const list = document.getElementById('orgList');
-                        list.innerHTML = '';
+                        list.replaceChildren();
                         data.forEach(uni => {
                             const opt = document.createElement('div');
                             opt.className = 'custom-select-option';
@@ -1706,6 +1799,49 @@
         
         // Initialize tilt after a short delay to ensure DOM is ready
         setTimeout(initTilt, 500);
+
+        document.addEventListener('click', (event) => {
+            const origin = event.target instanceof Element ? event.target : event.target.parentElement;
+            const control = origin?.closest('[data-action]');
+            if (!control) return;
+
+            switch (control.dataset.action) {
+                case 'toggle-sidebar': toggleSidebar(); break;
+                case 'show-section':
+                    event.preventDefault();
+                    showSection(control.dataset.view, control.dataset.section);
+                    break;
+                case 'logout': handleLogout(); break;
+                case 'select-example': selectExampleImage(control.dataset.url, control.dataset.filename); break;
+                case 'export-history': exportHistory(); break;
+                case 'clear-history': clearHistory(); break;
+                case 'change-avatar': triggerAvatarChange(); break;
+                case 'toggle-org-dropdown': toggleOrgDropdown(); break;
+                case 'select-org': selectOrg(control.dataset.org); break;
+                case 'edit-profile': enableProfileEdit(); break;
+                case 'save-profile': saveProfile(); break;
+                case 'export-history-settings': exportHistoryFromSettings(); break;
+                case 'clear-history-settings': clearHistoryFromSettings(); break;
+                case 'reset-settings': resetAllSettings(); break;
+                case 'toggle-faq': toggleFaq(control); break;
+                case 'close-location-modal': closeLocationModal(); break;
+                case 'submit-location': submitLocation(); break;
+            }
+        });
+
+        document.addEventListener('input', (event) => {
+            if (event.target.matches('[data-action="filter-orgs"]')) filterOrgs();
+        });
+
+        document.addEventListener('change', (event) => {
+            const control = event.target;
+            switch (control.dataset.changeAction) {
+                case 'role-change': handleRoleChange(); break;
+                case 'yield-unit': savePref('yieldUnit', control.value); break;
+                case 'notif-analysis': savePref('notifAnalysis', control.checked); break;
+                case 'notif-low-yield': savePref('notifLowYield', control.checked); break;
+            }
+        });
     </script>
 
 
